@@ -1,0 +1,281 @@
+.form-group{
+    width: 70%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      flex-direction: column; 
+      position: relative;
+      gap: 10px;
+      margin: 10px;
+
+  }
+
+  .date-icon{
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    bottom: 2px;
+  }
+
+  .date-icon svg{
+    user-select: none;
+    pointer-events: none;
+  }
+
+
+  
+.date-panel{
+      width: 410px;
+      height: auto;
+      position:absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgb(238,174,202);
+      background: linear-gradient(196deg, rgb(200, 70, 126) 0%, rgb(63, 125, 195) 100%);
+      background: rgb(56, 56, 56);
+
+      z-index: 3;
+      border-radius: 10px;
+      padding: 10px;
+      color: rgb(255, 255, 255);
+      overflow: hidden;
+      /*center*/
+
+     /*  top: 50%;
+      left: 50%;
+
+      transform: scale(.6,.6) translate(-80%, -20%);
+
+      /*left*/
+
+     /*  top: 50%;
+      left: 0%;
+
+      transform: scale(.6,.6) translate(-30%, -20%);  */
+
+
+      /*right*/
+
+      
+     top: 50%;
+      right: 10%;
+      transform: scale(.6,.6) translate(30%, -20%); 
+
+
+  }
+  .date-selected{
+  background: rgb(69, 85, 228);
+
+  border-radius: 10px;
+
+}
+.date-item:hover{
+    background: rgb(69, 85, 228);
+
+      border-radius: 10px;
+
+  }
+
+  .date-header{
+      width: 100%;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      padding-left: 15px;
+      
+  }
+  .date-day{
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      
+  }
+  .date-day-item{
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+  }
+  .date-body {
+      width: 100%;
+      min-height: 340px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      flex-basis: 0;
+    background: rgba(255, 255, 255, 0.24);
+    border-radius: 10px;
+    
+  }
+
+  .date-item{
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+  }
+
+  .date-empty{
+      pointer-events: none;
+      color: rgba(255, 255, 255, 0.25);
+  }
+
+
+#btnPreviousMonth{
+  position: absolute;
+  right: 50px;
+}
+
+#btnNextMonth{
+  position: absolute;
+  right: 10px;
+}
+
+.month-panel{
+  width: 100%;
+  height: 100%;
+  background: var(--gray-300);
+  background: rgba(108, 152, 200, 0.929);
+
+  position: absolute;
+  z-index: 3;
+  color: black;
+      transform: translateY(100%);
+      transition: .5s;
+      overflow: auto;
+
+}
+.month-item{
+      width: 30%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: var(--gray-500);
+      background: rgba(108, 152, 200, 0);
+
+      cursor: pointer;
+  color: white;
+}
+.month-item:hover{
+      background: var(--blue6);
+
+  }
+.month-header{
+      width: 100%;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      padding: 20px;
+}
+
+.month-body {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+
+  #header_month{
+      cursor: pointer;
+  }
+
+  .lbl_year{
+      cursor: pointer;
+  color: white;
+
+  }
+
+  .year-panel{
+  width: 100%;
+  height: 100%;
+  background: rgba(108, 152, 200, 0.929);
+
+  position: absolute;
+  z-index: 3;
+  color: black;
+      transform: translateY(100%);
+      transition: .5s;
+      overflow-y: auto;
+
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+}
+.year-item{
+      width: 115px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: rgba(108, 152, 200, 0);
+
+      cursor: pointer;
+      color: white;
+}
+.year-item:hover{
+      background: var(--blue6);
+
+  }
+
+.year-body {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+  }
+
+  .show-month{
+      transform: translateY(0%);
+      transition: .5s;
+
+  }
+  .btn svg{
+    user-select: none;
+    pointer-events: none;
+    color: white;
+  }
+  input{
+      width: 100%;
+  }
+  input:disabled{
+    background:none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.173)
+  }
+  .eff{
+    border-radius: 10%;
+    background: var(--gray-300);
+    color: rgba(255, 255, 255, 0);
+    /* transform: translate(10px,10px); */
+  }
+  /* .disableSelect{
+     user-select: none;
+    pointer-events: none; 
+  } */
+  .datepicker{
+    border-radius: 10px;
+    padding-left: 10px;
+  }
+
+

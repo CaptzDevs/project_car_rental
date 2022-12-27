@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental</title>
+    <link rel="stylesheet" href="/CarRental/assets/css/root.css">
+    <link rel="stylesheet" href="/CarRental/assets/plugin/bootstrap-5.1.3-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/CarRental/assets/plugin/fontawesome/all.min.css">
+
+    <script src="/CarRental/assets/plugin/bootstrap-5.1.3-dist/js/bootstrap.min.js"> </script>
+    <script src="/CarRental/assets/plugin/fontawesome/all.min.js"> </script>
+    <script src="/CarRental/assets/plugin/jquery/jquery-3.6.0.min.js"> </script>
+
+</head>
+<style>
+     
+     * {
+  margin: 0;
+  padding: 0;
+  font-family: "Google Sans", Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  transition: 0.5s;
+  
+
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 1px;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background: #505050;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background-color: rgb(43, 43, 43) ;
+}
+
+header{
+  width: 100%;
+  height: 50px;
+  background: rgb(28, 28, 28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+header a{
+  color: white;
+  text-decoration: none;
+}
+a:hover{
+  color: white;
+}
+.header-logo{
+  width: 30%;
+  height: 100%;
+  background: url('../assets/img/logo.png') no-repeat ;
+  background-size: 20%;
+  background-position: 35px;
+
+}
+.header-content{
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.header-panel{
+  width: 30%;
+  height: 100%;
+
+}
+ul.header-content {
+  padding: 0px !important;
+  margin: 0px !important;
+
+}
+.header-content li{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 5px 10px 5px;
+  position: relative;
+  font-size: 16px;
+}
+.header-content li:hover{
+  border-bottom: 1px solid var(--main-red);
+}
+
+.header-content li:hover ::after{
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--main-red);
+  position: absolute;
+  bottom: 5px;
+  left: 40%;
+
+}
+
+
+
+main{
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    background: rgb(66, 66, 66);
+  
+  }
+aside{
+    width: 20%;
+    min-width: 250px;
+    height: 100vh;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 10px;
+}
+.search-section{
+  width: 100%;
+  background: rgb(41, 41, 41);
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+.search-section label{
+  width: 10%;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.search-input{
+  width: 90%;
+  background: rgb(255, 255, 255);
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding-left: 10px;
+}
+
+.sort-section{
+  width: 100%;
+  background: rgb(41, 41, 41);
+  padding: 10px;
+  border-radius: 10px;
+}
+.sort-section ul{
+    list-style: none;
+    margin-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+.sort-section li{
+  font-size: .9rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  padding: 10px;
+
+  border-radius: 5px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.sort-section li:hover{
+  background: rgb(63, 63, 63);
+
+}
+
+
+.content{
+  width: 80%;
+  height: auto;
+  background: rgba(43, 43, 43, 0);
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+  padding-top: 10px;
+}
+
+.car-item{
+  width: 260px;
+  height: 260px;
+  border-radius: 10px;
+  background: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+  
+}
+.car-item:hover{
+  filter: drop-shadow(10px 10px rgba(150, 150, 150, 0.242));
+}
+
+.car-item svg{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  color: #434343 !important;
+
+}
+.car-item-image{
+  width: 100%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+.car-item-image img{
+  width: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+.car-item-name{
+  width: 100%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(43, 43, 43);
+  border-radius: 10px;
+  user-select: none;
+  font-size: .7rem;
+  padding: 10px;
+  text-align: center;
+
+color: white;
+}
+
+
+
+footer{
+  width: 100%;
+  height: 150px;
+  background: rgba(44, 44, 44, 0.177);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+color: white;
+  
+}
+
+</style>
+<body>
+  <header >
+    <div class='header-logo'></div>
+    <ul class='header-content'>
+        <li>
+            <a href="/">Home</a>
+        </li>
+        <li>
+            <a href="/agents">Agents</a>
+        </li>
+        <li>
+            <a href="/weapon">Weapons</a>
+
+        </li>
+        <li>
+            <a href="/Map">Maps</a>
+
+        </li>
+    </ul>
+    <div class='header-panel'></div>
+
+</header>
+    <main>
+  
+        <aside>
+          <div class="search-section">
+              <label for="search"> <i class="fa-regular fa-magnifying-glass"></i> </label>
+              <input class="search-input" type="text" id="search" placeholder="search" >
+          </div>
+            <div class="sort-section">
+              <div> Type </div>
+            <ul>
+                <li><i class="fa-regular fa-square"></i> <i class="fa-solid fa-car-side"></i> Car </li>
+                <li><i class="fa-regular fa-square"></i> <i class="fa-solid fa-motorcycle"></i> Motorcycle </li>
+            </ul>
+            </div>
+
+            <div class="sort-section">
+            <div> Seat </div>
+            <ul>
+                <li><i class="fa-regular fa-square"></i> 2 </li>
+                <li><i class="fa-regular fa-square"></i> 4 </li>
+                <li><i class="fa-regular fa-square"></i> 6 </li>
+
+            </ul>
+          </div>
+
+            
+            
+
+        </aside>
+
+        <section class="content" >
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://cdn.hum3d.com/wp-content/uploads/Honda/341_Honda_Civic_Mk11_FE_hatchback_eHEV_2023/Honda_Civic_Mk11_FE_hatchback_eHEV_2023_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic eHEV hatchback 2023
+              </div> 
+            </div>
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://cdn.hum3d.com/wp-content/uploads/Honda/341_Honda_Civic_Mk11_FE_hatchback_eHEV_2023/Honda_Civic_Mk11_FE_hatchback_eHEV_2023_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic eHEV hatchback 2023
+              </div> 
+            </div>
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://cdn.hum3d.com/wp-content/uploads/Honda/341_Honda_Civic_Mk11_FE_hatchback_eHEV_2023/Honda_Civic_Mk11_FE_hatchback_eHEV_2023_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic eHEV hatchback 2023
+              </div> 
+            </div>
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://360view.hum3d.com/zoom/Honda/Honda_Civic_Mk10_FK7_hatchback_TCR_2018_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic TCR hatchback 2021
+              </div> 
+            </div>
+
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://360view.hum3d.com/zoom/Honda/Honda_Civic_Mk10_FK7_hatchback_TCR_2018_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic TCR hatchback 2021
+              </div> 
+            </div>
+
+
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://360view.hum3d.com/zoom/Honda/Honda_Civic_Mk10_FK7_hatchback_TCR_2018_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic TCR hatchback 2021
+              </div> 
+            </div>
+
+
+            <div class="car-item"> 
+              <i class="fa-solid fa-car-side"></i> 
+              <div class="car-item-image">
+                <img src="https://360view.hum3d.com/zoom/Honda/Honda_Civic_Mk10_FK7_hatchback_TCR_2018_1000_0001.jpg">
+              </div>
+              <div class="car-item-name">
+                Honda Civic TCR hatchback 2021
+              </div> 
+            </div>
+
+
+
+            
+
+          
+        </section>
+        
+
+    </main>
+    <footer>
+       All Design By Captz
+  </footer>
+</body>
+</html>
