@@ -7,6 +7,7 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Admin_model');
 		
+		
 	}
 
 	public function index()
@@ -17,7 +18,7 @@ class Admin extends CI_Controller {
 	public function vehicle($data_id = NULL)
 	{
 		$data['data_id'] = $data_id;
-
+		$data['car_detail'] = NULL;
 
 		if($data_id == 'add'){
 			$this->load->view('/admin/car_add',$data);
@@ -26,14 +27,50 @@ class Admin extends CI_Controller {
 
 
 		if(is_numeric($data_id)){
+			
+			$data['car_detail'] = $this->Admin_model->get_data_by_id($data_id);
+			$data['car_image'] = $this->Admin_model->get_image_by_id($data_id);
+
 			$this->load->view('/admin/car_add',$data);
 		}
 
 
 	}
 
+	public function getDataByID(){
+		
+		echo $this->Admin_model->get_data_by_id($this->input->post('id'));
+
+	}
+
+	public function getAllData(){
+
+	}
+	public function deleteData(){
+		echo $this->Admin_model->delete($this->input->post('table'),$this->input->post('id'));
+	}
+
+	public function updateData(){
+
+		$this->load->helper("security");
+
+        $stream = $this->security->xss_clean( $this->input->raw_input_stream );
+      
+        $data = json_decode($stream, true);
+		$table = $data['table'];
+
+
+		
+		unset($data['table']);
+
+		 $result = $this->Admin_model->update($table,$data['id'],$data);   
+		 
+		echo $result; 
+	}
+
 	public function addData(){
 		$this->load->helper("security");
+
         $stream = $this->security->xss_clean( $this->input->raw_input_stream );
       
         $data = json_decode($stream, true);
@@ -45,7 +82,6 @@ class Admin extends CI_Controller {
 		 $insert_id = $this->db->insert_id();
 		 
 		 echo $insert_id;
-
 	}
 
 	public function uploadImage(){

@@ -814,10 +814,10 @@ border: 1px solid white;
         </div>
 
         
+
         <section class="section-modal row p-4 gap-sm-3" id="car-detail">
 
           <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
-
          <form class="form-modal col-lg-6 col-md-12" id="form_modal" action="">
             <div class="form-modal-head">
               <span>Car Detail</span>
@@ -907,8 +907,6 @@ border: 1px solid white;
 
         
           </div>
-
-      
 
 
             <div class="form-modal-footer">
