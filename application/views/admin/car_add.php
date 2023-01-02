@@ -678,7 +678,7 @@ input{
   filter: drop-shadow(0px 5px var(--blue8) );
   transform: translateY(-5px);
 }
-.vehicle-stastus-box svg{
+ svg{
   user-select: none;
   pointer-events: none;
 }
@@ -1011,11 +1011,12 @@ input{
           <div class="form-group-section">
             <label class="form-section-label" id="lbl-<?php echo $section ?>" for=""><?php echo $section ?> </label>
             <div class="form-group">
-              <img class="image-preview-url <?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? "d-block" : ""?>" id="image_preview_<?php echo $section ?>" 
+              <img class="image-preview-url <?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? "d-block" : ""?>" 
+              id="image_preview_<?php echo $section ?>" 
               src ="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? $car_arr[$section]['image_url'] : "" ?>"
               >
 
-              <input type="file" class="dropify" 
+              <input type="file" class="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? "d-none" : "dropify"?> "  
                     data-default-file="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '1' ? base_url('/uploads/images/'.$car_arr[$section]['image_url']) : ''  ?>" 
                     data-type="<?php echo $section ?>" 
                     data-id="<?php $car_arr[$section] && printf($car_arr[$section]['id']) ?> " 
@@ -1026,13 +1027,21 @@ input{
                   <div class="progress-loader" id="progress-<?php echo $section ?>"></div>
               </div>           
             </div>
-
+            <div class="w-100 text-center"> <i class="fa-solid fa-code"></i> </div>
             <div class="form-group-section borderless">
          
-              <div class="form-group">
+              <div class="form-group <?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '1' ? "d-none" : ""?> ">
               <label for="">URL</label>
-              <input class="url-input-image" type="text" data-type="<?php echo $section ?>" 
-              value="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? $car_arr[$section]['image_url'] : "" ?>">
+              <input class="url-input-image" 
+                      type="text" 
+                      data-type="<?php echo $section ?>" 
+                      value="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? $car_arr[$section]['image_url'] : "" ?>"
+                      data-id="<?php $car_arr[$section] && printf($car_arr[$section]['id']) ?>" 
+              
+              >
+              <button data-type="<?php echo $section ?>" data-id="<?php $car_arr[$section] && printf($car_arr[$section]['id']) ?>"
+                     class="btn-delete-url rounded px-2 mt-2 text-dark float-end"><i class="fa-solid fa-trash"></i>
+                </button>
             </div>
 
               <label for="">Show on web</label>
@@ -1380,12 +1389,14 @@ input{
 const REF_ID = '<?php echo $data_id ?>';
 
 $(".dropify").change((e)=>{
+  console.log('d')
   uploadImage(REF_ID,e.target.dataset.type)
-  
 })
 
 $(".url-input-image").change((e)=>{
-  uploadImageURL(REF_ID,e.target.dataset.type,e.target.value)
+  console.log('d')
+  uploadImageURL(e,REF_ID,e.target.dataset.type,e.target.value)
+  
 })
 
 $("#btn_save").click((e)=>{
@@ -1396,6 +1407,56 @@ $("#btn_save").click((e)=>{
 $("#btn_update").click((e)=>{
   e.preventDefault()
     sendData('update',REF_ID)
+})
+
+$(`.btn-delete-url`).click((e)=>{
+    e.preventDefault()
+    let image_section = e.target.dataset.type
+    let image_id = e.target.dataset.id
+
+    $(`.url-input-image[data-type='${image_section}']`).val('')
+    $(`#image_preview_${image_section}`).removeClass("d-block")
+    $(`input[data-type='${image_section}']`).parent().removeClass("d-none")
+    $(`input[data-type='${image_section}'][type='file']`).addClass("dropify")
+
+
+      $.ajax({
+        url: '<?php echo base_url("/Admin/deleteData")?>',
+        type: 'POST',
+        data: {
+                'table' : 'tbl_vehicle_image',
+                'id':image_id
+              },
+        success: function(response) {
+          if(response == 1){
+               $.toast({
+                           heading: "Delete Status Successfully",
+                           text:"",
+                           showHideTransition : "fade",
+                           hideAfter : 2000,
+                           icon:"success"
+
+                       })
+                    }
+                 }
+            });
+
+    $('.dropify').dropify({
+      tpl: {
+        wrap:            '<div class="dropify-wrapper"></div>',
+        loader:          '<div class="dropify-loader"></div>',
+        message:         '<div class="dropify-message" style="font-size:2rem"><i class="fa-solid fa-images"></i> </div>',
+        preview:         '<div class="dropify-preview"><span class="dropify-render"></span><div class="dropify-infos"><div class="dropify-infos-inner"><p class="dropify-infos-message">{{ replace }}</p></div></div></div>',
+        filename:        '<p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p>',
+        clearButton:     '<button type="button" class="dropify-clear">{{ remove }}</button>',
+        errorLine:       '<p class="dropify-error">{{ error }}</p>',
+        errorsContainer: '<div class="dropify-errors-container"><ul></ul></div>'
+    }
+    });
+
+    $(".dropify").change((e)=>{
+        uploadImage(REF_ID,e.target.dataset.type)
+    })
 })
 
 
@@ -1491,11 +1552,92 @@ function updateStatus(table ,id_name, ref_id , section , value){
 
 $(`.dropify`).on('dropify.beforeClear', function(e, element){
 
-  let image_id = e.target.dataset.id
+    let image_id = e.target.dataset.id
     let image_section = e.target.dataset.type
 
 
     $(`.dropify[data-type='${image_section}']`).on('dropify.afterClear', function(event, element){
+
+      $.ajax({
+        url: '<?php echo base_url("/Admin/deleteData")?>',
+        type: 'POST',
+        data: {
+                'table' : 'tbl_vehicle_image',
+                'id':image_id
+              },
+        success: function(response) {
+          if(response == 1){
+            $(`.url-input-image[data-type='${image_section}']`).parent().removeClass("d-none")
+
+               $.toast({
+
+                           heading: "Delete Status Successfully",
+
+                           text:"",
+
+                           showHideTransition : "fade",
+
+                           hideAfter : 2000,
+
+                           icon:"success"
+
+                       })
+            }
+          }
+      });
+    }); 
+
+});
+  
+/* */
+
+
+
+function uploadImageURL(e,ref_id,image_section,value){
+
+
+  if(value != ""){
+    $(`#image_preview_${image_section}`).addClass('d-block')
+    $(`.dropify[data-type='${image_section}']`).parent().addClass('d-none')
+    
+    $(`#image_preview_${image_section}`).attr('src',value)
+
+    let datasend = {
+      'table' : 'tbl_vehicle_image',
+      'vehicle_id': ref_id,
+      'image_section': image_section,
+      'image_type': '2',
+      'image_url': value,
+    }
+    
+    $.ajax({
+        url: '<?php echo base_url("/Admin/addData")?>',
+        type: 'POST',
+        data: JSON.stringify(datasend),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(response) {
+          if(response > 0){
+            $(`.btn-delete-url[data-type='${image_section}']`).attr('data-id',response)
+
+               $.toast({
+                           heading: "Upload Image URL Successfully",
+                           text:"",
+                           showHideTransition : "fade",
+                           hideAfter : 2000,
+                           icon:"success"
+                       })
+                    }
+                }
+           });
+    
+
+  }else{
+    $(`#image_preview_${image_section}`).removeClass("d-block")
+    $(`input[data-type='${image_section}']`).removeClass("d-none")
+    $(`input[data-type='${image_section}'][type='file']`).addClass("dropify")
+
+  let image_id = e.target.dataset.id
 
       $.ajax({
         url: '<?php echo base_url("/Admin/deleteData")?>',
@@ -1522,62 +1664,23 @@ $(`.dropify`).on('dropify.beforeClear', function(e, element){
             }
           }
       });
-    }); 
 
-});
-  
-/* */
-
-
-
-function uploadImageURL(ref_id,image_section,value){
-
-
-  $(`#image_preview_${image_section}`).show()
-  $(`.dropify[data-type='${image_section}']`).parent().hide()
- 
-  if(value != ""){
-    $(`#image_preview_${image_section}`).attr('src',value)
-
- 
-
-    let datasend = {
-      'table' : 'tbl_vehicle_image',
-      'vehicle_id': ref_id,
-      'image_section': image_section,
-      'image_type': '2',
-      'image_url': value,
+    $('.dropify').dropify({
+      tpl: {
+        wrap:            '<div class="dropify-wrapper"></div>',
+        loader:          '<div class="dropify-loader"></div>',
+        message:         '<div class="dropify-message" style="font-size:2rem"><i class="fa-solid fa-images"></i> </div>',
+        preview:         '<div class="dropify-preview"><span class="dropify-render"></span><div class="dropify-infos"><div class="dropify-infos-inner"><p class="dropify-infos-message">{{ replace }}</p></div></div></div>',
+        filename:        '<p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p>',
+        clearButton:     '<button type="button" class="dropify-clear">{{ remove }}</button>',
+        errorLine:       '<p class="dropify-error">{{ error }}</p>',
+        errorsContainer: '<div class="dropify-errors-container"><ul></ul></div>'
     }
-    
-    $.ajax({
-        url: '<?php echo base_url("/Admin/addData")?>',
-        type: 'POST',
-        data: JSON.stringify(datasend),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function(response) {
-          if(response == 1){
-               $.toast({
-
-                           heading: "Upload Image Successfully",
-
-                           text:"",
-
-                           showHideTransition : "fade",
-
-                           hideAfter : 2000,
-
-                           icon:"success"
-
-                       })
-          }
-        }
     });
-    
 
-  }else{
-    $(`#image_preview_${image_type}`).hide()
-    $(`.dropify[data-type='${image_type}']`).parent().show()
+    $(".dropify").change((e)=>{
+  uploadImage(REF_ID,e.target.dataset.type)
+})
 
   }
 }
@@ -1905,6 +2008,8 @@ function uploadImage(ref_id,image_section){
                 data = JSON.parse(data)
 
                 console.log(data);
+
+                $(`.url-input-image[data-type='${image_section}']`).parent().addClass("d-none")
 
                 $(`.dropify[data-type='${image_section}']`).prop('disabled',true)
                 $(`.dropify[data-type='${image_section}']`).attr('data-id',data)

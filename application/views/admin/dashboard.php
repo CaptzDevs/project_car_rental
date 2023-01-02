@@ -1345,7 +1345,7 @@ window.onbeforeunload  = function(event) {
         clearButton:     '<button type="button" class="dropify-clear">{{ remove }}</button>',
         errorLine:       '<p class="dropify-error">{{ error }}</p>',
         errorsContainer: '<div class="dropify-errors-container"><ul></ul></div>'
-    }
+    } 
     });
 
    </script>
