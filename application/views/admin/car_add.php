@@ -130,6 +130,8 @@ main{
     justify-content: flex-start;
     background: rgb(46, 46, 46);
     position: relative;
+    overflow-x: hidden;
+
   }
 
   aside{
@@ -202,6 +204,8 @@ main{
     background: rgb(46, 46, 46);
     padding: 20px;
     overflow: auto;
+    overflow-x: hidden;
+
 }
 
   footer{
@@ -335,7 +339,7 @@ section{
 .status-success {
   background: var(--green6) !important;
 }
-.status-waning {
+.status-warning {
   background: var(--yellow6) !important;
 }
 .status-danger {
@@ -413,6 +417,7 @@ section{
     padding-top: 50px;
     padding-bottom: 50px;
     transform: translateX(100%);
+    overflow-x: hidden;
 
 }
 
@@ -596,6 +601,7 @@ section{
   padding: 0px 20px 0px 20px;
   border: 1px solid rgba(255, 255, 255, 0.451);
   border-radius: 10px;
+  text-transform: capitalize;
 }
 .borderless{
   border: none;
@@ -859,11 +865,16 @@ input{
 
           <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
 
+
          <form class="form-modal col-lg-6 col-md-12" id="form_detail_modal" action="">
             <div class="form-modal-head">
               <span>Car Detail</span>
               <i class="fa-solid fa-file-invoice"></i>
-              <div class="status status-avalible rounded px-2">Avalible <i class="fa-solid fa-check"></i></div>
+              <?php $ve_status_arr = ['Broken','Avalible','Rented','Fixing'] ?>
+              <?php $ve_status_color_arr = ['broken','avalible','rented','fixing'] ?>
+
+              <div class="status status-<?php echo $car_detail ? $ve_status_color_arr[$car_detail['vehicle_status']]  : '' ?> rounded px-2"><?php echo $car_detail ? $ve_status_arr[$car_detail['vehicle_status']]  : '' ?> <!-- <i class="fa-solid fa-check"></i> --></div>
+
             </div>
 
           <div class="form-modal-body">
@@ -872,28 +883,28 @@ input{
               <label class="form-section-label" for="">General</label>
               <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" name="name" id="name">
+                <input type="text" name="name" id="name" value="<?php echo  $car_detail ? $car_detail['name'] : '' ?>">
               </div>
   
               <div class="form-group">
                 <label for="">Brand</label>
-                <input type="text" name="brand" id="brand">
+                <input type="text" name="brand" id="brand" value="<?php echo  $car_detail ? $car_detail['brand'] : '' ?>">
               </div>
   
               <div class="form-group">
                 <label for="">Year</label>
-                <input type="text" name="year" id="year">
+                <input type="text" name="year" id="year"  value="<?php echo  $car_detail ? $car_detail['year'] : '' ?>">
               </div>
 
               <div class="form-group">
                 <label for="">License plate</label>
-                <input type="text" name="license_plate" id="license_plate">
+                <input type="text" name="license_plate" id="license_plate" value="<?php echo  $car_detail ? $car_detail['license_plate'] : '' ?>">
               </div>
               
               
             <div class="form-group">
               <label for="">Slug Url</label>
-              <input type="text" name="slug_url" id="slug_url">
+              <input type="text" name="slug_url" id="slug_url"  value="<?php echo  $car_detail ? $car_detail['slug_url'] : '' ?>">
             </div>
 
             </div>
@@ -904,11 +915,11 @@ input{
 
             <div class="form-group">
               <label for="">Deposit</label>
-              <input type="text" name="deposit" id="deposit">
+              <input type="text" name="deposit" id="deposit" value="<?php echo  $car_detail ? $car_detail['deposit'] : '' ?>">
             </div>
             <div class="form-group">
               <label for="">Rate</label>
-              <input type="text" name="rate" id="rate">
+              <input type="text" name="rate" id="rate" value="<?php echo  $car_detail ? $car_detail['rate'] : '' ?>">
             </div>
 
           </div>
@@ -918,16 +929,16 @@ input{
             <label for="">Show on web</label>
 
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box data_status status-selected" data-value='1'><i class="fa-solid fa-eye"></i></div>
-              <div class="vehicle-stastus-box data_status " data-value='0'><i class="fa-solid fa-eye-slash"></i></div>
+              <div class="vehicle-stastus-box data_status <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $car_detail && $car_detail['data_status'] == '1' ? 'status-selected' : '' ?>" data-value='1'><i class="fa-solid fa-eye"></i></div>
+              <div class="vehicle-stastus-box data_status <?php echo $car_detail && $car_detail['data_status'] == '0' ? 'status-selected' : '' ?> " data-value='0'><i class="fa-solid fa-eye-slash"></i></div>
             </div>
           </div>
 
           <div class="form-group-section borderless">
             <label for="">Type</label>
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box vehicle_type status-selected" data-value='1'><i class="fa-solid fa-car-side"></i></div>
-              <div class="vehicle-stastus-box vehicle_type " data-value='2'><i class="fa-solid fa-motorcycle"></i></div>
+              <div class="vehicle-stastus-box vehicle_type <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $car_detail && $car_detail['vehicle_type'] == '1' ? 'status-selected' : '' ?> " data-value='1'><i class="fa-solid fa-car-side"></i></div>
+              <div class="vehicle-stastus-box vehicle_type <?php echo $car_detail && $car_detail['vehicle_type'] == '2' ? 'status-selected' : '' ?> " data-value='2'><i class="fa-solid fa-motorcycle"></i></div>
             </div>
           </div>
 
@@ -935,10 +946,10 @@ input{
           <div class="form-group-section borderless">
             <label for="">Status</label>
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box vehicle_status status-selected"data-value='1'>Avalible</div>
-              <div class="vehicle-stastus-box vehicle_status "data-value='2'>Rented</div>
-              <div class="vehicle-stastus-box vehicle_status "data-value='3'>Fixing</div>
-              <div class="vehicle-stastus-box vehicle_status "data-value='0'>Broken</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $car_detail && $car_detail['vehicle_status'] == '1' ? 'status-selected' : '' ?> "data-value='1'>Avalible</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $car_detail && $car_detail['vehicle_status'] == '2' ? 'status-selected' : '' ?> "data-value='2'>Rented</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $car_detail && $car_detail['vehicle_status'] == '3' ? 'status-selected' : '' ?> "data-value='3'>Fixing</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $car_detail && $car_detail['vehicle_status'] == '0' ? 'status-selected' : '' ?> "data-value='0'>Broken</div>
             </div>
           </div>
 
@@ -947,7 +958,10 @@ input{
 
       
             <div class="form-modal-footer">
-              <button class="btn-send-modal" id="btn_save"> Save </button>
+              <button class="btn-send-modal" id="btn_save"> <?php echo is_numeric($data_id) ? "Copy all data to new page" : 'Save' ?> </button>
+              <?php if(!is_numeric($data_id) == false){ ?>
+              <button class="btn-send-modal" id="btn_update"> Save </button>
+              <?php } ?>
             </div>
         </form> 
      <?php if(is_numeric($data_id)){ ?>
@@ -960,13 +974,56 @@ input{
 
         <div class="form-modal-body">
 
+
+        <?php 
+
+          $car_section_arr = ['overview','front','back','side','above','wheel'];
+          $car_arr = [];
+
+          foreach($car_section_arr as $section2){
+            $car_arr[$section2] =  [] ;
+            foreach($car_image as $car_image2){
+            
+              if($car_image2['image_section'] == $section2){
+                $car_arr[$section2] = $car_image2 ;
+              }
+              
+            }
+
+          }
+
+       /*    echo '<pre>';
+          print_r($car_arr);
+          echo '</pre>'; */
+
+
+         ?>
+<!-- <?php foreach($car_section_arr as $section){ ?>
+
+           <div class="status border p-2 rounded <?php echo $car_arr[$section] && $car_arr[$section]['id'] ? 'status-success' : '' ?>"><?php echo $section ?></div>
+
+<?php } ?> -->
+
+<?php foreach($car_section_arr as $section){
+  
+  ?>
+
           <div class="form-group-section">
-            <label class="form-section-label" id="lbl-overview" for="">Overview </label>
+            <label class="form-section-label" id="lbl-<?php echo $section ?>" for=""><?php echo $section ?> </label>
             <div class="form-group">
-              <img class="image-preview-url" id="image_preview_overview">
-              <input type="file" class="dropify" data-default-file="" data-type="overview" />
-                  <div class="progress-bar">
-                  <div class="progress-loader" id="progress-overview"></div>
+              <img class="image-preview-url <?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? "d-block" : ""?>" id="image_preview_<?php echo $section ?>" 
+              src ="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? $car_arr[$section]['image_url'] : "" ?>"
+              >
+
+              <input type="file" class="dropify" 
+                    data-default-file="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '1' ? base_url('/uploads/images/'.$car_arr[$section]['image_url']) : ''  ?>" 
+                    data-type="<?php echo $section ?>" 
+                    data-id="<?php $car_arr[$section] && printf($car_arr[$section]['id']) ?> " 
+
+                    />
+                  
+                    <div class="progress-bar">
+                  <div class="progress-loader" id="progress-<?php echo $section ?>"></div>
               </div>           
             </div>
 
@@ -974,20 +1031,22 @@ input{
          
               <div class="form-group">
               <label for="">URL</label>
-              <input class="url-input-image" type="text" data-type="overview">
+              <input class="url-input-image" type="text" data-type="<?php echo $section ?>" 
+              value="<?php echo $car_arr[$section] && $car_arr[$section]['image_type'] == '2' ? $car_arr[$section]['image_url'] : "" ?>">
             </div>
 
               <label for="">Show on web</label>
     
               <div class="vehicle-stastus-form">
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+                <div data-value="1" data-id="<?php $car_arr[$section] && printf($car_arr[$section]['id'])  ?> "  data-image_section=<?php echo $section ?> class="vehicle-stastus-box image_data_status <?php echo $car_arr[$section] && $car_arr[$section]['data_status'] == '1' ? 'status-selected' : ''  ?>" ><i class="fa-solid fa-eye"></i></div>
+                <div data-value="0" data-id="<?php $car_arr[$section] && printf($car_arr[$section]['id'])  ?> "  data-image_section=<?php echo $section ?> class="vehicle-stastus-box image_data_status <?php echo $car_arr[$section] && $car_arr[$section]['data_status'] == '0' ? 'status-selected' : ''  ?>" ><i class="fa-solid fa-eye-slash"></i></div>
               </div>
             </div>
 
           </div>
+          <?php  } ?>
 
-          <div class="form-group-section">
+        <!--   <div class="form-group-section">
             <label class="form-section-label" id="lbl-front" for="">Front</label>
             <div class="form-group">
               <img class="image-preview-url" id="image_preview_front">
@@ -1121,13 +1180,7 @@ input{
               </div>
             </div>
 
-          </div>
-    
-
- 
-
-      
-       
+          </div> -->
 
       
         </div>
@@ -1324,41 +1377,156 @@ input{
 
     <script>
 
-const SLUG_URL = '';
+const REF_ID = '<?php echo $data_id ?>';
 
 $(".dropify").change((e)=>{
-  uploadImage(1,e.target.dataset.type)
+  uploadImage(REF_ID,e.target.dataset.type)
+  
 })
 
 $(".url-input-image").change((e)=>{
-  uploadImageURL(1,e.target.dataset.type,e.target.value)
+  uploadImageURL(REF_ID,e.target.dataset.type,e.target.value)
 })
 
 $("#btn_save").click((e)=>{
   e.preventDefault()
-    sendData()
+    sendData('save')
+})
+
+$("#btn_update").click((e)=>{
+  e.preventDefault()
+    sendData('update',REF_ID)
+})
+
+
+$(".image_data_status").click((e)=>{
+  let value = e.target.dataset.value
+  let section = e.target.dataset.image_section
+  let image_id = e.target.dataset.id
+
+
+  $(`.image_data_status[data-image_section='${section}']`).each((i,item)=>{
+        item.classList.remove('status-selected')
+    })
+
+    updateStatus('tbl_vehicle_image','id',image_id,'data_status',value)
+    e.target.classList.add('status-selected')
+
 })
 
 $(".vehicle_status,.data_status,.vehicle_type").click((e)=>{
-  console.log(e.target.className)
-  if(e.target.className.includes('vehicle_status')){
-    $('.vehicle_status').each((i,item)=>{
-        item.classList.remove('status-selected')
-    })
-  }
+  let value = e.target.dataset.value
+
   if(e.target.className.includes('data_status')){
     $('.data_status').each((i,item)=>{
         item.classList.remove('status-selected')
-    })
+      })
+      updateStatus('tbl_vehicle','id',REF_ID,'data_status',value)
   }
+
   if(e.target.className.includes('vehicle_type')){
     $('.vehicle_type').each((i,item)=>{
         item.classList.remove('status-selected')
-    })
+        
+        
+      })
+      updateStatus('tbl_vehicle','id',REF_ID,'vehicle_type',value)
+      
   }
+
+  if(e.target.className.includes('vehicle_status')){
+    $('.vehicle_status').each((i,item)=>{
+        item.classList.remove('status-selected')
+      })
+      updateStatus('tbl_vehicle','id',REF_ID,'vehicle_status',value)
+        
+   
+  }
+  
+  
 
     e.target.classList.add('status-selected')
 })
+
+function updateStatus(table ,id_name, ref_id , section , value){
+
+    let datasend = {
+      'table' : table,
+    }
+
+    datasend[section] = value;
+    datasend[id_name] = ref_id;
+
+
+    
+    $.ajax({
+        url: '<?php echo base_url("/Admin/updateData")?>',
+        type: 'POST',
+        data: JSON.stringify(datasend),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function(response) {
+          if(response == 1){
+               $.toast({
+
+                           heading: "Update Status Successfully",
+
+                           text:"",
+
+                           showHideTransition : "fade",
+
+                           hideAfter : 2000,
+
+                           icon:"success"
+
+                       })
+          }
+          
+        }
+    });
+    
+
+ 
+}
+
+$(`.dropify`).on('dropify.beforeClear', function(e, element){
+
+  let image_id = e.target.dataset.id
+    let image_section = e.target.dataset.type
+
+
+    $(`.dropify[data-type='${image_section}']`).on('dropify.afterClear', function(event, element){
+
+      $.ajax({
+        url: '<?php echo base_url("/Admin/deleteData")?>',
+        type: 'POST',
+        data: {
+                'table' : 'tbl_vehicle_image',
+                'id':image_id
+              },
+        success: function(response) {
+          if(response == 1){
+               $.toast({
+
+                           heading: "Delete Status Successfully",
+
+                           text:"",
+
+                           showHideTransition : "fade",
+
+                           hideAfter : 2000,
+
+                           icon:"success"
+
+                       })
+            }
+          }
+      });
+    }); 
+
+});
+  
+/* */
 
 
 
@@ -1739,6 +1907,8 @@ function uploadImage(ref_id,image_section){
                 console.log(data);
 
                 $(`.dropify[data-type='${image_section}']`).prop('disabled',true)
+                $(`.dropify[data-type='${image_section}']`).attr('data-id',data)
+
                 setTimeout(() => {
 
                   $(`#lbl-${image_section}`).append(`<i class="fa-solid fa-circle-check"></i>`)
@@ -1808,7 +1978,7 @@ function uploadImage(ref_id,image_section){
 }
 
 
-async function sendData(){
+async function sendData(type,id){
 
    /*  if(await preUpload() == false){
             return 0;
@@ -1828,9 +1998,11 @@ async function sendData(){
         let formData = new FormData($("#form_detail_modal")[0]);
 
         formData.append('table','tbl_vehicle')
+        type == 'update' ? formData.append('id',id) : ''
         formData.append('vehicle_status',$(".vehicle_status.status-selected")[0].dataset.value)
         formData.append('vehicle_type',$(".vehicle_type.status-selected")[0].dataset.value)
         formData.append('data_status',$(".data_status.status-selected")[0].dataset.value)
+
 
         let dataSend = {};
         formData.forEach(function(value, key){
@@ -1843,7 +2015,7 @@ async function sendData(){
         $.ajax({
 
             type: 'POST',
-            url: '<?php echo base_url('Admin/addData') ?>',
+            url: type == 'save' ? '<?php echo base_url('Admin/addData') ?>' : '<?php echo base_url('Admin/updateData') ?>',
             data: JSON.stringify(dataSend),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -1891,8 +2063,9 @@ async function sendData(){
                            icon:"success"
                        })
 
-                       location.href = '<?php echo base_url('/Admin/vehicle/')?>'+data
-
+                       if(type == 'save'){
+                        location.href =  '<?php echo base_url('/Admin/vehicle/')?>'+data 
+                      }
               }, 500);
 
 
@@ -1914,7 +2087,8 @@ async function sendData(){
  
  $.toast({
   icon:'success',
-  text : "Success",
+  heading: "Vehicle Data : "+REF_ID,
+  hideAfter : 1500,
 })
 
 window.onbeforeunload  = function(event) {
