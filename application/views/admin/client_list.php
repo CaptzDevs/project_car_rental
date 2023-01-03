@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car List</title>
+    <title>Dashboard</title>
     <?php include('plugin.php') ?>
 </head>
 <style>
@@ -281,7 +281,7 @@ section{
   
 }
 .card-status{
-  min-width: 300px;
+  width: 49%;
   height: 100px;
   background: rgb(60, 60, 60);
   display: flex;
@@ -581,10 +581,7 @@ border: 1px solid white;
   background: var(--red6) !important;
 }
 
-.image-preview{
-  width: 50px;
-  height: 50px;
-}
+
 
 </style>
 <body>
@@ -594,9 +591,10 @@ border: 1px solid white;
       </div>
 
       <?php include('sidebar.php') ?>
+
         <div class="content">
           <div class="label-text">Dashboard <i class="fa-solid fa-chart-line"></i></div>
-          <section class="banner">
+       <!--    <section class="banner">
                     <div class="banner-card">
                       <i class="fa-solid fa-car-side"></i>
                       <span class="banner-amount">150</span>
@@ -614,26 +612,18 @@ border: 1px solid white;
                       <span class="lbl_amount">Customer</span>
                     </div>
 
-            </section>
-            <section class="section-status">
+            </section> -->
+            <section class="section-status  ">
                 <div class="card-status">
-                    <div class="card-status-bar status-avalible"></div>
-                    <div class="status-label">Avalible <i class="fa-solid fa-file-lines"></i></div>
+                    <div class="card-status-bar status-success"></div>
+                    <div class="status-label">Normal<i class="fa-regular fa-circle-check"></i></div>
                     <div class="status-amount">50</div>
                 </div>
+            
+             
                 <div class="card-status">
-                  <div class="card-status-bar status-rented"></div>
-                    <div class="status-label">Rented  <i class="fa-solid fa-file-check"></i></div>
-                    <div class="status-amount"> 50 </div>
-                </div>
-                <div class="card-status">
-                  <div class="card-status-bar status-fixing"></div>
-                    <div class="status-label">Fixing <i class="fa-solid fa-file-exclamation"></i> </div>
-                    <div class="status-amount">50</div>
-                </div>
-                <div class="card-status">
-                  <div class="card-status-bar status-broken"></div>
-                    <div class="status-label">Broken <i class="fa-solid fa-file-excel"></i> </div>
+                  <div class="card-status-bar status-error"></div>
+                    <div class="status-label">Banned <i class="fa-solid fa-ban"></i> </div>
                     <div class="status-amount">50</div>
                 </div>
 
@@ -642,38 +632,6 @@ border: 1px solid white;
             <?php $status_arr = ['broken','avalible' , 'rented' , 'fixing' , ] ?>
 
         <section class="table-group">  
-            <section class="section-table">
-              <div class="label-text">Cars <i class="fa-solid fa-cars"></i></div>
-              <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th  scope="col">ID</th>
-                    <!-- <th  scope="col">Image</th> -->
-                    <th  scope="col">Name</th>
-                    <th style="width: 20%;"  scope="col">Status</th>
-                    <th style="width: 10px;" scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                 <?php $i = 0 ?>
-                <?php foreach($all_vehicle as $value){   $i++;?>
-
-                  <tr class="data-row vehicle_data" data-id="<?php echo $value['id']?>">
-                    <td><?php echo $i?> </td>
-                   <!--  <td> <img class="image-preview" src="<?php echo $value['image_type'] == '1'? base_url("/uploads/images/".$value['image_url']) : $value['image_url'] ?>" alt=""> </td> -->
-                    <td><?php echo $value['name'] ?></td>
-                    <td ><div class="status-box status-<?php echo $status_arr[$value['vehicle_status']] ?>"><?php echo $status_arr[$value['vehicle_status']] ?></div></td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-                  
-                  <?php } ?>
-  
-                </tbody>
-              </table>
-            </div>
-            </section>
-
 
             <?php $status_client_color = ['error','success'] ;
                   $status_client_arr = ['banned','normal'];
@@ -692,17 +650,18 @@ border: 1px solid white;
                     <th  scope="col">Name</th>
                     <th  scope="col">Email</th>
                     <th  scope="col">Tel.</th>
+                    <th style="width: 10px;" scope="col">Role</th>
                     <th style="width: 20%;"  scope="col">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                 <?php $i = 0 ?>
-                <?php foreach($all_client as $value){ $i++ ?>
+                <?php foreach($all_client as $value){ ?>
                   <tr class="data-row client_data" data-id="<?php echo $value['id']?>">
-                    <td><?php echo $i ?> </td>
+                    <td><?php echo $value['id'] ?> </td>
                     <td><?php echo $value['name'] ?></td>
                     <td><?php echo $value['email'] ?></td>
                     <td><?php echo $value['tel'] ?></td>
+                    <td><?php echo $status_client_role[$value['role']] ?></td>
                     <td ><div class="status-box status-<?php echo $status_client_color[$value['data_status']] ?>"><?php echo $status_client_arr[$value['data_status']] ?></div></td>
                     <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
                   </tr>
@@ -715,58 +674,7 @@ border: 1px solid white;
             </section>
             
 
-            <section class="section-table">
-              <div class="label-text">Rent Detail <i class="fa-solid fa-files"></i></div>
-              <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th  scope="col">ID</th>
-                    <th  scope="col">Client</th>
-                    <th  scope="col">Vehicle</th>
-                    <th  scope="col">Start Rent</th>
-                    <th  scope="col">End Rent</th>
-                    <th  style="width: 10%;"  scope="col">Rent Status</th>
-                    <th style="width: 10px;" scope="col"></th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="rent-data-row">
-                    <th scope="row">1</th>
-                    <td>Siwakorn</td>
-                    <td>Ford Focus</td>
-                    <td>23/12/2565</td>
-                    <td>28/12/2565</td>
-                    <td ><div class="status-box status-avalible">Returned</div></td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-
-                  <tr class="rent-data-row">
-                    <th scope="row">1</th>
-                    <td>Siwakorn</td>
-                    <td>Ford Focus</td>
-                    <td>23/12/2565</td>
-                    <td>28/12/2565</td>
-                    <td ><div class="status-box status-rented">Rented</div></td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-
-                  <tr class="rent-data-row">
-                    <th scope="row">1</th>
-                    <td>Siwakorn</td>
-                    <td>Ford Focus</td>
-                    <td>23/12/2565</td>
-                    <td>28/12/2565</td>
-                    <td ><div class="status-box status-broken">Late</div></td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-            
-                
-                </tbody>
-              </table>
-            </div>
-            </section>
+          
         </section>
 
         </div>
@@ -1254,7 +1162,8 @@ window.onbeforeunload  = function(event) {
 
 
     $(`.data-row.client_data`).click((e)=>{
-      location.href = `<?php echo base_url('/Admin/client/') ?>${e.target.parentElement.dataset.id}`
+      location.href = `<?php echo base_url('/Admin/client/') ?>${e.target.parentElement.dataset.id ? e.target.parentElement.dataset.id : e.target.parentElement.parentElement.dataset.id}`
+
 
      /*  $(".section-modal#car-detail").addClass('slide-in-from-right')
       $(".content").addClass('slide-out-to-left')
