@@ -873,7 +873,9 @@ input{
               <?php $ve_status_arr = ['Broken','Avalible','Rented','Fixing'] ?>
               <?php $ve_status_color_arr = ['broken','avalible','rented','fixing'] ?>
 
-              <div class="status status-<?php echo $car_detail ? $ve_status_color_arr[$car_detail['vehicle_status']]  : '' ?> rounded px-2"><?php echo $car_detail ? $ve_status_arr[$car_detail['vehicle_status']]  : '' ?> <!-- <i class="fa-solid fa-check"></i> --></div>
+              <?php $vehicle_detail = $vehicle_data ? $vehicle_data['detail'][0] : '' ?>
+
+              <div class="status status-<?php echo $vehicle_detail ? $ve_status_color_arr[$vehicle_detail['vehicle_status']]  : '' ?> rounded px-2"><?php echo $vehicle_detail ? $ve_status_arr[$vehicle_detail['vehicle_status']]  : '' ?> <!-- <i class="fa-solid fa-check"></i> --></div>
 
             </div>
 
@@ -883,28 +885,28 @@ input{
               <label class="form-section-label" for="">General</label>
               <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" name="name" id="name" value="<?php echo  $car_detail ? $car_detail['name'] : '' ?>">
+                <input type="text" name="name" id="name" value="<?php echo  $vehicle_detail ? $vehicle_detail['name'] : '' ?>">
               </div>
   
               <div class="form-group">
                 <label for="">Brand</label>
-                <input type="text" name="brand" id="brand" value="<?php echo  $car_detail ? $car_detail['brand'] : '' ?>">
+                <input type="text" name="brand" id="brand" value="<?php echo  $vehicle_detail ? $vehicle_detail['brand'] : '' ?>">
               </div>
   
               <div class="form-group">
                 <label for="">Year</label>
-                <input type="text" name="year" id="year"  value="<?php echo  $car_detail ? $car_detail['year'] : '' ?>">
+                <input type="text" name="year" id="year"  value="<?php echo  $vehicle_detail ? $vehicle_detail['year'] : '' ?>">
               </div>
 
               <div class="form-group">
                 <label for="">License plate</label>
-                <input type="text" name="license_plate" id="license_plate" value="<?php echo  $car_detail ? $car_detail['license_plate'] : '' ?>">
+                <input type="text" name="license_plate" id="license_plate" value="<?php echo  $vehicle_detail ? $vehicle_detail['license_plate'] : '' ?>">
               </div>
               
               
             <div class="form-group">
               <label for="">Slug Url</label>
-              <input type="text" name="slug_url" id="slug_url"  value="<?php echo  $car_detail ? $car_detail['slug_url'] : '' ?>">
+              <input type="text" name="slug_url" id="slug_url"  value="<?php echo  $vehicle_detail ? $vehicle_detail['slug_url'] : '' ?>">
             </div>
 
             </div>
@@ -915,11 +917,11 @@ input{
 
             <div class="form-group">
               <label for="">Deposit</label>
-              <input type="text" name="deposit" id="deposit" value="<?php echo  $car_detail ? $car_detail['deposit'] : '' ?>">
+              <input type="text" name="deposit" id="deposit" value="<?php echo  $vehicle_detail ? $vehicle_detail['deposit'] : '' ?>">
             </div>
             <div class="form-group">
               <label for="">Rate</label>
-              <input type="text" name="rate" id="rate" value="<?php echo  $car_detail ? $car_detail['rate'] : '' ?>">
+              <input type="text" name="rate" id="rate" value="<?php echo  $vehicle_detail ? $vehicle_detail['rate'] : '' ?>">
             </div>
 
           </div>
@@ -929,16 +931,16 @@ input{
             <label for="">Show on web</label>
 
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box data_status <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $car_detail && $car_detail['data_status'] == '1' ? 'status-selected' : '' ?>" data-value='1'><i class="fa-solid fa-eye"></i></div>
-              <div class="vehicle-stastus-box data_status <?php echo $car_detail && $car_detail['data_status'] == '0' ? 'status-selected' : '' ?> " data-value='0'><i class="fa-solid fa-eye-slash"></i></div>
+              <div class="vehicle-stastus-box data_status <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $vehicle_detail && $vehicle_detail['data_status'] == '1' ? 'status-selected' : '' ?>" data-value='1'><i class="fa-solid fa-eye"></i></div>
+              <div class="vehicle-stastus-box data_status <?php echo $vehicle_detail && $vehicle_detail['data_status'] == '0' ? 'status-selected' : '' ?> " data-value='0'><i class="fa-solid fa-eye-slash"></i></div>
             </div>
           </div>
 
           <div class="form-group-section borderless">
             <label for="">Type</label>
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box vehicle_type <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $car_detail && $car_detail['vehicle_type'] == '1' ? 'status-selected' : '' ?> " data-value='1'><i class="fa-solid fa-car-side"></i></div>
-              <div class="vehicle-stastus-box vehicle_type <?php echo $car_detail && $car_detail['vehicle_type'] == '2' ? 'status-selected' : '' ?> " data-value='2'><i class="fa-solid fa-motorcycle"></i></div>
+              <div class="vehicle-stastus-box vehicle_type <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $vehicle_detail && $vehicle_detail['vehicle_type'] == '1' ? 'status-selected' : '' ?> " data-value='1'><i class="fa-solid fa-car-side"></i></div>
+              <div class="vehicle-stastus-box vehicle_type <?php echo $vehicle_detail && $vehicle_detail['vehicle_type'] == '2' ? 'status-selected' : '' ?> " data-value='2'><i class="fa-solid fa-motorcycle"></i></div>
             </div>
           </div>
 
@@ -946,10 +948,10 @@ input{
           <div class="form-group-section borderless">
             <label for="">Status</label>
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box vehicle_status <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $car_detail && $car_detail['vehicle_status'] == '1' ? 'status-selected' : '' ?> "data-value='1'>Avalible</div>
-              <div class="vehicle-stastus-box vehicle_status <?php echo $car_detail && $car_detail['vehicle_status'] == '2' ? 'status-selected' : '' ?> "data-value='2'>Rented</div>
-              <div class="vehicle-stastus-box vehicle_status <?php echo $car_detail && $car_detail['vehicle_status'] == '3' ? 'status-selected' : '' ?> "data-value='3'>Fixing</div>
-              <div class="vehicle-stastus-box vehicle_status <?php echo $car_detail && $car_detail['vehicle_status'] == '0' ? 'status-selected' : '' ?> "data-value='0'>Broken</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $vehicle_detail && $vehicle_detail['vehicle_status'] == '1' ? 'status-selected' : '' ?> "data-value='1'>Avalible</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $vehicle_detail && $vehicle_detail['vehicle_status'] == '2' ? 'status-selected' : '' ?> "data-value='2'>Rented</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $vehicle_detail && $vehicle_detail['vehicle_status'] == '3' ? 'status-selected' : '' ?> "data-value='3'>Fixing</div>
+              <div class="vehicle-stastus-box vehicle_status <?php echo $vehicle_detail && $vehicle_detail['vehicle_status'] == '0' ? 'status-selected' : '' ?> "data-value='0'>Broken</div>
             </div>
           </div>
 
@@ -982,19 +984,16 @@ input{
 
           foreach($car_section_arr as $section2){
             $car_arr[$section2] =  [] ;
-            foreach($car_image as $car_image2){
-            
+            foreach($vehicle_data['images'] as $car_image2){
               if($car_image2['image_section'] == $section2){
                 $car_arr[$section2] = $car_image2 ;
               }
-              
             }
-
           }
 
-       /*    echo '<pre>';
+       /*  echo '<pre>';
           print_r($car_arr);
-          echo '</pre>'; */
+          echo '</pre>';  */
 
 
          ?>
@@ -1337,7 +1336,6 @@ input{
               <div class="form-group">
                 <label for="">ID Card</label>
                 <input type="file" class="dropify user_image" id="client_id_card" data-default-file="" />
-  
               </div>
 
               <div class="form-group">
@@ -1604,7 +1602,7 @@ function uploadImageURL(e,ref_id,image_section,value){
 
     let datasend = {
       'table' : 'tbl_vehicle_image',
-      'vehicle_id': ref_id,
+      'ref_id': ref_id,
       'image_section': image_section,
       'image_type': '2',
       'image_url': value,
@@ -1946,6 +1944,7 @@ function uploadImage(ref_id,image_section){
 
           let imageData = new FormData();
 
+          imageData.append('type','vehicle')
           imageData.append('ref_id',ref_id)
           imageData.append('image_section',image_section); 
           imageData.append('image_type','1'); 

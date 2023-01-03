@@ -7,3 +7,14 @@
     position: absolute;
     color: white;
   }
+ 
+  svg{
+    pointer-events: none;
+  }
+
+  .disabled{
+    pointer-events: none;
+    opacity: 50%;
+  }
+
+  

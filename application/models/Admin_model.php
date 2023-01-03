@@ -25,21 +25,44 @@ class Admin_model extends CI_Model
         return $query;
     }
 
+    public function get_all_data($table){
+        return $this->db->get($table)->result_array();
+    }
 
-    public function get_data_by_id($id){
+    public function get_data_by_id($table,$id){
         $this->db->where('id',$id);
-        return $this->db->get('tbl_vehicle')->result_array()[0];
+        return $this->db->get($table)->result_array()[0];
         
     }
 
-    public function get_image_by_id($id){
+    public function get_full_dataById($table,$id){
+        //inclue detail and image 
+        $sql_detail = "SELECT * FROM ".$table." WHERE id = ".$id."";
+        $sql_image = "SELECT * FROM ".$table."_image WHERE ref_id = ".$id."";
         
-        $sql = "SELECT *,ve_image.id as id , ve_image.data_status as data_status FROM `tbl_vehicle_image` as ve_image
-        LEFT JOIN tbl_vehicle as ve on ve.id = ve_image.vehicle_id
-        WHERE ve.id = ".$id."";
+        
+        return  array(
+            "detail" => $this->db->query($sql_detail)->result_array(),
+            "images" => $this->db->query($sql_image)->result_array(),
+        );
+
+    }
+
+    public function get_all_brand(){
+        $sql = "SELECT ve.brand FROM tbl_vehicle as ve GROUP BY ve.brand";
 
         return  $this->db->query($sql)->result_array();
-        
+    }
+
+    public function get_all_vehicleData_with_ImageSection($table , $section){
+
+        $sql  = "SELECT * , detail.id as id ,images.id as image_id  FROM ".$table." as detail
+        LEFT JOIN tbl_vehicle_image as images on detail.id = images.ref_id
+        WHERE images.image_section = '".$section."'
+        ";
+
+        return $this->db->query($sql)->result_array();
+
     }
 
     public function admin_signup($username , $password , $email){
