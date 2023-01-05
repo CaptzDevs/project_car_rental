@@ -1196,7 +1196,7 @@ input{
 
         </section>
 
-        <section class="section-modal row p-4 gap-sm-3" id="rent-detail">
+      <!--   <section class="section-modal row p-4 gap-sm-3" id="rent-detail">
 
           <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
 
@@ -1372,7 +1372,7 @@ input{
           </div>
       </form> 
 
-        </section>
+        </section> -->
 
     </main>
 
@@ -2089,7 +2089,7 @@ async function sendData(type,id){
         let formData = new FormData($("#form_detail_modal")[0]);
 
         formData.append('table','tbl_client')
-        type == 'update' ? formData.append('id',id) : ''
+        formData.append('id',<?php echo $data_id ?>)
         formData.append('role',$(".role.status-selected")[0].dataset.value)
         formData.append('data_status',$(".data_status.status-selected")[0].dataset.value)
 

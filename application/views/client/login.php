@@ -17,7 +17,6 @@
   font-family: "Google Sans", Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   transition: 0.5s;
-  
 
 }
 
@@ -51,6 +50,7 @@ html {
 }
 body {
     background: rgb(247, 247, 247);
+
 }
 
 main{
@@ -60,10 +60,9 @@ main{
     align-items: flex-start;
     justify-content: flex-start;
     gap: 10px;
-    background: rgb(66, 66, 66);
+    background: rgb(45, 45, 45);
     position: relative;
     padding-top: 30px;
-    background: rgb(247, 247, 247);
 
   }
 
@@ -82,6 +81,7 @@ main{
     position: absolute;
     right: 10px;
     overflow: auto;
+    
 }
 
 .panel-perspective{
@@ -174,7 +174,7 @@ main{
   gap: 15px;
   position: relative;
   padding-top: 0px;
-  overflow: hidden;
+  overflow-x: hidden;
   margin-top: 50px;
 }
 
@@ -208,8 +208,7 @@ main{
   background: rgb(247, 247, 247);
 
 }
-.car-item:hover{
-}
+
 
 .car-item svg{
   position: absolute;
@@ -282,23 +281,24 @@ margin-top: 50px;
 
 .quotation{
     width: 100%;
-    height: 100vh;
+    height: auto;
     display: none;
     position: absolute;
     top: 0;
     left: 0;
     background: rgb(45, 45, 45);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 10px;
     color: white;
     z-index: 5;
     gap: 10px;
     transform: translateX(100%);
-    overflow: auto;
+    overflow: visible;
     padding-top: 50px;
     padding-bottom: 50px;
+
 }
 
 .slide-in-from-right{
@@ -307,6 +307,11 @@ margin-top: 50px;
 }
 .slide-out-to-left{
   transform: translateX(-100%);
+  opacity: 0%;
+}
+
+.slide-out-to-right{
+  transform: translateX(100%);
   opacity: 0%;
 }
 
@@ -321,7 +326,7 @@ margin-top: 50px;
   color: white;
 }
 
-.datepicker , input {
+.datepicker  input {
   background: rgb(46, 46, 46);
     outline: none;
     border: none;
@@ -342,7 +347,6 @@ margin-top: 50px;
   width: 500px;
   min-width: 300px;
   height: auto;
-   min-height: 600px; 
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -359,7 +363,7 @@ margin-top: 50px;
   width: 100%;
   color: white;
   border-bottom: 1px solid rgb(61, 61, 61);
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   margin-bottom: 5px;
   display: flex;
   align-items: flex-start;
@@ -384,6 +388,17 @@ margin-top: 50px;
   padding-right: 20px;
 
 }
+input[type=text]{
+  max-height: 40px;
+  background: rgb(46, 46, 46);
+    outline: none;
+    border: none;
+    color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    border-radius: 10px;
+}
 .form-quotation .row{
   margin: 0px;
 }
@@ -400,7 +415,7 @@ margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  
+  gap: 10px;
 }
 
 .amount-group{
@@ -466,9 +481,19 @@ svg{
   background: none;
   color: white;
   border: none;
+  background: rgb(39, 39, 39);
+
 }
 
-.btn-send-quotation:hover{
+.btn-pre-quotation{
+  width: 50%;
+  height: 100%;
+  border-radius: 10px;
+  background: none;
+  color: white;
+  border: none;
+}
+.btn-send-quotation:hover , .btn-pre-quotation:hover{
   background: rgb(46, 46, 46);
 }
 .total-price{
@@ -618,6 +643,22 @@ li{
   }
 }
 
+.btn-login-alternative{
+  width: 100%;
+  padding: 5px;
+  border-radius: 10px;
+}
+.create-account{
+  cursor: pointer;
+  margin: 10px 0px 10px 0px;
+  color: white;
+}
+.create-account:hover{
+  color: rgb(49, 49, 49);
+
+}
+
+
 
 @media (max-width: 576px) { 
 
@@ -638,154 +679,59 @@ li{
 
 </style>
 <body>
-  <?php include('header.php') ?>
     <main>
-          <?php 
-
-          $vehicle_detail = $vehicle_data['detail'][0];
-          $car_section_arr = ['overview','front','back','side','above'];
-          $car_arr = [];
-
-          foreach($car_section_arr as $section2){
-            $car_arr[$section2] =  [] ;
-            foreach($vehicle_data['images'] as $car_image2){
-            
-              if($car_image2['image_section'] == $section2){
-                $car_arr[$section2] = $car_image2 ;
-              }
-              
-            }
-
-          }
-
-       /*    echo '<pre>';
-          print_r($car_arr);
-          echo '</pre>'; */
-
-
-         ?>
+        
   
         <section class="content" >
 
-            <div class="car-item"> 
-       
-              <div class="car-item-image">
-                <?php if($car_arr['overview']['image_type'] == '1'){ ?>
-                <img id="car-image-preview" src="<?php $car_arr['overview']  && printf(base_url('/uploads/images/'.$car_arr['overview']['image_url']))  ?>">
-                <?php } ?>
-                <?php if($car_arr['overview']['image_type'] == '2'){ ?>
-                <img id="car-image-preview" src="<?php $car_arr['overview']  && printf($car_arr['overview']['image_url'])  ?>">
-                
-                <?php } ?>
+          
 
-              </div>
-              <div class="car-item-name ">
-                <?php echo $vehicle_detail['name']; ?>
-              </div> 
-            </div>
-
-            
-            <aside class="panel-perspective">
-                <div class="image-section">
-                    <div> Perspectives  </div>
-                    <ul class="perspective-list">
-
-                       <!--  <li> <i class="fa-regular fa-chevron-right"></i> Overview  </li> -->
-                    <?php foreach($car_section_arr as $section){
-                      $section_selected = '';
-                      if($section == 'overview') $section_selected = '<i class="fa-regular fa-chevron-right"></i>'
-                      ?>
-                        <li class="car-section-selector" data-src="<?php $car_arr[$section] && printf($car_arr[$section]['image_url']) ?>"> <?php echo $section_selected ?> <?php echo $section ?>  </li>
-                      <?php  } ?>
-
-                    </ul>
-                  </div>
-            </aside>
-
-            <aside class="panel">
-             
-                  <div class="panel-section privilege-section">
-                    <div> Privilege  </div>
-                    <ul class="privilege-list">
-                        <li> <i class="fa-solid fa-car-tilt"></i> First class insurance  </li>
-                        <li> <i class="fa-solid fa-gas-pump"></i> Full fuel  </li>
-                        <li> <i class="fa-solid fa-location-arrow"></i> GPS  </li>
-                    </ul>
-                  </div>
-
-                  <div class="panel-section">
-                    <div> Rate  </div>
-                    <ul class="pricing-list">
-                        <li>  Minimum rent (day) : 3 days  </li>
-                        <li>  Rate / Day : <?php echo $vehicle_detail['rate']; ?> ฿ </li>
-                        <li>  Deposit :   <?php echo $vehicle_detail['deposit']; ?> ฿ </li>
-
-                    </ul>
-                  </div>
-
-                    <button id="btn_rentCar">Rent</button>
-            </aside>
+      
         </section>
         <section class="quotation">
               <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
 
              <form class="form-quotation" id="form_quotation" action="">
                 <div class="form-quotation-head">
-                  <span>Quotation</span>
+                  <span>Login</span>
                   <i class="fa-solid fa-file-invoice"></i>
                 </div>
 
               <div class="row gap-3 form-quotation-body">
 
-                <div class="col-12 form-group quotation-detail">
-
-                       <div class="quotation-detail-group">
-                         <span>Deposit :</span>
-                         <span>10000 ฿</span>
-                       </div>
-                     
-                       <div class="quotation-detail-group">
-                         <div>Rate / Day :</div>
-                         <div>900 ฿</div>
-                       </div>
-                     </div>
-                   
                      <div class="col-12 ">
                          <div class="form-group">
-                           <label for="date_pay" >Start Rent</label>
-                           <input class="datepicker" type="text" id="date_1" name="start_rent" autocomplete="off">
+                           <label for="username" >Username</label>
+                           <input class="form-login" type="text" id="username" name="username" autocomplete="off">
                      </div>
                    </div>
-                 
-                   <div class="col-xl-8">
-                    
-                       <div class="sum-rateperday">
-                           3 day | 1800 ฿
-                       </div>
-                       
+
+                   <div class="col-12 ">
+                         <div class="form-group">
+                           <label for="password" >Password</label>
+                           <input class="form-login" type="text" id="password" name="password" autocomplete="off">
+                     </div>
                    </div>
-
-                    <div class="col-xl-3 col-md-12">
-                        <div class="form-group">
-                          <label for="date_amount"  >Rent days</label>
-                          <div class="amount-group">
-                              <button id="btn_decr_day"> <i class="fa-solid fa-minus"></i> </button>
-                              <input class="date_amount" type="text" id="date_amount" name="date_amount" value="1" autocomplete="off">
-                              <button id="btn_incr_day"> <i class="fa-solid fa-plus"></i> </button>
-                            </div>
-                          
-                      </div>
-                    </div>
-
-                    <div class="col-3 total-price">
-                          <div >Total | </div>
-                          <div >15000</div>
-                    </div>
 
                 </div>
 
+                   <div class="row gap-3 form-quotation-body">
+                      <div class="col-12 text-center">- or -</div>
+                     <div class="col-12 ">
+                         <div class="form-group">
+                           <button class="btn-login-alternative"> <i class="fa-brands fa-google"></i> Google  </button>
+                     </div>
+                   </div>
+
+                   <div class="col-12 ">
+                         <div class="form-group">
+                          <button class="btn-login-alternative"><i class="fa-brands fa-facebook"></i> Facebook </button>
+                     </div>
+                   </div>
+                </div>
+                <span class="create-account" id="next-1">Create Account</span>
                 <div class="form-quotation-footer">
-                  <button class="btn-send-quotation" id="next-1"> Next <i class="fa-solid fa-arrow-right"></i> </button>
+                  <button class="btn-send-quotation btn-login" > Login <i class="fa-solid fa-right-to-bracket px-1"></i> </button>
                 </div>
 
 
@@ -793,61 +739,49 @@ li{
 
 
             <form class="form-quotation form-next" id="form_payment" action="">
-              
-              <div class="form-quotation-head">
-                <span>Payment</span>
-                <i class="fa-duotone fa-money-check-dollar"></i>
-              </div>
+                <div class="form-quotation-head">
+                  <span>Sign up</span>
+                  <i class="fa-solid fa-file-invoice"></i>
+                </div>
 
-            <div class="row gap-1 form-quotation-body">
-              <div class="col-12 form-group quotation-detail">
+              <div class="row gap-3 form-quotation-body">
 
-                     <div class="quotation-detail-group price-detail">
-                       <span>Deposit :</span>
-                       <span>10000 ฿</span>
+                     <div class="col-12 ">
+                         <div class="form-group">
+                           <label for="username" >Username</label>
+                           <input class="datepicker" type="text" id="username" name="username" autocomplete="off">
                      </div>
-                   
-                     <div class="quotation-detail-group price-detail">
-                       <div>Rate / Day :</div>
-                       <div>900 ฿</div>
-                     </div>
-
-                    <div class="quotation-detail-group price-detail">
-                      <div>Vat (7%)</div>
-                      <div>900 ฿</div>
-                    </div>
-
-                     <div class="quotation-detail-group price-detail hl">
-                      <div>Total</div>
-                      <div>900 ฿</div>
-                    </div>
-
                    </div>
 
-                   <div class="col-12">
-                      <div class="row gap-2 align-items-center justify-content-center mt-3">
-                        <div class="col-xl-6 col-sm-12 payment-item">ไทยพาณิชย์ 4090700949<i class="fa-solid fa-money-check-dollar"></i></div>
-                        <div class="col-xl-5 col-sm-12 payment-item">Prompay 0980746601<i class="fa-solid fa-money-check-dollar"></i></div>
+                   <div class="col-12 ">
+                         <div class="form-group">
+                           <label for="email" >Email</label>
+                           <input class="datepicker" type="text" id="email" name="email" autocomplete="off">
+                     </div>
                    </div>
-              </div>
 
-              <div class="col-12">
-                  <div class="payment-file">
-                    <input type="file" name="" id="">
-                  </div>
-              </div>
+                   <div class="col-12 ">
+                         <div class="form-group">
+                           <label for="password" >Password</label>
+                           <input class="datepicker" type="text" id="password" name="password" autocomplete="off">
+                     </div>
+                   </div>
 
-            </div>
+                   <div class="col-12 ">
+                         <div class="form-group">
+                           <label for="repassword" >Re Password</label>
+                           <input class="datepicker" type="text" id="repassword" name="repassword" autocomplete="off">
+                     </div>
+                   </div>
+
+                </div>
+                <div class="form-quotation-footer">
+                <button class="btn-pre-quotation" id="pre-1"> Login <i class="fa-solid fa-left"></i> </button>
+                  <button class="btn-send-quotation btn-signup" id="next-2"> Sign up <i class="fa-solid fa-right-to-bracket px-1"></i> </button>
+                </div>
 
 
-
-
-              <div class="form-quotation-footer">
-                <button class="btn-send-quotation" id="next-2"> Next <i class="fa-solid fa-arrow-right"></i> </button>
-              </div>
-
-
-          </form>
+            </form> 
 
 
           <form class="form-quotation form-next" id="form_confirm" action="">
@@ -1037,67 +971,12 @@ li{
         </section>
     </main>
     
-   
-
-    <footer>
-       All Design By Captz
-  </footer>
-  
-
   <script>
 
-  $('aside').addClass('fade-panel-in')
-
-    let i =0;
-  let count =setInterval(()=>{
-    $('.privilege-list li')[i].classList.add('fade-item-in')
-    if(i == $('.privilege-list li').length-1){
-      clearInterval(count)
-    }
-    i++
-  },200)
-
-  let i2 =0;
-  let count2 =setInterval(()=>{
-    $('.pricing-list li')[i2].classList.add('fade-item-in')
-    if(i2 == $('.pricing-list li').length-1){
-      clearInterval(count2)
-    }
-    i2++
-  },200)
-
-  let i3 =0;
-  let count3 =setInterval(()=>{
-    $('.perspective-list li')[i3].classList.add('fade-item-in')
-    if(i3 == $('.perspective-list li').length-1){
-      clearInterval(count3)
-    }
     
-    i3++
-  },200)
 
-
-$('.car-item-image').addClass('pre-slide-in')
-
-    $('.car-section-selector').click((e)=>{
-      $("#car-image-preview")[0].src = e.target.dataset.src
-$('.car-item-image').removeClass('pre-slide-in')
       
-
-      $('.car-section-selector').each((i,item)=>{
-        $(item.children[0]).remove()
-      })
-
-setTimeout(() => {
-  $('.car-item-image').addClass('pre-slide-in')
-}, 200);
-
-
-
-      e.target.insertAdjacentHTML('afterbegin',`<i class="fa-regular fa-chevron-right"></i>`)
-
-    })
-      
+$(".quotation").addClass('slide-in-from-right')
 
     $("#btn_rentCar").click((e)=>{
         $(".quotation").addClass('slide-in-from-right')
@@ -1115,19 +994,136 @@ setTimeout(() => {
     $("#next-1").click((e)=>{
       e.preventDefault()
       $("#form_quotation").addClass('slide-out-to-left')
-
       $("#form_payment").css("display",'block')
       $("#form_payment").addClass('slide-form')
     })
 
-    $("#next-2").click((e)=>{
+    $("#pre-1").click((e)=>{
       e.preventDefault()
-      $("#form_payment").addClass('slide-form-out')
+      $("#form_quotation").removeClass('slide-out-to-left')
+      $("#form_payment").addClass('slide-out-to-right')
+      $("#form_payment").removeClass('slide-form')
 
-      $("#form_confirm").css("display",'block')
-      $("#form_confirm").addClass('slide-form')
     })
 
+    $(".btn-login").click((e)=>{
+      e.preventDefault()
+      $.ajax({
+        url: '<?php echo base_url("/Control/do_login")?>',
+        type: 'POST',
+        data: {
+                'username':$(".form-login#username").val(),
+                'password':$(".form-login#password").val()
+              },
+        success: function(response) {
+          response = JSON.parse(response)
+          console.log()
+          if(response){
+
+            location.href = '<?php echo base_url('/Client/detail/')?>'+response[0].id
+
+                    }else{
+                      $.toast({
+                        heading: "ERROR",
+                        text:"",
+                        icon:"error",
+                           showHideTransition : "fade",
+                           hideAfter : 2000,
+                           icon:"success"
+
+                       })
+                    }
+                 }
+            });
+    })
+
+    
+    $(".btn-signup").click((e)=>{
+      e.preventDefault()
+        let formData = new FormData($("#form_payment")[0])
+        formData.append('table','tbl_client')
+        formData.append('role','1')
+        formData.delete('repassword')
+
+
+
+        let dataSend = {};
+        formData.forEach(function(value, key){
+          dataSend[key] = value;
+        });
+
+        console.log(dataSend)
+
+         $.ajax({
+
+            type: 'POST',
+            url:  '<?php echo base_url('Control/do_signup') ?>',
+            data: JSON.stringify(dataSend),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+             xhr: function() {
+                //upload Progress
+                var xhr = $.ajaxSettings.xhr();
+
+                if (xhr.upload) {
+                    $(".progress").show();
+                    xhr.upload.addEventListener('progress', function(event) {
+
+                        var percent = 0;
+                        var position = event.loaded || event.position;
+                        var total = event.total;
+                        if (event.lengthComputable) {
+                            percent = Math.ceil(position / total * 100);
+                        }
+                        console.log(percent)
+
+                        //update progressbar
+
+               
+
+                    }, true);
+                }
+                return xhr;
+            },
+
+            success: async function(data, status) {
+
+                console.log(data);
+          
+  
+                if (data > 0) {
+                    console.log("UPLOAD SUCCESS")
+
+                    setTimeout(() => {
+                $.toast().reset('all')
+                $.toast({
+
+                           heading: "Upload Data Successfully",
+                           text:"",
+                           showHideTransition : "fade",
+                           hideAfter : 1500,
+                           icon:"success"
+                       })
+
+                        /* location.href =  '<?php echo base_url('/Admin/client/')?>'+data  */
+                        location.href =  '<?php echo base_url('/Control/Login/')?>' 
+              }, 500);
+
+
+                } else {
+
+                    swal({
+                        title: 'Can not be saved!',
+                        //text: "You won't be able to revert this!",
+                        type: 'warning',
+                        confirmButtonClass: 'btn btn-confirm mt-2'
+                    });
+                }
+            }
+            });
+    })
+
+  
     $("#btn_incr_day").click((e)=>{
       e.preventDefault()
         if(+e.target.previousElementSibling.value < 20 ){

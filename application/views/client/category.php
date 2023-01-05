@@ -296,7 +296,7 @@ a{
 
         <section class="content" >
             <?php foreach($vehicle_data as $value){ ?>
-            <a class="car-item" href="<?php echo base_url('/Client/preview/').$value['id'] ?>"> 
+            <a class="car-item" href="<?php echo base_url('/Control/preview/').$value['id'] ?>"> 
               <?php echo $value['vehicle_type'] == '1' ?  '<i class="fa-solid fa-car-side"></i> ' : '<i class="fa-solid fa-motorcycle"></i>' ?>
               <div class="car-item-image">
                 <img src="<?php echo $value['image_type'] == '1'? base_url("/uploads/images/".$value['image_url']) : $value['image_url'] ?>">

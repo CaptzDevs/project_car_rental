@@ -1,95 +1,102 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Client extends CI_Controller {
+class Control extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('Control_model');
 		$this->load->model('Admin_model');
 		
-		
 	}
 
-	public function index()
-	{
-	
+	public function index(){
+		$data['vehicle_data'] = $this->Admin_model->get_all_vehicleData_with_ImageSection('tbl_vehicle','overview');
+		$data['vehicle_brand'] = $this->Admin_model->get_all_brand();
+
+			$this->load->view('/client/category',$data);
 	}
-	
-	public function Detail($data_id = NULL)
+
+	public function Preview($data_id = NULL)
 	{
 		$data['data_id'] = $data_id;
-		$data['client_detail'] = NULL;
-
-		if($data_id == NULL){
-			$data['all_client'] = $this->Admin_model->get_all_data('tbl_client');
-			$this->load->view('/admin/client_list',$data);
-			
-		}
-
-		if($data_id == 'add'){
-			$this->load->view('/admin/client_form',$data);
-		}
+		$data['vehicle_data'] = $this->Admin_model->get_full_dataById('tbl_vehicle',$data_id);
 
 
-		if(is_numeric($data_id)){
-			
-			$data['client_data'] = $this->Admin_model->get_full_dataById('tbl_client',$data_id);
+			$this->load->view('/client/preview',$data);
+	}
 
-			/* $data['client_detail'] = $this->Admin_model->get_data_by_id('tbl_client',$data_id);
-			$data['client_image'] = $this->Admin_model->get_image_by_id('client',$data_id); */
+	public function Category($data_id = NULL)
+	{
+		$data['data_id'] = $data_id;
+		$data['vehicle_data'] = $this->Admin_model->get_all_vehicleData_with_ImageSection('tbl_vehicle','overview');
+		$data['vehicle_brand'] = $this->Admin_model->get_all_brand();
 
-			$this->load->view('/admin/client_form',$data);
-		}
+			$this->load->view('/client/category',$data);
+	}
 
+
+	public function Login()
+	{
+		if(!$this->session->has_userdata('id')){
+
+			$this->load->view('/Client/login');
+	
+			}else{
+				redirect(base_url('/Control/'));
+			}
 
 	}
 
-	public function getDataByID(){
+	public function do_login(){
 		
-		echo $this->Admin_model->get_data_by_id($this->input->post('id'));
+		 $data = $this->Control_model->check_login(
+			$this->input->post('username'),
+			$this->input->post('password'),
+		);   
 
+		if(count($data) > 0){
+            $newdata = array(
+                'id'  =>   $data[0]['id'],
+                'username'  =>  $data[0]['username'],
+                'email'     => $data[0]['email'],
+                'role' => $data[0]['role']
+        );
+        
+        	$this->session->set_userdata($newdata);
+
+			echo json_encode($data);
+
+        }else{
+			echo json_encode(false);
+		}
+		 
 	}
 
-	public function getAllData(){
-
-	}
-	public function deleteData(){
-		echo $this->Admin_model->delete($this->input->post('table'),$this->input->post('id'));
-	}
-
-	public function updateData(){
-
+	public function do_signup(){
 		$this->load->helper("security");
-
         $stream = $this->security->xss_clean( $this->input->raw_input_stream );
       
         $data = json_decode($stream, true);
-		$table = $data['table'];
-		
-		unset($data['table']);
-
-		 $result = $this->Admin_model->update($table,$data['id'],$data);   
+		 $result = $this->Control_model->signup($data['username'],$data['password'],$data['email'],$data['role']);   
 		 
-		echo $result; 
+		 echo $result;
 	}
 
-	public function addData(){
-		$this->load->helper("security");
+	public function logout(){
+        $sess = array(
+			'id',
+			'username',
+			'email',
+            "role",
+        );
+		$this->session->unset_userdata($sess);
+		redirect(base_url('/Admin/Login'));
 
-        $stream = $this->security->xss_clean( $this->input->raw_input_stream );
-      
-        $data = json_decode($stream, true);
-		$table = $data['table'];
-		unset($data['table']);
-
-		/* print_r($data); */
-		 $result = $this->Admin_model->insert($table,$data);   
-		 $insert_id = $this->db->insert_id();
-		 
-		 echo $insert_id;
-	}
+    }
 
 	public function uploadImage(){
+
       
 		$data = [];
 		
