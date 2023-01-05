@@ -1254,7 +1254,7 @@ window.onbeforeunload  = function(event) {
 
 
     $(`.data-row.client_data`).click((e)=>{
-      location.href = `<?php echo base_url('/Admin/client/') ?>${e.target.parentElement.dataset.id}`
+      location.href = `<?php echo base_url('/Admin/client/') ?>${e.target.parentElement.dataset.id ? e.target.parentElement.dataset.id : e.target.parentElement.parentElement.dataset.id}`
 
      /*  $(".section-modal#car-detail").addClass('slide-in-from-right')
       $(".content").addClass('slide-out-to-left')
@@ -1262,8 +1262,9 @@ window.onbeforeunload  = function(event) {
 
     }) 
 
+    
     $(`.data-row.vehicle_data`).click((e)=>{
-      location.href = `<?php echo base_url('/Admin/vehicle/') ?>${e.target.parentElement.dataset.id}`
+      location.href = `<?php echo base_url('/Admin/vehicle/') ?>${e.target.parentElement.dataset.id ? e.target.parentElement.dataset.id : e.target.parentElement.parentElement.dataset.id}`
 
     }) 
 

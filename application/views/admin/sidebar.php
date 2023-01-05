@@ -85,7 +85,7 @@
 
           </div>
           <div class="menu-body">
-         <a href="<?php echo base_url('/Client/category') ?>" class="menu-item"> <i class="fa-duotone fa-house"></i> Client Side </a>
+         <a href="<?php echo base_url('/Control/category') ?>" class="menu-item"> <i class="fa-solid fa-house"></i> Client Side </a>
          <a href="<?php echo base_url('/Admin') ?>" class="menu-item"> <i class="fa-solid fa-chart-line"></i> Dashboard </a>
          <a href="<?php echo base_url('/Admin/vehicle') ?>" class="menu-item"> <i class="fa-solid fa-car-side"></i> Vehicle </a>
          <a href="<?php echo base_url('/Admin/Client') ?>" class="menu-item"> <i class="fa-solid fa-users"></i>  Client </a>

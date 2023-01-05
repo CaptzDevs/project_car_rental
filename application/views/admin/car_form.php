@@ -682,7 +682,15 @@ input{
   user-select: none;
   pointer-events: none;
 }
+.preview-text{
+  text-decoration: none;
+  color: white;
+  font-size: .8rem;
 
+}
+.preview-text:hover{
+  text-decoration: underline;
+}
 </style>
 <body>
     <main>
@@ -868,8 +876,10 @@ input{
 
          <form class="form-modal col-lg-6 col-md-12" id="form_detail_modal" action="">
             <div class="form-modal-head">
-              <span>Car Detail</span>
+            <span>Car Detail</span>
               <i class="fa-solid fa-file-invoice"></i>
+
+
               <?php $ve_status_arr = ['Broken','Avalible','Rented','Fixing'] ?>
               <?php $ve_status_color_arr = ['broken','avalible','rented','fixing'] ?>
 
@@ -972,6 +982,8 @@ input{
           <div class="form-modal-head">
             <span>Car Image</span>
             <i class="fa-solid fa-images"></i>
+            <a class="preview-text" href="<?php echo base_url('/Control/preview/').$data_id ?>">Preview </a>
+
           </div>
 
         <div class="form-modal-body">
@@ -1202,7 +1214,7 @@ input{
 
 
         </section>
-
+<!-- 
         <section class="section-modal row p-4 gap-sm-3" id="rent-detail">
 
           <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
@@ -1378,7 +1390,7 @@ input{
           </div>
       </form> 
 
-        </section>
+        </section> -->
 
     </main>
 
