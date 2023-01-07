@@ -388,7 +388,7 @@ margin-top: 50px;
   padding-right: 20px;
 
 }
-input[type=text]{
+input[type=text],input[type=password]{
   max-height: 40px;
   background: rgb(46, 46, 46);
     outline: none;
@@ -709,7 +709,7 @@ li{
                    <div class="col-12 ">
                          <div class="form-group">
                            <label for="password" >Password</label>
-                           <input class="form-login" type="text" id="password" name="password" autocomplete="off">
+                           <input class="form-login" type="password" id="password" name="password" autocomplete="off">
                      </div>
                    </div>
 
@@ -763,14 +763,14 @@ li{
                    <div class="col-12 ">
                          <div class="form-group">
                            <label for="password" >Password</label>
-                           <input class="datepicker" type="text" id="password" name="password" autocomplete="off">
+                           <input class="datepicker" type="password" id="password" name="password" autocomplete="off">
                      </div>
                    </div>
 
                    <div class="col-12 ">
                          <div class="form-group">
                            <label for="repassword" >Re Password</label>
-                           <input class="datepicker" type="text" id="repassword" name="repassword" autocomplete="off">
+                           <input class="datepicker" type="password" id="repassword" name="repassword" autocomplete="off">
                      </div>
                    </div>
 
@@ -974,7 +974,6 @@ li{
   <script>
 
     
-
       
 $(".quotation").addClass('slide-in-from-right')
 
@@ -989,6 +988,16 @@ $(".quotation").addClass('slide-in-from-right')
         $(".quotation").removeClass('slide-in-from-right')
         $(".content").removeClass('slide-out-to-left')
         $("body").css("overflow","auto")
+
+        setTimeout(() => {
+          if(window.history.length < 5){
+            location.href = '<?php echo base_url('/Control/category')?>'
+
+          }else{
+            window.history.back()
+          }
+    
+        }, 200);
     })
 
     $("#next-1").click((e)=>{

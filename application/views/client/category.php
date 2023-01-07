@@ -243,7 +243,7 @@ a{
               <input class="search-input" type="text" id="search" placeholder="search" >
           </div>
             <div class="sort-section">
-              <div> Type </div>
+              <div> Type   </div>
             <ul>
                 <li><i class="fa-regular fa-square"></i> <i class="fa-solid fa-car-side"></i> Car </li>
                 <li><i class="fa-regular fa-square"></i> <i class="fa-solid fa-motorcycle"></i> Motorcycle </li>
@@ -279,7 +279,7 @@ a{
           </div>
 
           <div class="sort-section">
-            <div> Seat </div>
+            <div> Seat</div>
             <ul>
                 <li><i class="fa-regular fa-square"></i> 2 </li>
                 <li><i class="fa-regular fa-square"></i> 4 </li>

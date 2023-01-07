@@ -6,7 +6,10 @@ class Client extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Admin_model');
+	if(!isset($_SESSION['id'])){
+		redirect(base_url('/Control/Login'));
 		
+	}
 		
 	}
 
@@ -30,15 +33,15 @@ class Client extends CI_Controller {
 			$this->load->view('/admin/client_form',$data);
 		}
 
-
 		if(is_numeric($data_id)){
 			
-			$data['client_data'] = $this->Admin_model->get_full_dataById('tbl_client',$data_id);
+			if($_SESSION['id'] == $data_id){
 
-			/* $data['client_detail'] = $this->Admin_model->get_data_by_id('tbl_client',$data_id);
-			$data['client_image'] = $this->Admin_model->get_image_by_id('client',$data_id); */
-
-			$this->load->view('/admin/client_form',$data);
+				$data['client_data'] = $this->Admin_model->get_full_dataById('tbl_client',$data_id);
+				$this->load->view('/admin/client_form',$data);
+			}else{
+				redirect(base_url('/Control/category'));
+			}
 		}
 
 
@@ -65,9 +68,8 @@ class Client extends CI_Controller {
       
         $data = json_decode($stream, true);
 		$table = $data['table'];
-		
 		unset($data['table']);
-
+		
 		 $result = $this->Admin_model->update($table,$data['id'],$data);   
 		 
 		echo $result; 

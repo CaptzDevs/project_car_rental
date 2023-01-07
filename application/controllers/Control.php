@@ -84,14 +84,17 @@ class Control extends CI_Controller {
 	}
 
 	public function logout(){
-        $sess = array(
+        
+		$sess = array(
 			'id',
 			'username',
 			'email',
             "role",
         );
+		
 		$this->session->unset_userdata($sess);
-		redirect(base_url('/Admin/Login'));
+
+		redirect(base_url('/Control/Login'));
 
     }
 
