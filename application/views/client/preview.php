@@ -716,9 +716,8 @@ li{
                   <div class="panel-section">
                     <div> Rate  </div>
                     <ul class="pricing-list">
-                        <li>  Minimum rent (day) : 3 days  </li>
-                        <li>  Rate / Day : <?php echo $vehicle_detail['rate']; ?> ฿ </li>
-                        <li>  Deposit :   <?php echo $vehicle_detail['deposit']; ?> ฿ </li>
+                        <li>  Rate / Day : <?php echo number_format($vehicle_detail['rate']); ?> ฿ </li>
+                        <li>  Deposit :   <?php echo number_format($vehicle_detail['deposit']); ?> ฿ </li>
 
                     </ul>
                   </div>
@@ -741,12 +740,12 @@ li{
 
                        <div class="quotation-detail-group">
                          <span>Deposit :</span>
-                         <span>10000 ฿</span>
+                         <span><?php echo number_format( $vehicle_detail['deposit']); ?>  ฿</span>
                        </div>
                      
                        <div class="quotation-detail-group">
                          <div>Rate / Day :</div>
-                         <div>900 ฿</div>
+                         <div><?php echo number_format($vehicle_detail['rate']); ?>  ฿</div>
                        </div>
                      </div>
                    
@@ -760,7 +759,7 @@ li{
                    <div class="col-xl-8">
                     
                        <div class="sum-rateperday">
-                           3 day | 1800 ฿
+                        1 days | <?php echo number_format($vehicle_detail['rate']) ?> ฿
                        </div>
                        
                    </div>
@@ -779,7 +778,7 @@ li{
 
                     <div class="col-3 total-price">
                           <div >Total | </div>
-                          <div >15000</div>
+                          <div id="total_price" >15000</div>
                     </div>
 
                 </div>
@@ -1130,19 +1129,62 @@ setTimeout(() => {
 
     $("#btn_incr_day").click((e)=>{
       e.preventDefault()
+   
+
         if(+e.target.previousElementSibling.value < 20 ){
+
           e.target.previousElementSibling.value = +e.target.previousElementSibling.value + 1;
+          let days = $("#date_amount").val()
+          let price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
+          let deposit = <?php echo (int) $vehicle_detail['deposit']; ?>;
+
+            $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
+            $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
+
         }
     })
 
     $("#date_amount").on('change keyup',(e)=>{
-      console.log(e.target.value)
+      console.log(e.type)
+      
 
+        let days = 1
+        let price = 1
+        let deposit = <?php echo (int) $vehicle_detail['deposit']; ?>;
+
+        if(e.type = 'change'){
+          if(e.target.value != '' || e.target.value > 1){
+          e.target.value = +e.target.value
+
+          days = $("#date_amount").val()
+          price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
+
+          $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
+          $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
+        }
+      }
+
+
+      if(+e.target.value >= 1 && +e.target.value <= 20){
       if(e.keyCode == 38){
           e.target.value  = +e.target.value  + 1
-      }else if(e.keyCode == 40){
-         e.target.value  = +e.target.value - 1
+          days = $("#date_amount").val()
+          price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
+
+          $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
+          $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
+
+      }else if(e.keyCode == 40 && +e.target.value > 1 ){
+
+          e.target.value  = +e.target.value - 1
+          days = $("#date_amount").val()
+          price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
+
+          $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
+          $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
       }
+    }
+
   
       if(+e.target.value < 1){
         e.target.value = 1
@@ -1154,10 +1196,18 @@ setTimeout(() => {
 
     $("#btn_decr_day").click((e)=>{
       e.preventDefault()
-      
       if(+e.target.nextElementSibling.value  >= 2){
-       e.target.nextElementSibling.value = +e.target.nextElementSibling.value - 1; 
+        e.target.nextElementSibling.value = +e.target.nextElementSibling.value - 1; 
 
+        let days = $("#date_amount").val()
+        let price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
+        let deposit = <?php echo (int) $vehicle_detail['deposit']; ?>;
+
+
+
+          $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
+          $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
+       
       } 
 
     })

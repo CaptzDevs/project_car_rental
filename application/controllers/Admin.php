@@ -6,11 +6,23 @@ class Admin extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Admin_model');
+
+		
+	}
+
+	public function checkRole(){
+		if(isset($_SESSION['id'])){
+			if($_SESSION['role'] == '1'){
+					redirect(base_url('/Control/category'));
+		}
+		}else if(!isset($_SESSION['id'])){
+		redirect(base_url('/Control/category'));
+		} 
 	}
 
 	public function index()
 	{
-
+		$this->checkRole();
 		$data['all_vehicle'] = $this->Admin_model->get_all_vehicleData_with_ImageSection('tbl_vehicle','overview');
 		$data['all_client'] = $this->Admin_model->get_all_data('tbl_client');
 		$this->load->view('/admin/dashboard',$data);
@@ -18,6 +30,7 @@ class Admin extends CI_Controller {
 	
 	public function vehicle($data_id = NULL)
 	{
+		$this->checkRole();
 		$data['data_id'] = $data_id;
 		$data['vehicle_data'] = NULL;
 
@@ -81,6 +94,10 @@ class Admin extends CI_Controller {
       
         $data = json_decode($stream, true);
 		$table = $data['table'];
+
+		if(isset($data['role'])){
+			$_SESSION['role'] = "".$data['role']."";
+		}
 		
 		unset($data['table']);
 

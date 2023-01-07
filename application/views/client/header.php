@@ -9,7 +9,8 @@ header{
   justify-content: center;
   position: absolute;
   top: 0;
-  z-index: 2;
+  z-index: 5;
+
 }
 header a{
   color: white;
@@ -35,11 +36,7 @@ a:hover{
   justify-content: center;
   gap: 20px;
 }
-.header-panel{
-  width: 30%;
-  height: 100%;
 
-}
 ul.header-content {
   padding: 0px !important;
   margin: 0px !important;
@@ -69,6 +66,61 @@ ul.header-content {
 
 }
 
+.header-panel{
+  width: 20%;
+  height: 0px;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: white;
+  padding-right: 40px;
+
+}
+.header-panel-dropdown{
+  width: 100%;
+  height: auto;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  top: 30px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgb(44, 44, 44);
+  transform: translate(0px,50px);
+  opacity: 0%;
+  pointer-events: none;
+
+}
+
+
+.header-panel-icon{
+  padding: 10px;
+  font-size: .8rem;
+  cursor: pointer;
+}
+.header-panel-icon svg{
+  pointer-events: none;
+
+}
+.header-dropdown-item{
+  width: 100%;
+  padding: 20px;
+  cursor: pointer;
+}
+.show-dropdown{
+  opacity: 100%;
+  transform: translate(0px,0px);
+  pointer-events: all;
+  
+}
+.header-dropdown-item:hover{
+background: #000;
+}
+
 </style>
 <header >
     <div class='header-logo'></div>
@@ -88,6 +140,29 @@ ul.header-content {
 
         </li>
     </ul>
-    <div class='header-panel'></div>
+    <div class='header-panel'>
+          <?php if( isset( $_SESSION['id'])){ ?>
+            <div class="header-panel-icon" id="user-profile"><i class="fa-solid fa-user"></i></div>
+            <div class="header-panel-dropdown">
+              <a href="<?php echo base_url("/Client/detail/").$_SESSION['id'] ?>" class="header-dropdown-item">Profile</a>
+              <a href="<?php echo base_url("/") ?>" class="header-dropdown-item">Status</a>
+              <a href="<?php echo base_url("/Control/Logout") ?>" class="header-dropdown-item">Logout</a>
+            </div>
+          <?php  }else{ ?>
+            <a class="header-panel-icon" href="<?php echo base_url("/Control/Login") ?>" ><i class="fa-solid fa-right-to-bracket"></i></a>
+          <?php } ?>
+    </div>
 
 </header>
+
+<script>
+  let dropdown_arr = ['header-dropdown-item','header-panel-icon']
+  $(window).click((e)=>{
+    if(!dropdown_arr.includes(e.target.className)){
+      $(".header-panel-dropdown").removeClass('show-dropdown')
+    }
+  })
+  $("#user-profile").click((e)=>{
+    $(".header-panel-dropdown").toggleClass('show-dropdown')
+  })
+</script>

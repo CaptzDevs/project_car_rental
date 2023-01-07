@@ -868,7 +868,7 @@ input{
 
          <form class="form-modal col-lg-6 col-md-12" id="form_detail_modal" action="">
             <div class="form-modal-head">
-              <span>Car Detail</span>
+              <span>Client Detail <?php echo $_SESSION['role'] ?></span>
               <i class="fa-solid fa-file-invoice"></i>
 
 
@@ -925,6 +925,7 @@ input{
               </div> -->
 
             </div>
+            <?php if($_SESSION['role'] == '0'){ ?>
 
             <div class="form-group-section ">
                 <label class="form-section-label" for="">Status</label>
@@ -938,6 +939,7 @@ input{
                 
               </div>
              
+
               <div class="form-group-section borderless">
                 <label for="">Ban</label>
     
@@ -948,6 +950,7 @@ input{
                 
               </div>
             
+              <?php } ?>
      
      
 
@@ -977,7 +980,7 @@ input{
 
         <form class="form-modal col-lg-4 col-md-12" id="form_image_modal" action="">
           <div class="form-modal-head">
-            <span>Car Image</span>
+            <span>Client Image</span>
             <i class="fa-solid fa-images"></i>
           </div>
 
@@ -2181,6 +2184,8 @@ async function sendData(type,id){
   hideAfter : 1500,
 })
 
+  let role = <?php echo $_SESSION['role'] ?>
+
 window.onbeforeunload  = function(event) {
   $(".section-modal#car-detail").removeClass('slide-in-from-right')
 
@@ -2210,7 +2215,8 @@ window.onbeforeunload  = function(event) {
         $("aside").css("opacity",'100%')
 
         setTimeout(() => {
-            location.href = '<?php echo base_url('/admin')?>'
+            location.href = '<?php echo $_SESSION['role'] == '0' ? base_url('/admin') : base_url('/Control/category')?>'
+    
         }, 500);
 
     })
