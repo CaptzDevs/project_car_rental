@@ -145,7 +145,7 @@ background: #000;
             <div class="header-panel-icon" id="user-profile"><i class="fa-solid fa-user"></i></div>
             <div class="header-panel-dropdown">
               <a href="<?php echo base_url("/Client/detail/").$_SESSION['id'] ?>" class="header-dropdown-item">Profile</a>
-              <a href="<?php echo base_url("/") ?>" class="header-dropdown-item">Status</a>
+              <a href="<?php echo base_url("/Client/rental/").$_SESSION['id'] ?>" class="header-dropdown-item">Rental Status</a>
               <a href="<?php echo base_url("/Control/Logout") ?>" class="header-dropdown-item">Logout</a>
             </div>
           <?php  }else{ ?>

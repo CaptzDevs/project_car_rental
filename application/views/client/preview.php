@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Rental</title>
     <?php include('plugin.php') ?>
+
+    <link   href="<?php echo base_url('assets/plugin/c-carlendar/css/calendar.css') ?>" rel="stylesheet">
+    <script src="<?php echo base_url('assets/plugin/c-carlendar/js/calendar.js')?>"></script>
+
+
    
 
 </head>
@@ -468,9 +473,20 @@ svg{
   border: none;
 }
 
-.btn-send-quotation:hover{
+
+
+.btn-pre-quotation{
+  width: 50%;
+  height: 100%;
+  border-radius: 10px;
+  background: none;
+  color: white;
+  border: none;
+}
+.btn-send-quotation:hover , .btn-pre-quotation:hover{
   background: rgb(46, 46, 46);
 }
+
 .total-price{
   width: 100%;
   background: rgb(46, 46, 46);
@@ -581,6 +597,14 @@ li{
 .perspective-list li, .pricing-list li, .privilege-list li{
   transform: translate(150%,0%);
 }
+ .price-detail{
+  font-size: .7rem;
+  
+}
+#form_confirm,#form_rental{
+  width: 40%;
+
+}
 @keyframes pre_slide_out {
   0%{
     transform: translate(150%,0%);
@@ -689,7 +713,6 @@ li{
                 <div class="image-section">
                     <div> Perspectives  </div>
                     <ul class="perspective-list">
-
                        <!--  <li> <i class="fa-regular fa-chevron-right"></i> Overview  </li> -->
                     <?php foreach($car_section_arr as $section){
                       $section_selected = '';
@@ -722,9 +745,27 @@ li{
                     </ul>
                   </div>
 
-                    <button id="btn_rentCar">Rent</button>
+                  <?php 
+                  if(!isset($_SESSION['id'])){   ?>
+                        <button id="btn_login">Login or Signup</button>
+                        <span style="font-size: .5rem;"> You need to Login before renting car</span>
+
+                  <?php } else{
+                  $is_approved = $this->Admin_model->get_data_by_id("tbl_client",$_SESSION['id'])['approve_status'];
+
+                   if($is_approved == '1'){ ?>
+
+                        <button id="btn_rentCar">Rent</button>
+
+                  <?php }else if($is_approved == '0'){  ?>
+                    <a style="width: 100%;" href="<?php echo base_url('/Client/detail/').$_SESSION['id'] ?>">  <button > Verify </button></a>
+
+                       
+                        <span style="font-size: .5rem;"> You need to verify your identity before renting</span>
+                    <?php }} ?>
             </aside>
         </section>
+
         <section class="quotation">
               <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
 
@@ -752,9 +793,11 @@ li{
                      <div class="col-12 ">
                          <div class="form-group">
                            <label for="date_pay" >Start Rent</label>
-                           <input class="datepicker" type="text" id="date_1" name="start_rent" autocomplete="off">
+                           <input class="datepicker" type="text" id="start_rent" name="start_rent" autocomplete="off">
                      </div>
                    </div>
+
+                
                  
                    <div class="col-xl-8">
                     
@@ -775,6 +818,13 @@ li{
                           
                       </div>
                     </div>
+
+                    <div class="col-12 ">
+                         <div class="form-group">
+                           <label for="date_pay" >End Rent</label>
+                           <input class="datepicker" type="text" id="end_rent" name="end_rent" autocomplete="off">
+                     </div>
+                   </div>
 
                     <div class="col-3 total-price">
                           <div >Total | </div>
@@ -803,22 +853,22 @@ li{
 
                      <div class="quotation-detail-group price-detail">
                        <span>Deposit :</span>
-                       <span>10000 ฿</span>
+                       <span><?php echo $vehicle_detail['deposit']?> ฿</span>
                      </div>
                    
                      <div class="quotation-detail-group price-detail">
                        <div>Rate / Day :</div>
-                       <div>900 ฿</div>
+                       <div id="sum_rate"><?php echo $vehicle_detail['rate']?> ฿</div>
                      </div>
 
                     <div class="quotation-detail-group price-detail">
                       <div>Vat (7%)</div>
-                      <div>900 ฿</div>
+                      <div id="sum_vat">0 ฿</div>
                     </div>
 
                      <div class="quotation-detail-group price-detail hl">
                       <div>Total</div>
-                      <div>900 ฿</div>
+                      <div id="sum_total">0 ฿</div>
                     </div>
 
                    </div>
@@ -842,6 +892,7 @@ li{
 
 
               <div class="form-quotation-footer">
+              <button class="btn-pre-quotation" id="pre-1">  <i class="fa-solid fa-left"></i> back </button>
                 <button class="btn-send-quotation" id="next-2"> Next <i class="fa-solid fa-arrow-right"></i> </button>
               </div>
 
@@ -856,24 +907,24 @@ li{
               <i class="fa-solid fa-check"></i>
             </div>
 
-          <div class="row gap-1 form-quotation-body">
+          <div class="row gap-1 form-quotation-body confirm-page-text">
 
             <div class="col-12 form-group quotation-detail">
 
                  
-              <div class="quotation-detail-group price-detail">
+              <div class="quotation-detail-group price-detail ">
                 <div>Car id : </div>
-                <div> 3131daa</div>
+                <div> <?php echo $vehicle_detail['id'] ?></div>
               </div>
 
               <div class="quotation-detail-group price-detail">
                 <div>Car name : </div>
-                <div> civic </div>
+                <div> <?php echo $vehicle_detail['name'] ?> </div>
               </div>
 
               <div class="quotation-detail-group price-detail">
                 <div>License plate : </div>
-                <div> 19313 </div>
+                <div> <?php echo $vehicle_detail['license_plate'] ?> </div>
               </div>
 
         </div>
@@ -881,35 +932,34 @@ li{
             <div class="col-12 form-group quotation-detail">
 
               
-
                    <div class="quotation-detail-group price-detail">
                      <span>File :</span>
-                     <span> dsddasdaasdga4416.jpg <i class="fa-duotone fa-file"></i></span>
+                     <span> dsddasdaasdga4416.jpg <i class="fa-duotone fa-file  mx-1"></i></span>
                    </div>
                  
                    <div class="quotation-detail-group price-detail">
                     <div>Start rent : </div>
-                    <div> 19/12/2022 <i class="fa-solid fa-calendar-days"></i></div>
+                    <div> <span id="sum_start_rent"></span><i class="fa-solid fa-calendar-days  mx-1"></i></div>
 
                   </div>
 
                    <div class="quotation-detail-group price-detail">
                     <div>End rent : </div>
-                    <div> 19/12/2022 <i class="fa-solid fa-calendar-days"></i></div>
+                    <div> <span id="sum_end_rent"> </span><i class="fa-solid fa-calendar-days  mx-1"></i></div>
 
                    </div>
 
 
                    <div class="quotation-detail-group price-detail">
-                    <div>Days rent : </div>
-                    <div> 3 days <i class="fa-solid fa-calendar-days"></i></div>
+                    <div>Day amount : </div>
+                    <div> <span id="sum_amount_day"></span> days <i class="fa-solid fa-calendar-days  mx-1"></i></div>
 
                    </div>
 
 
                    <div class="quotation-detail-group price-detail">
                     <div>Total cost </div>
-                    <div> 30000 <i class="fa-solid fa-money-check-dollar"></i></div>
+                    <div> <span id="sum_cost"></span> <i class="fa-solid fa-money-check-dollar mx-1"></i></div>
 
                    </div>
 
@@ -931,7 +981,8 @@ li{
 
 
             <div class="form-quotation-footer">
-              <button class="btn-send-quotation"> Confirm <i class="fa-duotone fa-file-check"></i> </button>
+            <button class="btn-pre-quotation" id="pre-2">  <i class="fa-solid fa-left"></i> back </button>
+              <button class="btn-send-quotation"  id="next-3"> Confirm <i class="fa-duotone fa-file-check"></i> </button>
             </div>
 
 
@@ -939,7 +990,7 @@ li{
 
 
 
-        <form class="form-quotation form-next" style="padding-bottom: 10px;" action="">
+        <form class="form-quotation form-next" id="form_rental" style="padding-bottom: 10px;" action="">
               
           <div class="form-quotation-head">
             <span> Rental Detail</span>
@@ -952,17 +1003,17 @@ li{
                  
             <div class="quotation-detail-group price-detail">
               <div>Car id : </div>
-              <div> 3131daa</div>
+              <div> <?php echo $vehicle_detail['id'] ?> </div>
             </div>
 
             <div class="quotation-detail-group price-detail">
               <div>Car name : </div>
-              <div> civic </div>
+              <div>  <?php echo $vehicle_detail['name'] ?> </div>
             </div>
 
             <div class="quotation-detail-group price-detail">
               <div>License plate : </div>
-              <div> 19313 </div>
+              <div>  <?php echo $vehicle_detail['license_plate'] ?> </div>
             </div>
 
       </div>
@@ -1079,6 +1130,7 @@ li{
 $('.car-item-image').addClass('pre-slide-in')
 
     $('.car-section-selector').click((e)=>{
+      $("#car-image-preview")[0].src = ''
       $("#car-image-preview")[0].src = e.target.dataset.src
 $('.car-item-image').removeClass('pre-slide-in')
       
@@ -1092,12 +1144,14 @@ setTimeout(() => {
 }, 200);
 
 
-
       e.target.insertAdjacentHTML('afterbegin',`<i class="fa-regular fa-chevron-right"></i>`)
 
     })
       
 
+    $("#btn_login").click((e)=>{
+        location.href = "<?php echo base_url('/Control/Login') ?>"
+    })
     $("#btn_rentCar").click((e)=>{
         $(".quotation").addClass('slide-in-from-right')
         $(".content").addClass('slide-out-to-left')
@@ -1114,10 +1168,27 @@ setTimeout(() => {
     $("#next-1").click((e)=>{
       e.preventDefault()
       $("#form_quotation").addClass('slide-out-to-left')
-
       $("#form_payment").css("display",'block')
       $("#form_payment").addClass('slide-form')
+
+      rendetEndDate()
+
+      let price = parseInt($('#total_price').text().replace(/,/g, ''), 10)
+      let vat = Math.round(price*0.07)
+      $('#sum_rate').html($('.sum-rateperday').html())
+      $("#sum_vat").html(vat+" ฿")
+      $('#sum_total').html(( +vat+price).toLocaleString())
+
     })
+
+    $("#pre-1").click((e)=>{
+      e.preventDefault()
+      $("#form_quotation").removeClass('slide-out-to-left')
+      $("#form_payment").addClass('slide-out-to-right')
+      $("#form_payment").removeClass('slide-form')
+    })
+
+
 
     $("#next-2").click((e)=>{
       e.preventDefault()
@@ -1125,15 +1196,181 @@ setTimeout(() => {
 
       $("#form_confirm").css("display",'block')
       $("#form_confirm").addClass('slide-form')
+
+
+      $("#sum_start_rent").html($("#start_rent").val())
+      $("#sum_end_rent").html($("#end_rent").val())
+      $("#sum_amount_day").html($("#date_amount").val())
+      $("#sum_cost").html( $("#sum_total").html())
+
     })
+
+    
+
+
+
+    $("#pre-2").click((e)=>{
+      e.preventDefault()
+
+       $("#form_payment").removeClass('slide-form-out')
+
+      $("#form_confirm").css("display",'block')
+      $("#form_confirm").removeClass('slide-form')
+
+   
+    })
+    let CLIENT_ID = "<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''  ?>"
+      let VEHICLE_ID = "<?php echo isset($vehicle_detail['id']) ? $vehicle_detail['id'] : ''  ?>"
+
+    $("#next-3").click((e)=>{
+     /*  e.preventDefault()
+      $("#form_confirm").addClass('slide-form-out')
+
+      $("#form_rental").css("display",'block')
+      $("#form_rental").addClass('slide-form') */
+
+      e.preventDefault()
+
+   
+
+      sendData()
+
+
+    })
+
+    async function sendData(type,id){
+
+/*  if(await preUpload() == false){
+         return 0;
+     } */
+
+ $("#btn_upload_product , #btn_upload_image , #btn_upload_file").prop('disabled',true);
+ $.toast().reset('all')
+ $.toast({
+     heading: `<div style="width:200px"> Uploading</div>`,
+     text:`<div id="data_load_progress" style="color:var(--gray-900);"></div> \n <div id="image_load_progress" style="color:var(--gray-900);"></div> \n <div id="file_load_progress" style="color:var(--gray-900);"></div>`,
+     showHideTransition : "fade",
+ allowToastClose: false,
+     hideAfter : false,
+     loader:true,
+ })
+
+     let formData = new FormData();
+
+     formData.append('table','tbl_rental')
+    /*  type == 'update' ? formData.append('id',id) : '' */
+     formData.append('client_id',CLIENT_ID)
+     formData.append('vehicle_id',VEHICLE_ID)
+     formData.append('start_rent_date',$("#start_rent")[0].dataset.value)
+     formData.append('end_rent_date',$("#end_rent")[0].dataset.value)
+     formData.append('rent_days',$("#date_amount").val())
+     formData.append('cost', parseInt($('#sum_cost').text().replace(/,/g, ''), 10))
+
+     formData.append('fine',0)
+
+     formData.append('receipt','')
+
+
+
+     let dataSend = {};
+     formData.forEach(function(value, key){
+       dataSend[key] = value;
+     });
+
+     console.log(dataSend)
+
+
+     $.ajax({
+
+         type: 'POST',
+         url:  '<?php echo base_url('Admin/add_Rental_Data') ?>',
+         data: JSON.stringify(dataSend),
+         contentType: 'application/json; charset=utf-8',
+         dataType: 'json',
+          xhr: function() {
+             //upload Progress
+             var xhr = $.ajaxSettings.xhr();
+
+             if (xhr.upload) {
+                 $(".progress").show();
+                 xhr.upload.addEventListener('progress', function(event) {
+
+                     var percent = 0;
+                     var position = event.loaded || event.position;
+                     var total = event.total;
+                     if (event.lengthComputable) {
+                         percent = Math.ceil(position / total * 100);
+                     }
+                     console.log(percent)
+
+                     //update progressbar
+
+            
+
+                 }, true);
+             }
+             return xhr;
+         },
+
+         success: async function(data, status) {
+
+             console.log(data);
+       
+
+             if (data > 0) {
+                 console.log("UPLOAD SUCCESS")
+
+                 setTimeout(() => {
+             $.toast().reset('all')
+             $.toast({
+
+                        heading: "Upload Data Successfully",
+                        text:"",
+                        showHideTransition : "fade",
+                        hideAfter : 1500,
+                        icon:"success"
+                    })
+
+                     location.href = '<?php echo isset($_SESSION['id'])  ? base_url('/Client/rental/').$_SESSION['id'] : "" ?> '
+           }, 500);
+
+
+             } else {
+
+                 swal({
+                     title: 'Can not be saved!',
+                     //text: "You won't be able to revert this!",
+                     type: 'warning',
+                     confirmButtonClass: 'btn btn-confirm mt-2'
+                 });
+             }
+         }
+         });
+}
+
+
+    function rendetEndDate(){
+      let fulldate = $("#start_rent")[0].dataset.value
+          let d = new Date(fulldate.slice(0,4),fulldate.slice(4,6),(+fulldate.slice(6,8)+(+$("#date_amount").val())))
+          $("#end_rent").val(`${d_en_sm[d.getDay()]}, ${("0"+d.getDate()).slice(-2)} ${m_en_full[d.getMonth()]} ${d.getFullYear()}`)
+
+          $("#end_rent")[0].dataset.value = `${d.getFullYear()}${("0"+(d.getMonth())).slice(-2)}${("0"+d.getDate()).slice(-2)}`
+    }
+
+    let d_en_sm = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
+    let m_en_full = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     $("#btn_incr_day").click((e)=>{
       e.preventDefault()
+    
    
-
         if(+e.target.previousElementSibling.value < 20 ){
-
+          
           e.target.previousElementSibling.value = +e.target.previousElementSibling.value + 1;
+
+
+          rendetEndDate()
+
           let days = $("#date_amount").val()
           let price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
           let deposit = <?php echo (int) $vehicle_detail['deposit']; ?>;
@@ -1143,6 +1380,8 @@ setTimeout(() => {
 
         }
     })
+
+
 
     $("#date_amount").on('change keyup',(e)=>{
       console.log(e.type)
@@ -1165,9 +1404,11 @@ setTimeout(() => {
       }
 
 
-      if(+e.target.value >= 1 && +e.target.value <= 20){
-      if(e.keyCode == 38){
+
+        if(e.keyCode == 38 && +e.target.value < 20){
           e.target.value  = +e.target.value  + 1
+        rendetEndDate()
+
           days = $("#date_amount").val()
           price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
 
@@ -1177,13 +1418,15 @@ setTimeout(() => {
       }else if(e.keyCode == 40 && +e.target.value > 1 ){
 
           e.target.value  = +e.target.value - 1
+        rendetEndDate()
+
           days = $("#date_amount").val()
           price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
 
           $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
           $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
       }
-    }
+    
 
   
       if(+e.target.value < 1){
@@ -1196,8 +1439,13 @@ setTimeout(() => {
 
     $("#btn_decr_day").click((e)=>{
       e.preventDefault()
+
+
+
       if(+e.target.nextElementSibling.value  >= 2){
         e.target.nextElementSibling.value = +e.target.nextElementSibling.value - 1; 
+        rendetEndDate()
+
 
         let days = $("#date_amount").val()
         let price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
@@ -1212,10 +1460,20 @@ setTimeout(() => {
 
     })
 
-/* $("#date_1").Calendar('calendar',{
-  separation : "/",
-   
-}) */
+    let d = new Date()
+
+ $("#start_rent").Calendar('calendar',{
+  format : "dd/MM/yyyy",
+  separation : " ",
+    lang : "en",
+    showDay : 'small',
+    closeOnSelect : true,
+    max  : 30000101, 
+    min : d.getFullYear()+""+("0"+(d.getMonth()+1)).slice(-2)+""+("0"+d.getDate()).slice(-2)
+}) 
+$("#end_rent").prop('readonly',true)
+
+
 
 
 /* $("#date_2").Calendar('calendar',{

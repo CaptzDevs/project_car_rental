@@ -89,7 +89,7 @@
          <a href="<?php echo base_url('/Admin') ?>" class="menu-item"> <i class="fa-solid fa-chart-line"></i> Dashboard </a>
          <a href="<?php echo base_url('/Admin/vehicle') ?>" class="menu-item"> <i class="fa-solid fa-car-side"></i> Vehicle </a>
          <a href="<?php echo base_url('/Admin/Client') ?>" class="menu-item"> <i class="fa-solid fa-users"></i>  Client </a>
-         <a href="<?php echo base_url('/Admin/Rent') ?>" class="menu-item disabled"> <i class="fa-duotone fa-file-check"></i> Rent Status </a>
+         <a href="<?php echo base_url('/Admin/Rental') ?>" class="menu-item"> <i class="fa-duotone fa-file-check"></i> Rent Status </a>
          <a href="<?php echo base_url('/Admin/Fix') ?>" class="menu-item disabled"> <i class="fa-solid fa-wrench"></i> Fix </a>
          <a href="<?php echo base_url('/Admin/Privilege') ?>" class="menu-item disabled"> <i class="fa-solid fa-sparkles"></i> Privilege </a>
 

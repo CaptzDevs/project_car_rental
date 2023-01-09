@@ -326,23 +326,6 @@ margin-top: 50px;
   color: white;
 }
 
-.datepicker  input {
-  background: rgb(46, 46, 46);
-    outline: none;
-    border: none;
-    color: white;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 10px;
-  }
-.date-icon{
-  color: rgb(137, 137, 137) !important;
-}
-.date-panel{
-  top: 70%;
-  right: 0%;
-}
-
 .form-quotation{
   width: 500px;
   min-width: 300px;
@@ -389,6 +372,7 @@ margin-top: 50px;
 
 }
 input[type=text],input[type=password]{
+  width: 100%;
   max-height: 40px;
   background: rgb(46, 46, 46);
     outline: none;

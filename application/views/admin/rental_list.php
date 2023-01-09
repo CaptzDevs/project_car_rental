@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car List</title>
+    <title>Dashboard</title>
     <?php include('plugin.php') ?>
 </head>
 <style>
@@ -201,8 +201,7 @@ background: linear-gradient(196deg, rgba(226,174,238,1) 0%, rgba(148,158,233,1) 
 
 .section-table{
   width: 100%;
-  min-width: 500px;
-
+  /* min-width: 500px; */
   background: rgb(60, 60, 60);
   border-radius: 10px;
   padding: 20px;
@@ -281,7 +280,7 @@ section{
   
 }
 .card-status{
-  min-width: 300px;
+  width: 24%;
   height: 100px;
   background: rgb(60, 60, 60);
   display: flex;
@@ -594,10 +593,30 @@ border: 1px solid white;
   background: var(--red6) !important;
 }
 
-.image-preview{
-  width: 50px;
-  height: 50px;
+
+@media (max-width: 576px) { 
+
+  
 }
+
+@media (max-width: 768px) { 
+ .form-quotation{
+ width: 100%;
+} 
+}
+
+@media (max-width: 992px) {  }
+
+@media (max-width: 1200px) { 
+  .card-status{
+    width: 100%;
+    height: 50px;
+    font-size: 1rem;
+  }
+ }
+
+@media (max-width: 1400px) {  }
+
 
 </style>
 <body>
@@ -607,9 +626,10 @@ border: 1px solid white;
       </div>
 
       <?php include('sidebar.php') ?>
+
         <div class="content">
           <div class="label-text">Dashboard <i class="fa-solid fa-chart-line"></i></div>
-          <section class="banner">
+       <!--    <section class="banner">
                     <div class="banner-card">
                       <i class="fa-solid fa-car-side"></i>
                       <span class="banner-amount">150</span>
@@ -627,26 +647,26 @@ border: 1px solid white;
                       <span class="lbl_amount">Customer</span>
                     </div>
 
-            </section>
+            </section> -->
             <section class="section-status">
                 <div class="card-status">
                     <div class="card-status-bar status-avalible"></div>
-                    <div class="status-label">Avalible <i class="fa-solid fa-file-lines"></i></div>
+                    <div class="status-label">Returned  <i class="fa-solid fa-file-lines"></i></div>
                     <div class="status-amount">50</div>
                 </div>
                 <div class="card-status">
                   <div class="card-status-bar status-rented"></div>
-                    <div class="status-label">Rented  <i class="fa-solid fa-file-check"></i></div>
+                    <div class="status-label"> Renting  <i class="fa-solid fa-file-check"></i></div>
                     <div class="status-amount"> 50 </div>
                 </div>
                 <div class="card-status">
                   <div class="card-status-bar status-fixing"></div>
-                    <div class="status-label">Fixing <i class="fa-solid fa-file-exclamation"></i> </div>
+                    <div class="status-label">Pending <i class="fa-solid fa-file-exclamation"></i> </div>
                     <div class="status-amount">50</div>
                 </div>
                 <div class="card-status">
                   <div class="card-status-bar status-broken"></div>
-                    <div class="status-label">Broken <i class="fa-solid fa-file-excel"></i> </div>
+                    <div class="status-label">Late <i class="fa-solid fa-file-excel"></i> </div>
                     <div class="status-amount">50</div>
                 </div>
 
@@ -655,115 +675,15 @@ border: 1px solid white;
             <?php $status_arr = ['broken','avalible' , 'rented' , 'fixing' , ] ?>
 
         <section class="table-group">  
-            <section class="section-table">
-              <div class="label-text">Cars <i class="fa-solid fa-cars"></i></div>
-              <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th  scope="col">ID</th>
-                    <!-- <th  scope="col">Image</th> -->
-                    <th  scope="col">Name</th>
-                    <th style="width: 20%;"  scope="col">Status</th>
-                    <th style="width: 10px;" scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                 <?php $i = 0 ?>
-                <?php foreach($all_vehicle as $value){   $i++;?>
 
-                  <tr class="data-row vehicle_data" data-id="<?php echo $value['id']?>">
-                    <td><?php echo $i?> </td>
-                   <!--  <td> <img class="image-preview" src="<?php echo $value['image_type'] == '1'? base_url("/uploads/images/".$value['image_url']) : $value['image_url'] ?>" alt=""> </td> -->
-                    <td><?php echo $value['name'] ?></td>
-                    <td ><div class="status-box status-<?php echo $status_arr[$value['vehicle_status']] ?>"><?php echo $status_arr[$value['vehicle_status']] ?></div></td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-                  
-                  <?php } ?>
-  
-                </tbody>
-              </table>
-            </div>
-            </section>
-
-
-            <?php $status_client_color = ['error','success','warning'] ;
-                  $status_client_arr = ['not approve','approved','pending'];
-                  $status_client_attached = ['not attached','attached'];
-                  $status_client_filled = ['not filled','filled'];
-
-
+            <?php $status_client_color = ['error','success'] ;
+                  $status_client_arr = ['banned','normal'];
                   $status_client_role = ['admin','client'];
 
             ?>
 
 
-            <section class="section-table">
-              <div class="label-text">Client <i class="fa-solid fa-users"></i></div>
-              <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th  scope="col">ID</th>
-                    <th  scope="col">Name</th>
-                    <th  scope="col">Email</th>
-                    <th  scope="col">Detail</th>
-                    <th  scope="col">ID card</th>
-                    <th  scope="col">Driver License</th>
-
-                    <th style="width: 20%;"  scope="col">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                 <?php $i = 0 ?>
-                <?php foreach($all_client as $value){ $i++ ;
-                  $client_image = $this->Admin_model->get_image_byClientID($value['id']);
-        
-                  $check_user_idcard = 0;
-                  $check_user_dl= 0;
-                  
-                  $check_user_detail = $value['name'] && $value['email'] && $value['tel'] && $value['address'] ? 1 : 0;
-                  foreach($client_image as $image){
-                    if( $image['image_section'] == 'ID_Card' && $image['image_url'] != ''  ){
-                      $check_user_idcard = $image['image_section'] = 1;
-                    }
-                    if(  $image['image_section'] == 'Driver_License' && $image['image_url'] != ''  ){
-                      $check_user_dl = $image['image_section'] = 1;
-                    }
-
-
-                }
-
-                  
-                  ?>
-                  <tr class="data-row client_data" data-id="<?php echo $value['id']?>">
-                    <td><?php echo $i ?> </td>
-                    <td><?php echo $value['name'] ?></td>
-                    <td><?php echo $value['email'] ?></td>
-                    <td>
-                    <div class="status-box status-<?php echo $status_client_color[$check_user_detail] ?>"><?php echo $status_client_filled[$check_user_detail] ?></div>
-                    </td>
-
-                    <td>
-                    <div class="status-box status-<?php echo $status_client_color[$check_user_idcard] ?>"><?php echo $status_client_attached[$check_user_idcard] ?></div>
-                   </td>
-                    <td>
-                    <div class="status-box status-<?php echo $status_client_color[$check_user_dl] ?>"><?php echo $status_client_attached[$check_user_dl] ?></div>
-                  </td>
-
-
-                    <td ><div class="status-box status-<?php echo $status_client_color[$value['approve_status']] ?>"><?php echo $status_client_arr[$value['approve_status']] ?></div></td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-              
-                  <?php } ?>
-  
-                </tbody>
-              </table>
-            </div>
-            </section>
-            <?php  $status_client_color = ['warning','success','error'] ;
+<?php  $status_client_color = ['warning','success','error'] ;
                   $status_client_arr = ['renting','returned','late'];
                   /* print_r($all_rental)  */
                   ?>
@@ -784,8 +704,9 @@ border: 1px solid white;
                   </tr>
                 </thead>
                 <tbody>
-                 <?php $i = 0 ?>
-                  <?php foreach($all_rental as $value){ 
+                  <?php 
+                  $i = 0;
+                  foreach($all_rental as $value){ 
                     $i++;
                        $start_date = DateTime::createFromFormat('Ymd', $value['start_rent_date'])->format('d / m / Y');
                        $end_date = DateTime::createFromFormat('Ymd', $value['end_rent_date'])->format('d / m / Y');
@@ -811,11 +732,462 @@ border: 1px solid white;
               </table>
             </div>
             </section>
+
+          
         </section>
 
         </div>
 
-     
+        
+
+        <section class="section-modal row p-4 gap-sm-3" id="car-detail">
+
+          <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
+         <form class="form-modal col-lg-6 col-md-12" id="form_modal" action="">
+            <div class="form-modal-head">
+              <span>Car Detail</span>
+              <i class="fa-solid fa-file-invoice"></i>
+              <div class="status status-avalible rounded px-2">Avalible <i class="fa-solid fa-check"></i></div>
+            </div>
+
+          <div class="form-modal-body">
+
+            <div class="form-group-section">
+              <label class="form-section-label" for="">General</label>
+              <div class="form-group">
+                <label for="">Name</label>
+                <input type="text" name="" id="">
+              </div>
+  
+              <div class="form-group">
+                <label for="">Brand</label>
+                <input type="text" name="" id="">
+              </div>
+  
+              <div class="form-group">
+                <label for="">Year</label>
+                <input type="text" name="" id="">
+              </div>
+
+              <div class="form-group">
+                <label for="">License plate</label>
+                <input type="text" name="" id="">
+              </div>
+              
+              
+            <div class="form-group">
+              <label for="">Slug Url</label>
+              <input type="text" name="" id="">
+            </div>
+
+            </div>
+           
+            
+            <div class="form-group-section">
+              <label class="form-section-label" for="">Pricing</label>
+
+            <div class="form-group">
+              <label for="">Deposit</label>
+              <input type="text" name="" id="">
+            </div>
+
+
+            <div class="form-group">
+              <label for="">Rate</label>
+              <input type="text" name="" id="">
+            </div>
+
+          </div>
+
+
+          <div class="form-group-section ">
+            <label class="form-section-label" for="">Status</label>
+            
+            <label for="">Show on web</label>
+
+            <div class="vehicle-stastus-form">
+              <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+              <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+            </div>
+          </div>
+
+          <div class="form-group-section borderless">
+            <label for="">Type</label>
+            <div class="vehicle-stastus-form">
+              <div class="vehicle-stastus-box"><i class="fa-solid fa-car-side"></i></div>
+              <div class="vehicle-stastus-box"><i class="fa-solid fa-motorcycle"></i></div>
+            </div>
+          </div>
+
+        
+          <div class="form-group-section borderless">
+            <label for="">Status</label>
+            <div class="vehicle-stastus-form">
+              <div class="vehicle-stastus-box">Avalible</div>
+              <div class="vehicle-stastus-box">Rented</div>
+              <div class="vehicle-stastus-box">Fixing</div>
+              <div class="vehicle-stastus-box">Broken</div>
+            </div>
+          </div>
+
+        
+          </div>
+
+
+            <div class="form-modal-footer">
+              <button class="btn-send-modal" id="next-1"> Save </button>
+            </div>
+
+
+        </form> 
+
+
+        <form class="form-modal col-lg-4 col-md-12" id="form_modal" action="">
+          <div class="form-modal-head">
+            <span>Car Image</span>
+            <i class="fa-solid fa-images"></i>
+          </div>
+
+        <div class="form-modal-body">
+
+          <div class="form-group-section">
+            <label class="form-section-label" for="">Overview</label>
+            <div class="form-group">
+              <input type="file" class="dropify" data-default-file="" />
+
+            </div>
+
+            <div class="form-group-section borderless">
+         
+              <div class="form-group">
+              <label for="">URL</label>
+              <input type="text" name="" id="">
+            </div>
+
+              <label for="">Show on web</label>
+    
+              <div class="vehicle-stastus-form">
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group-section">
+            <label class="form-section-label" for="">Front</label>
+            <div class="form-group">
+              <input type="file" class="dropify" data-default-file="" />
+            </div>
+
+            <div class="form-group-section borderless">
+         
+              <div class="form-group">
+              <label for="">URL</label>
+              <input type="text" name="" id="">
+            </div>
+
+              <label for="">Show on web</label>
+    
+              <div class="vehicle-stastus-form">
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="form-group-section">
+            <label class="form-section-label" for="">Back</label>
+            <div class="form-group">
+              <input type="file" class="dropify" data-default-file="" />
+
+            </div>
+
+            <div class="form-group-section borderless">
+         
+              <div class="form-group">
+              <label for="">URL</label>
+              <input type="text" name="" id="">
+            </div>
+
+              <label for="">Show on web</label>
+    
+              <div class="vehicle-stastus-form">
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <div class="form-group-section">
+            <label class="form-section-label" for="">Side</label>
+            <div class="form-group">
+              <input type="file" class="dropify" data-default-file="" />
+
+            </div>
+
+            <div class="form-group-section borderless">
+         
+              <div class="form-group">
+              <label for="">URL</label>
+              <input type="text" name="" id="">
+            </div>
+
+              <label for="">Show on web</label>
+    
+              <div class="vehicle-stastus-form">
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+              </div>
+            </div>
+
+          </div>
+         
+          
+          <div class="form-group-section">
+            <label class="form-section-label" for="">Above</label>
+            <div class="form-group">
+              <input type="file" class="dropify" data-default-file="" />
+
+            </div>
+
+            
+            <div class="form-group-section borderless">
+         
+              <div class="form-group">
+              <label for="">URL</label>
+              <input type="text" name="" id="">
+            </div>
+
+              <label for="">Show on web</label>
+    
+              <div class="vehicle-stastus-form">
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+              </div>
+            </div>
+
+          </div>
+
+
+    
+
+ 
+
+      
+       
+
+      
+        </div>
+
+    
+
+
+          <div class="form-modal-footer">
+            <button class="btn-send-modal" id="next-1"> Save </button>
+          </div>
+
+
+      </form> 
+
+        </section>
+
+        <section class="section-modal row p-4 gap-sm-3" id="rent-detail">
+
+          <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
+
+         <form class="form-modal col-lg-6 col-md-12" id="form_modal" action="">
+            <div class="form-modal-head">
+              <span>Rent Detail</span>
+              <i class="fa-solid fa-file-invoice"></i>
+              <div class="status status-rented rounded px-2">Pending <i class="fa-solid fa-check"></i></div>
+            </div>
+
+          <div class="form-modal-body">
+
+            <div class="form-group-section">
+              <label class="form-section-label" for="">General</label>
+              <div class="form-group">
+                <label for="">Client Name</label>
+                <input type="text" name="" id="">
+              </div>
+  
+              <div class="form-group">
+                <label for="">Vehicle Name</label>
+                <input type="text" name="" id="">
+              </div>
+  
+              <div class="form-group">
+                <label for="start_rent" >Start Rent</label>
+                <input class="datepicker" type="text" id="start_rent" name="start_rent" autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label for="end_rent" >End Rent</label>
+            <input class="datepicker" type="text" id="end_rent" name="end_rent" autocomplete="off">
+      </div>
+              
+              
+            <div class="form-group">
+              <label for="">Rent days</label>
+              <input type="text" name="" id="">
+            </div>
+
+            </div>
+           
+            
+            <div class="form-group-section">
+              <label class="form-section-label" for="">Payment</label>
+
+            <div class="form-group">
+              <label for="">Proof of payment</label>
+              <input type="file" class="dropify" data-default-file="" />
+
+            </div>
+
+
+         
+
+          </div>
+
+
+          <div class="form-group-section ">
+            <label class="form-section-label" for="">Status</label>
+            
+            <label for="">Show on web</label>
+
+            <div class="vehicle-stastus-form">
+              <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
+              <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
+            </div>
+          </div>
+
+          <div class="form-group-section borderless">
+            <label for="">Returning Car Status</label>
+            <div class="vehicle-stastus-form">
+              <div class="vehicle-stastus-box"> Returned <i class="fa-solid fa-circle-check"></i></div>
+              <div class="vehicle-stastus-box"> Renting <i class="fa-solid fa-car-side"></i></div>
+              <div class="vehicle-stastus-box"> Late <i class="fa-solid fa-clock"></i></div>
+
+            </div>
+          </div>
+
+        
+          <div class="form-group-section borderless">
+            <label for="">Request Status</label>
+            <div class="vehicle-stastus-form">
+              <div class="vehicle-stastus-box">Approve <i class="fa-solid fa-file-check"></i> </div>
+              <div class="vehicle-stastus-box">Pending <i class="fa-solid fa-clock"></i></div>
+              <div class="vehicle-stastus-box">Denied <i class="fa-solid fa-file-excel"></i></div>
+            </div>
+          </div>
+
+        
+          </div>
+
+      
+
+
+            <div class="form-modal-footer">
+              <button class="btn-send-modal" id="next-1"> Save </button>
+            </div>
+
+
+        </form> 
+
+
+        <form class="form-modal col-lg-4 col-md-12" id="form_modal" action="">
+          <div class="form-modal-head">
+            <span>Client Detail</span>
+            <i class="fa-solid fa-file-user"></i>
+          </div>
+
+        <div class="form-modal-body">
+
+          <div class="form-group-section">
+            <label class="form-section-label" for="">Overview</label>
+
+              <div class="form-group">
+                <label for="">Client Name</label>
+                <input type="text" name="" id="">
+              </div>
+
+              <div class="form-group">
+                <label for="">Username</label>
+                <input type="text" name="" id="">
+              </div>
+
+              <div class="form-group">
+                <label for="">Password</label>
+                <input type="text" name="" id="">
+              </div>
+
+              <div class="form-group">
+                <label for="">Tel.</label>
+                <input type="text" name="" id="">
+              </div>
+
+              <div class="form-group">
+                <label for="">Address</label>
+                <textarea name="" id="" maxlength="150" cols="30" rows="10"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="">ID Card</label>
+                <input type="file" class="dropify user_image" id="client_id_card" data-default-file="" />
+  
+              </div>
+
+              <div class="form-group">
+                <label for="">Driver License </label>
+                <input type="file" class="dropify user_image" id="client_driver_license" data-default-file="" />
+  
+              </div>
+  
+              <div class="form-group-section ">
+                <label class="form-section-label" for="">Status</label>
+                
+                <label for="">Role</label>
+    
+                <div class="vehicle-stastus-form">
+                  <div class="vehicle-stastus-box"> Client <i class="fa-solid fa-user"></i></div>
+                  <div class="vehicle-stastus-box"> Admin <i class="fa-solid fa-user-astronaut"></i></div>
+                </div>
+                
+              </div>
+             
+              <div class="form-group-section borderless">
+                <label for="">Ban</label>
+    
+                <div class="vehicle-stastus-form">
+                  <div class="vehicle-stastus-box"> Unban <i class="fa-regular fa-circle"></i></div>
+                  <div class="vehicle-stastus-box"> Ban <i class="fa-solid fa-ban"></i></div>
+                </div>
+                
+              </div>
+
+         
+
+          </div>
+
+        </div>
+
+    
+
+
+          <div class="form-modal-footer">
+            <button class="btn-send-modal" id="next-1"> Save </button>
+          </div>
+
+
+      </form> 
+
+        </section>
 
     </main>
 
@@ -846,9 +1218,7 @@ window.onbeforeunload  = function(event) {
 
 
 
-
-
-    $(`.data-row.rent_data`).click((e)=>{
+$(`.data-row.rent_data`).click((e)=>{
       location.href = `<?php echo base_url('/Admin/rental/') ?>${e.target.parentElement.dataset.id ? e.target.parentElement.dataset.id : e.target.parentElement.parentElement.dataset.id}`
 
      /*  $(".section-modal#car-detail").addClass('slide-in-from-right')
@@ -857,9 +1227,9 @@ window.onbeforeunload  = function(event) {
 
     }) 
 
-
     $(`.data-row.client_data`).click((e)=>{
       location.href = `<?php echo base_url('/Admin/client/') ?>${e.target.parentElement.dataset.id ? e.target.parentElement.dataset.id : e.target.parentElement.parentElement.dataset.id}`
+
 
      /*  $(".section-modal#car-detail").addClass('slide-in-from-right')
       $(".content").addClass('slide-out-to-left')
@@ -867,9 +1237,8 @@ window.onbeforeunload  = function(event) {
 
     }) 
 
-    
     $(`.data-row.vehicle_data`).click((e)=>{
-      location.href = `<?php echo base_url('/Admin/vehicle/') ?>${e.target.parentElement.dataset.id ? e.target.parentElement.dataset.id : e.target.parentElement.parentElement.dataset.id}`
+      location.href = `<?php echo base_url('/Admin/vehicle/') ?>${e.target.parentElement.dataset.id}`
 
     }) 
 
