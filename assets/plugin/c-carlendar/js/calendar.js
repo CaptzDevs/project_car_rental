@@ -124,7 +124,7 @@ yy   = 65 , 22
         day : 'full',          
         month : 'full',
         min  : 19000101,    
-        max  : 21000101, 
+        max  : 30000101, 
         startWith  : '',
         closeOnSelect : true,
         dayPanel : 'full',
@@ -646,6 +646,8 @@ $("#date_pay2").Calendar('calendar',{
     max : 25660110, 
 })
 */
+
+
 
 
 
@@ -1247,6 +1249,10 @@ let checkYearType =  yearType == "AD" ? +this_year : +this_year+543
     let displayYear = yearType == 'AD' ? this_year : this_year+543 
 
     $(".lbl_year").text(yearPanel == 'full' ? displayYear : (''+displayYear).slice(-2)) 
+
+
+
+    
 
 //render section -------------------------------------
 /*   let elem_length = 0;

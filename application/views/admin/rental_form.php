@@ -282,7 +282,6 @@ background: linear-gradient(196deg, rgba(226,174,238,1) 0%, rgba(148,158,233,1) 
 }
 .table td{
   font-size: .9rem;
-  pointer-events: none;
 }
 .table tr{
   cursor: pointer;
@@ -316,39 +315,7 @@ section{
   margin-bottom: 20px ;
 }
 
-.status-box{
-  padding: 5px 10px 5px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
 
-}
-.status-avalible {
-  background: var(--green6);
-}
-.status-rented {
-  background: var(--yellow6);
-}
-.status-fixing {
-  background: var(--orange6);
-}
-.status-broken {
-  background: var(--red6);
-}
-
-.status-success {
-  background: var(--green6) !important;
-}
-.status-warning {
-  background: var(--yellow6) !important;
-}
-.status-danger {
-  background: var(--orange6) !important;
-}
-.status-error {
-  background: var(--red6) !important;
-}
 
 .section-status{
   width: 100%;
@@ -471,7 +438,7 @@ section{
   font-size: 1.2rem;
   margin-bottom: 5px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   position: relative;
   padding-bottom: 10px;
@@ -634,8 +601,9 @@ textarea{
   border-radius: 10px;
   background: rgba(48, 48, 48, 0.54);;
 }
-input:hover , textarea:hover{
-outline: 1px solid white;
+textarea:hover{
+
+border: 1px solid white;
 }
 input{
   width: 100%;
@@ -682,7 +650,24 @@ input{
   user-select: none;
   pointer-events: none;
 }
+.preview-text{
+  text-decoration: none;
+  color: white;
+  font-size: .8rem;
 
+}
+.preview-text:hover{
+  text-decoration: underline;
+}
+a{
+  color: white;
+  text-decoration: none;
+}
+.img-preview{
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 10px;
+}
 </style>
 <body>
     <main>
@@ -861,407 +846,91 @@ input{
 
         </div> -->
 
-        <?php $client_detail = $client_data ? $client_data['detail'][0] : '';
-            ?>
-
-        <section class="section-modal row p-4 gap-sm-3" id="car-detail">
-
-          <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
-
-          <?php 
-          $approve_text = ['Not approve', 'Approved','Pending'];
-          $approve_color = ['error' , 'success','warning'];
-          
-          ?>
-
-         <form class="form-modal col-lg-6 col-md-12" id="form_detail_modal" action="">
-            <div class="form-modal-head">
-              <span>Client Detail </span>
-                    <div class="status status-<?php echo $approve_color[$client_detail['approve_status']] ?> px-2 rounded"><?php  echo $approve_text[$client_detail['approve_status']] ?></div>
-              <i class="fa-solid fa-file-invoice"></i>
 
 
-            </div>
-
-
-          <div class="form-modal-body">
-
-            <div class="form-group-section">
-              <label class="form-section-label" for="">Overview</label>
-              <div class="form-group">
-                <label for="">Name</label>
-                <input type="text" name="name" id="name" value="<?php echo  $client_detail ? $client_detail['name'] : '' ?>">
-              </div>
-  
-              <div class="form-group">
-                <label for="">Username</label>
-                <input type="text" name="username" id="username" value="<?php echo  $client_detail ? $client_detail['username'] : '' ?>">
-              </div>
-  
-              <div class="form-group">
-                <label for="">Password</label>
-                <input type="text" name="password" id="password"  value="<?php echo  $client_detail ? $client_detail['password'] : '' ?>" >
-              </div>
-
-              <div class="form-group">
-                <label for="">Email.</label>
-                <input type="text" name="email" id="email" value="<?php echo  $client_detail ? $client_detail['email'] : '' ?>">
-              </div>
-
-              <div class="form-group">
-                <label for="">Tel.</label>
-                <input type="text" name="tel" id="tel" value="<?php echo  $client_detail ? $client_detail['tel'] : '' ?>">
-              </div>
-              
-              
-            <div class="form-group">
-              <label for="">Address</label>
-              <textarea name="address" id="address" maxlength="150" cols="30" rows="10" ><?php echo $client_detail ? $client_detail['address'] : '' ?></textarea>
-
-            </div>
-
-             <!--  <div class="form-group">
-                <label for="">ID Card</label>
-                <input type="file" class="dropify user_image" id="client_id_card" data-default-file="" />
-              </div>
-
-                 <div class="form-group">
-                <label for="">Driver License </label>
-                <input type="file" class="dropify user_image" id="client_driver_license" data-default-file="" />
-  
-              </div> -->
-
-            </div>
-            <?php if($_SESSION['role'] == '0'){ ?>
-
-            <div class="form-group-section ">
-                <label class="form-section-label" for="">Status</label>
-                
-                <label for="">Role</label>
-    
-                <div class="vehicle-stastus-form">
-                  <div class="vehicle-stastus-box role <?php echo $client_detail && $client_detail['role'] == '1' ? 'status-selected' : '' ?> <?php echo $data_id == 'add' ? 'status-selected' : '' ?>" data-value="1"> Client <i class="fa-solid fa-user"></i></div>
-                  <div class="vehicle-stastus-box role <?php echo $client_detail && $client_detail['role'] == '0' ? 'status-selected' : '' ?> " data-value="0"> Admin <i class="fa-solid fa-user-astronaut"></i></div>
-                </div>
-                
-              </div>
-             
-
-              <div class="form-group-section borderless">
-                <label for="">Ban</label>
-    
-                <div class="vehicle-stastus-form">
-                  <div class="vehicle-stastus-box data_status <?php echo $client_detail && $client_detail['data_status'] == '1' ? 'status-selected' : '' ?><?php echo $data_id == 'add' ? 'status-selected' : '' ?>" data-value="1"> Unban <i class="fa-regular fa-circle"></i></div>
-                  <div class="vehicle-stastus-box data_status <?php echo $client_detail && $client_detail['data_status'] == '0' ? 'status-selected' : '' ?> " data-value="0"> Ban <i class="fa-solid fa-ban"></i></div>
-                </div>
-                
-              </div>
-
-              <div class="form-group-section borderless">
-                <label for="">Approve</label>
-    
-                <div class="vehicle-stastus-form">
-                  <div class="vehicle-stastus-box approve_status <?php echo $client_detail && $client_detail['approve_status'] == '1' ? 'status-selected' : '' ?><?php echo $data_id == 'add' ? 'status-selected' : '' ?>" data-value="1"> Approve <i class="fa-solid fa-file-check"></i></div>
-                  <div class="vehicle-stastus-box approve_status <?php echo $client_detail && $client_detail['approve_status'] == '0' ? 'status-selected' : '' ?> " data-value="0"> Not Approve <i class="fa-solid fa-file"></i></div>
-                  <div class="vehicle-stastus-box approve_status <?php echo $client_detail && $client_detail['approve_status'] == '2' ? 'status-selected' : '' ?> " data-value="2"> Pending <i class="fa-solid fa-clock"></i></div>
-              
-                </div>
-                
-              </div>
-            
-              <?php } ?>
-     
-     
-
-       <!--    <div class="form-group-section borderless">
-            <label for="">Type</label>
-            <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box vehicle_type <?php echo $data_id == 'add' ? 'status-selected' : '' ?> <?php echo $client_detail && $client_detail['vehicle_type'] == '1' ? 'status-selected' : '' ?> " data-value='1'><i class="fa-solid fa-car-side"></i></div>
-              <div class="vehicle-stastus-box vehicle_type <?php echo $client_detail && $client_detail['vehicle_type'] == '2' ? 'status-selected' : '' ?> " data-value='2'><i class="fa-solid fa-motorcycle"></i></div>
-            </div>
-          </div>
- -->
-        
-   
-
-        
-          </div>
-
-      
-            <div class="form-modal-footer">
-              <button class="btn-send-modal" id="btn_save"> <?php echo is_numeric($data_id) ? "Copy all data to new page" : 'Save' ?> </button>
-              <?php if(!is_numeric($data_id) == false){ ?>
-              <button class="btn-send-modal" id="btn_update"> Save </button>
-              <?php } ?>
-            </div>
-        </form> 
-     <?php if(is_numeric($data_id)){ ?>
-
-        <form class="form-modal col-lg-4 col-md-12" id="form_image_modal" action="">
-          <div class="form-modal-head">
-            <span>Client Image</span>
-            <i class="fa-solid fa-images"></i>
-          </div>
-
-        <div class="form-modal-body">
-
-
-        <?php 
-
-          $client_section_arr = ['ID_Card','Driver_License'];
-          $client_arr = [];
-
-          foreach($client_section_arr as $section2){
-            $client_arr[$section2] =  [] ;
-            foreach($client_data['images'] as $client_image2){
-            
-              if($client_image2['image_section'] == $section2){
-                $client_arr[$section2] = $client_image2 ;
-              }
-              
-            }
-
-          }
-
-       /*    echo '<pre>';
-          print_r($client_arr);
-          echo '</pre>'; */
-
-
-         ?>
-<!-- <?php foreach($client_section_arr as $section){ ?>
-
-           <div class="status border p-2 rounded <?php echo $client_arr[$section] && $client_arr[$section]['id'] ? 'status-success' : '' ?>"><?php echo $section ?></div>
-
-<?php } ?> -->
-
-<?php 
-      foreach($client_section_arr as $section){
-  
-  ?>
-
-          <div class="form-group-section">
-            <label class="form-section-label" id="lbl-<?php echo $section ?>" for=""><?php echo $section ?> </label>
-            <div class="form-group">
-            
-
-              <input type="file" class="dropify"  
-                    data-default-file="<?php echo $client_arr[$section]  ? base_url('/uploads/images/'.$client_arr[$section]['image_url']) : ''  ?>" 
-                    data-type="<?php echo $section ?>" 
-                    data-id="<?php $client_arr[$section] && printf($client_arr[$section]['id']) ?> " 
-
-                    />
-                  
-                    <div class="progress-bar">
-                  <div class="progress-loader" id="progress-<?php echo $section ?>"></div>
-              </div>           
-            </div>
-            <div class="form-group-section borderless">
-         
-        <?php if($_SESSION['role'] == '0'){ ?>
-              <label for="">Approve File</label>
-    
-              <div class="vehicle-stastus-form">
-                <div data-value="1" data-id="<?php $client_arr[$section] && printf($client_arr[$section]['id'])  ?> "  data-image_section=<?php echo $section ?> class="vehicle-stastus-box image_data_status <?php echo $client_arr[$section] && $client_arr[$section]['data_status'] == '1' ? 'status-selected' : ''  ?>" ><i class="fa-solid fa-file-check"></i></div>
-                <div data-value="0" data-id="<?php $client_arr[$section] && printf($client_arr[$section]['id'])  ?> "  data-image_section=<?php echo $section ?> class="vehicle-stastus-box image_data_status <?php echo $client_arr[$section] && $client_arr[$section]['data_status'] == '0' ? 'status-selected' : ''  ?>" ><i class="fa-solid fa-file-excel"></i></div>
-                <!-- <div data-value="2" data-id="<?php $client_arr[$section] && printf($client_arr[$section]['id'])  ?> "  data-image_section=<?php echo $section ?> class="vehicle-stastus-box image_data_status <?php echo $client_arr[$section] && $client_arr[$section]['data_status'] == '2' ? 'status-selected' : ''  ?>" ><i class="fa-solid fa-clock"></i></div>
-               -->
-              </div>
-            </div>
-            <?php } ?>
-          </div>
-          <?php  } ?>
-
-        <!--   <div class="form-group-section">
-            <label class="form-section-label" id="lbl-front" for="">Front</label>
-            <div class="form-group">
-              <img class="image-preview-url" id="image_preview_front">
-              <input type="file" class="dropify" data-default-file="" data-type="front"/>
-            </div>
-                  <div class="progress-bar">
-                  <div class="progress-loader" id="progress-front"></div>
-              </div>
-            <div class="form-group-section borderless">
-         
-              <div class="form-group">
-              <label for="">URL</label>
-              <input class="url-input-image" type="text"  data-type="font">
-            </div>
-
-              <label for="">Show on web</label>
-    
-              <div class="vehicle-stastus-form">
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
-              </div>
-            </div>
-
-          </div>
-          <div class="form-group-section">
-            <label class="form-section-label" id="lbl-back" for="">Back</label>
-            <div class="form-group">
-              <img class="image-preview-url" id="image_preview_back">
-              <input type="file" class="dropify" data-default-file="" data-type="back"/>
-                  <div class="progress-bar">
-                  <div class="progress-loader" id="progress-back"></div>
-              </div>
-            </div>
-
-            <div class="form-group-section borderless">
-         
-              <div class="form-group">
-              <label for="">URL</label>
-              <input class="url-input-image" type="text"  data-type="back">
-            </div>
-
-              <label for="">Show on web</label>
-    
-              <div class="vehicle-stastus-form">
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="form-group-section">
-            <label class="form-section-label" id="lbl-side" for="">Side</label>
-            <div class="form-group">
-              <img class="image-preview-url" id="image_preview_side">
-              <input type="file" class="dropify" data-default-file="" data-type="side"/>
-                  <div class="progress-bar">
-                  <div class="progress-loader" id="progress-side"></div>
-              </div>
-            </div>
-
-            <div class="form-group-section borderless">
-         
-              <div class="form-group">
-              <label for="">URL</label>
-              <input class="url-input-image" type="text" data-type="side">
-            </div>
-
-              <label for="">Show on web</label>
-    
-              <div class="vehicle-stastus-form">
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
-              </div>
-            </div>
-
-          </div>
-         
-          
-          <div class="form-group-section">
-            <label class="form-section-label" id="lbl-above" for="">Above</label>
-            <div class="form-group">
-              <img class="image-preview-url" id="image_preview_above">
-              <input type="file" class="dropify" data-default-file="" data-type="above"/>
-                  <div class="progress-bar">
-                  <div class="progress-loader" id="progress-above"></div>
-              </div>
-            </div>
-
-            
-            <div class="form-group-section borderless">
-         
-              <div class="form-group">
-              <label for="">URL</label>
-              <input class="url-input-image" type="text" data-type="above">
-            </div>
-
-              <label for="">Show on web</label>
-    
-              <div class="vehicle-stastus-form">
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="form-group-section">
-            <label class="form-section-label" id="lbl-wheel" for="">Wheel</label>
-            <div class="form-group">
-              <img class="image-preview-url" id="image_preview_wheel">
-              <input type="file" class="dropify" data-default-file="" data-type="wheel"/>
-                  <div class="progress-bar">
-                  <div class="progress-loader" id="progress-wheel"></div>
-              </div>
-            </div>
-
-            
-            <div class="form-group-section borderless">
-         
-              <div class="form-group">
-              <label for="">URL</label>
-              <input class="url-input-image" type="text" data-type="wheel">
-            </div>
-
-              <label for="">Show on web</label>
-    
-              <div class="vehicle-stastus-form">
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-                <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
-              </div>
-            </div>
-
-          </div> -->
-
-      
-        </div>
-
-    
-         <!--  <div class="form-modal-footer">
-            <button class="btn-send-modal" id="next-1"> Save </button>
-          </div> -->
-      </form> 
-      <?php } ?>
-
-
-        </section>
-
-      <!--   <section class="section-modal row p-4 gap-sm-3" id="rent-detail">
+        <section class="section-modal row p-4 gap-sm-3" id="rent-detail">
 
           <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
 
          <form class="form-modal col-lg-6 col-md-12" id="form_modal" action="">
-            <div class="form-modal-head">
-              <span>Rent Detail</span>
-              <i class="fa-solid fa-file-invoice"></i>
-              <div class="status status-rented rounded px-2">Pending <i class="fa-solid fa-check"></i></div>
+
+            <?php $ve_status_arr = ['Denied','Approve ','Pending'] ?>
+            <?php $ve_status_color_arr = ['error','success','warning'] ?>
+    <?php 
+
+    $end_rent = DateTime::createFromFormat('Ymd', $rental_data['end_rent_date']);
+    $start_rent = DateTime::createFromFormat('Ymd', $rental_data['start_rent_date']);
+
+    
+    $today = new DateTime();
+    $interval = $today->diff($end_rent);
+    
+    $remainingDays = $interval->format('%a');
+
+    $istimetorent = $today >= $start_rent ;
+
+    $datebefore_renting = $today->diff($start_rent)->format('%a');
+
+ 
+    ?>
+        <div class="form-modal-head">
+            <span> Rental Detail</span>
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <div  class="status status-<?php echo $rental_data ? $ve_status_color_arr[$rental_data['request_status']]  : '' ?> rounded px-2">
+            <?php echo $rental_data ? $ve_status_arr[$rental_data['request_status']]  : '' ?> <!-- <i class="fa-solid fa-check"></i> --></div>
+
+            <br>
+            <?php if($datebefore_renting > 0  && $rental_data['request_status'] != 0){ ?> 
+              <div class="status  rounded px-2 " style="font-size: .8rem;">
+              <?php echo $datebefore_renting ?> Days before renting
             </div>
+          <?php  } ?>
+              
+            <?php if($rental_data['request_status'] != 0 && $istimetorent ){ ?>
+            <div class="status status-success <?php echo $remainingDays < 2 ? 'status-error ': '' ?> rounded px-2 " style="font-size: .8rem;">
+              <?php echo $remainingDays ?> Days Remain
+            </div>
+              <?php } ?>
+          </div>
 
           <div class="form-modal-body">
-
+    <?php 
+      $start_date = DateTime::createFromFormat('Ymd', $rental_data['start_rent_date'])->format('d / m / Y');
+      $end_date = DateTime::createFromFormat('Ymd', $rental_data['end_rent_date'])->format('d / m / Y');
+      ?>
             <div class="form-group-section">
               <label class="form-section-label" for="">General</label>
               <div class="form-group">
-                <label for="">Client Name</label>
-                <input type="text" name="" id="">
-              </div>
-  
-              <div class="form-group">
                 <label for="">Vehicle Name</label>
-                <input type="text" name="" id="">
+                <input type="text" name=""id="" value="<?php echo $rental_data['name']?>">
               </div>
   
               <div class="form-group">
                 <label for="start_rent" >Start Rent</label>
-                <input class="datepicker" type="text" id="start_rent" name="start_rent" autocomplete="off">
+                <input class="datepicker" type="text" id="start_rent" name="start_rent" autocomplete="off" value="<?php echo $start_date ?>">
           </div>
 
           <div class="form-group">
             <label for="end_rent" >End Rent</label>
-            <input class="datepicker" type="text" id="end_rent" name="end_rent" autocomplete="off">
+            <input class="datepicker" type="text" id="end_rent" name="end_rent" autocomplete="off" value="<?php echo $end_date ?>">
       </div>
               
               
             <div class="form-group">
               <label for="">Rent days</label>
-              <input type="text" name="" id="">
+              <input type="text" name="" id="" value="<?php echo $rental_data['rent_days']?>">
             </div>
 
+            <div class="form-group">
+              <label for="">Cost Total</label>
+              <input type="text" name="" id="" value="<?php echo number_format($rental_data['cost']) ?>">
+            </div>
+
+            <div class="form-group">
+              <label for="">Fine</label>
+              <input type="text" name="" id="" value="<?php echo $rental_data['fine']?>">
+            </div>
             </div>
            
             
@@ -1274,38 +943,43 @@ input{
 
             </div>
          
+              <label for="">Approve payment</label>
+
+            <div class="vehicle-stastus-form">
+              <div data-value="1" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box approve_receipt <?php echo $rental_data && $rental_data['approve_receipt'] == '1' ? 'status-selected' : '' ?> ">Approve <i class="fa-solid fa-file-check"></i></div>
+              <div data-value="2" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box approve_receipt <?php echo $rental_data && $rental_data['approve_receipt'] == '2' ? 'status-selected' : '' ?> ">Pending <i class="fa-solid fa-clock"></i></div>
+              <div data-value="0" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box approve_receipt <?php echo $rental_data && $rental_data['approve_receipt'] == '0' ? 'status-selected' : '' ?> ">Denied <i class="fa-solid fa-file-xmark"></i></div>
+            </div>
 
           </div>
           <div class="form-group-section ">
             <label class="form-section-label" for="">Status</label>
             
-            <label for="">Show on web</label>
-
-            <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box"><i class="fa-solid fa-eye"></i></div>
-              <div class="vehicle-stastus-box"><i class="fa-solid fa-eye-slash"></i></div>
-            </div>
+          
           </div>
 
-          <div class="form-group-section borderless">
-            <label for="">Returning Car Status</label>
-            <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box"> Returned <i class="fa-solid fa-circle-check"></i></div>
-              <div class="vehicle-stastus-box"> Renting <i class="fa-solid fa-car-side"></i></div>
-              <div class="vehicle-stastus-box"> Late <i class="fa-solid fa-clock"></i></div>
-
-            </div>
-          </div>
-
-        
           <div class="form-group-section borderless">
             <label for="">Request Status</label>
             <div class="vehicle-stastus-form">
-              <div class="vehicle-stastus-box">Approve <i class="fa-solid fa-file-check"></i> </div>
-              <div class="vehicle-stastus-box">Pending <i class="fa-solid fa-clock"></i></div>
-              <div class="vehicle-stastus-box">Denied <i class="fa-solid fa-file-excel"></i></div>
+              <div data-value="1" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '1' ? 'status-selected' : '' ?> ">Approve <i class="fa-solid fa-file-check"></i> </div>
+              <div data-value="2" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '2' ? 'status-selected' : '' ?> ">Pending <i class="fa-solid fa-clock"></i></div>
+              <div data-value="0" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '0' ? 'status-selected' : '' ?> ">Denied <i class="fa-solid fa-file-excel"></i></div>
             </div>
           </div>
+
+          <?php if($rental_data['request_status'] == '1'){ ?>
+          <div class="form-group-section borderless">
+            <label for="">Returning Car Status</label>
+            <div class="vehicle-stastus-form">
+              <div data-value="1" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '1' ? 'status-selected' : '' ?> "> Returned <i class="fa-solid fa-circle-check"></i></div>
+              <div data-value="0" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '0' ? 'status-selected' : '' ?> "> Renting <i class="fa-solid fa-car-side"></i></div>
+              <div data-value="2" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '2' ? 'status-selected' : '' ?> "> Late <i class="fa-solid fa-clock"></i></div>
+
+            </div>
+          </div>
+            <?php } ?>
+        
+
 
         
           </div>
@@ -1315,54 +989,78 @@ input{
               <button class="btn-send-modal" id="next-1"> Save </button>
             </div>
         </form> 
-        <form class="form-modal col-lg-4 col-md-12" id="form_modal" action="">
+   <form class="form-modal col-lg-4 col-md-12" id="form_modal" action="">
           <div class="form-modal-head">
-            <span>Client Detail</span>
+            <span class="position-relative"><a href="<?php echo base_url('/Admin/client/').$data_id ?>">Client Detail <i style="top:5px ;right:-20px;font-size:.8rem" class="fa-solid fa-magnifying-glass"></i></a></span>
             <i class="fa-solid fa-file-user"></i>
           </div>
 
         <div class="form-modal-body">
+        <?php 
+        $client_detail = $client_data['detail'][0] ;
 
+
+        $client_section_arr = ['ID_Card','Driver_License'];
+        $client_arr = [];
+
+        foreach($client_section_arr as $section2){
+          $client_arr[$section2] =  [] ;
+          foreach($client_data['images'] as $client_image2){
+          
+            if($client_image2['image_section'] == $section2){
+              $client_arr[$section2] = $client_image2 ;
+            }
+            
+          }
+
+        }
+
+   /*    echo '<pre>';
+        print_r($client_arr);
+        echo '</pre>';  */
+
+
+        
+        ?>
+     
           <div class="form-group-section">
             <label class="form-section-label" for="">Overview</label>
 
               <div class="form-group">
                 <label for="">Client Name</label>
-                <input type="text" name="" id="">
+                <input type="text" name="" id="" disabled value="<?php echo $client_detail['name']?>">
               </div>
 
               <div class="form-group">
                 <label for="">Username</label>
-                <input type="text" name="" id="">
+                <input type="text" name="" id="" disabled value="<?php echo $client_detail['username']?>">
               </div>
 
               <div class="form-group">
-                <label for="">Password</label>
-                <input type="text" name="" id="">
+                <label for="">Email</label>
+                <input type="text" name="" id="" disabled value="<?php echo $client_detail['email']?>">
               </div>
 
               <div class="form-group">
                 <label for="">Tel.</label>
-                <input type="text" name="" id="">
+                <input type="text" name="" id="" disabled value="<?php echo $client_detail['tel']?>">
               </div>
 
               <div class="form-group">
                 <label for="">Address</label>
-                <textarea name="" id="" maxlength="150" cols="30" rows="10"></textarea>
+                <textarea name="" id="" maxlength="150" cols="30" rows="10" disabled><?php echo $client_detail['address'] ?></textarea>
               </div>
+              <?php foreach($client_section_arr as $section){ ?>
 
               <div class="form-group">
-                <label for="">ID Card</label>
-                <input type="file" class="dropify user_image" id="client_id_card" data-default-file="" />
-  
+                <label for=""><?php echo $section ?><i class="fa-solid fa-address-card mx-2"></i></label>
+                <img class="img-preview" src="<?php echo $client_arr[$section] ? base_url('/uploads/images/').$client_arr[$section]["image_url"] : '' ?>" alt="" srcset="">
               </div>
+              <?php } ?>
 
-              <div class="form-group">
-                <label for="">Driver License </label>
-                <input type="file" class="dropify user_image" id="client_driver_license" data-default-file="" />
-  
-              </div>
-  
+          
+
+  <!-- 
               <div class="form-group-section ">
                 <label class="form-section-label" for="">Status</label>
                 
@@ -1383,25 +1081,59 @@ input{
                   <div class="vehicle-stastus-box"> Ban <i class="fa-solid fa-ban"></i></div>
                 </div>
                 
-              </div>
+              </div> -->
 
          
 
           </div>
 
-        </div>
+        </div> 
 
     
-          <div class="form-modal-footer">
+          <!-- <div class="form-modal-footer">
             <button class="btn-send-modal" id="next-1"> Save </button>
-          </div>
+          </div> -->
       </form> 
 
-        </section> -->
+        </section> 
 
     </main>
 
     <script>
+
+$(".returned_status,.approve_receipt,.request_status").click((e)=>{
+  let value = e.target.dataset.value
+  let id = e.target.dataset.id
+  if(e.target.className.includes('approve_receipt')){
+    $('.approve_receipt').each((i,item)=>{
+        item.classList.remove('status-selected')
+      })
+      updateStatus('tbl_rental','id',id,'approve_receipt',value)
+  }
+
+  if(e.target.className.includes('returned_status')){
+    $('.returned_status').each((i,item)=>{
+        item.classList.remove('status-selected')
+        
+        
+      })
+      updateStatus('tbl_rental','id',id,'returned_status',value)
+      
+  }
+
+  if(e.target.className.includes('request_status')){
+    $('.request_status').each((i,item)=>{
+        item.classList.remove('status-selected')
+      })
+      updateStatus('tbl_rental','id',id,'request_status',value)
+      location.reload()
+        
+   
+  }
+  
+
+    e.target.classList.add('status-selected')
+})
 
 const REF_ID = '<?php echo $data_id ?>';
 
@@ -1441,7 +1173,7 @@ $(`.btn-delete-url`).click((e)=>{
         url: '<?php echo base_url("/Admin/deleteData")?>',
         type: 'POST',
         data: {
-                'table' : 'tbl_client_image',
+                'table' : 'tbl_vehicle_image',
                 'id':image_id
               },
         success: function(response) {
@@ -1477,54 +1209,9 @@ $(`.btn-delete-url`).click((e)=>{
 })
 
 
-$(".image_data_status").click((e)=>{
-  let value = e.target.dataset.value
-  let section = e.target.dataset.image_section
-  let image_id = e.target.dataset.id
 
 
-  $(`.image_data_status[data-image_section='${section}']`).each((i,item)=>{
-        item.classList.remove('status-selected')
-    })
 
-    updateStatus('tbl_client_image','id',image_id,'data_status',value)
-    e.target.classList.add('status-selected')
-
-  })
-
-$(".data_status,.role,.approve_status").click((e)=>{
-  let value = e.target.dataset.value
-
-  if(e.target.className.includes('data_status')){
-    $('.data_status').each((i,item)=>{
-        item.classList.remove('status-selected')
-      })
-      updateStatus('tbl_client','id',REF_ID,'data_status',value)
-  }
-
-  if(e.target.className.includes('approve_status')){
-    $('.approve_status').each((i,item)=>{
-        item.classList.remove('status-selected')
-      })
-      updateStatus('tbl_client','id',REF_ID,'approve_status',value)
-  }
-  
-  if(e.target.className.includes('role')){
-    $('.role').each((i,item)=>{
-        item.classList.remove('status-selected')
-        
-        
-      })
-      updateStatus('tbl_client','id',REF_ID,'role',value)
-      
-  }
-
-
-  
-  
-
-    e.target.classList.add('status-selected')
-})
 
 function updateStatus(table ,id_name, ref_id , section , value){
 
@@ -1579,7 +1266,7 @@ $(`.dropify`).on('dropify.beforeClear', function(e, element){
         url: '<?php echo base_url("/Admin/deleteData")?>',
         type: 'POST',
         data: {
-                'table' : 'tbl_client_image',
+                'table' : 'tbl_vehicle_image',
                 'id':image_id
               },
         success: function(response) {
@@ -1620,8 +1307,8 @@ function uploadImageURL(e,ref_id,image_section,value){
     $(`#image_preview_${image_section}`).attr('src',value)
 
     let datasend = {
-      'table' : 'tbl_/*  */_image',
-      'vehicle_id': ref_id,
+      'table' : 'tbl_vehicle_image',
+      'ref_id': ref_id,
       'image_section': image_section,
       'image_type': '2',
       'image_url': value,
@@ -1660,7 +1347,7 @@ function uploadImageURL(e,ref_id,image_section,value){
         url: '<?php echo base_url("/Admin/deleteData")?>',
         type: 'POST',
         data: {
-                'table' : 'tbl_/*  */_image',
+                'table' : 'tbl_vehicle_image',
                 'id':image_id
               },
         success: function(response) {
@@ -1963,7 +1650,7 @@ function uploadImage(ref_id,image_section){
 
           let imageData = new FormData();
 
-          imageData.append('type','client')
+          imageData.append('type','vehicle')
           imageData.append('ref_id',ref_id)
           imageData.append('image_section',image_section); 
           imageData.append('image_type','1'); 
@@ -2107,6 +1794,7 @@ async function sendData(type,id){
             return 0;
         } */
 
+    $("#btn_upload_product , #btn_upload_image , #btn_upload_file").prop('disabled',true);
     $.toast().reset('all')
     $.toast({
         heading: `<div style="width:200px"> Uploading</div>`,
@@ -2119,8 +1807,11 @@ async function sendData(type,id){
 
         let formData = new FormData($("#form_detail_modal")[0]);
 
-        formData.append('table','tbl_client')
-        formData.append('id',<?php echo $data_id ?>)
+        formData.append('table','tbl_vehicle')
+        type == 'update' ? formData.append('id',id) : ''
+        formData.append('vehicle_status',$(".vehicle_status.status-selected")[0].dataset.value)
+        formData.append('vehicle_type',$(".vehicle_type.status-selected")[0].dataset.value)
+        formData.append('data_status',$(".data_status.status-selected")[0].dataset.value)
 
 
         let dataSend = {};
@@ -2183,7 +1874,7 @@ async function sendData(type,id){
                        })
 
                        if(type == 'save'){
-                        location.href =  '<?php echo base_url('/Admin/client/')?>'+data 
+                        location.href =  '<?php echo base_url('/Admin/vehicle/')?>'+data 
                       }
               }, 500);
 
@@ -2206,18 +1897,16 @@ async function sendData(type,id){
  
  $.toast({
   icon:'success',
-  heading: "Client Data : "+REF_ID,
+  heading: "Vehicle Data : "+REF_ID,
   hideAfter : 1500,
 })
 
-  let role = <?php echo $_SESSION['role'] ?>
-
 window.onbeforeunload  = function(event) {
-  $(".section-modal#car-detail").removeClass('slide-in-from-right')
+  $(".section-modal#rental-detail").removeClass('slide-in-from-right')
 
 };
 
- $(".section-modal#car-detail").addClass('slide-in-from-right')
+ $(".section-modal#rent-detail").addClass('slide-in-from-right')
 
     $(".car-data-row").click((e)=>{
       $(".section-modal#car-detail").addClass('slide-in-from-right')
@@ -2241,8 +1930,7 @@ window.onbeforeunload  = function(event) {
         $("aside").css("opacity",'100%')
 
         setTimeout(() => {
-            location.href = '<?php echo $_SESSION['role'] == '0' ? base_url('/admin') : base_url('/Control/category')?>'
-    
+            location.href = '<?php echo base_url('/admin')?>'
         }, 500);
 
     })

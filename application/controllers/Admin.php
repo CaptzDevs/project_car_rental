@@ -24,8 +24,12 @@ class Admin extends CI_Controller {
 	{
 		$this->checkRole();
 		$data['all_vehicle'] = $this->Admin_model->get_all_vehicleData_with_ImageSection('tbl_vehicle','overview');
-		$data['all_client'] = $this->Admin_model->get_all_data('tbl_client');
+		$data['all_client'] = $this->Admin_model->get_client_data();
+		$data['all_rental'] = $this->Admin_model->get_rental_data();
 		$this->load->view('/admin/dashboard',$data);
+
+
+		
 	}
 	
 	public function vehicle($data_id = NULL)
@@ -58,7 +62,7 @@ class Admin extends CI_Controller {
 		$data['client_data'] = NULL;
 
 		if($data_id == NULL){
-			$data['all_client'] = $this->Admin_model->get_all_data('tbl_client');
+			$data['all_client'] = $this->Admin_model->get_client_data();
 			$this->load->view('/admin/client_list',$data);
 		}
 
@@ -71,6 +75,26 @@ class Admin extends CI_Controller {
 			$data['client_data'] = $this->Admin_model->get_full_dataById('tbl_client',$data_id);
 
 			$this->load->view('/admin/client_form',$data);
+		}
+
+	}
+
+	public function Rental($data_id = NULL)
+	{
+		$data['data_id'] = $data_id;
+		$data['rental_data'] = NULL;
+
+		if($data_id == NULL){
+		$data['all_rental'] = $this->Admin_model->get_rental_data();
+
+			$this->load->view('/admin/rental_list',$data);
+		}
+		if(is_numeric($data_id)){
+
+			$data['rental_data'] = $this->Admin_model->get_rental_dataById($data_id);
+			$data['client_data'] = $this->Admin_model->get_full_dataById('tbl_client',$data_id);
+
+			$this->load->view('/admin/rental_form',$data);
 		}
 
 	}
@@ -105,6 +129,7 @@ class Admin extends CI_Controller {
 		 
 		echo $result; 
 	}
+	
 
 	public function addData(){
 		$this->load->helper("security");
@@ -121,6 +146,31 @@ class Admin extends CI_Controller {
 		 
 		 echo $insert_id;
 	}
+
+	
+	public function add_Rental_Data(){
+		$this->load->helper("security");
+
+        $stream = $this->security->xss_clean( $this->input->raw_input_stream );
+      
+        $data = json_decode($stream, true);
+		$table = $data['table'];
+		unset($data['table']);
+
+		/* print_r($data); */
+
+		$data_update = array(
+			"data_status" => '0',
+		);
+
+		$this->Admin_model->update_all('tbl_rental','client_id',$data['client_id'],$data_update);  
+		
+		 $result = $this->Admin_model->insert($table,$data);   
+		 $insert_id = $this->db->insert_id();
+		 
+		 echo $insert_id;
+	}
+
 
 	public function uploadImage(){
 

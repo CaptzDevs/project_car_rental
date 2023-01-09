@@ -6,16 +6,34 @@ class Client extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Admin_model');
-	if(!isset($_SESSION['id'])){
+
+	/* if(!isset($_SESSION['id'])){
 		redirect(base_url('/Control/Login'));
-		
-	}
+	} */
 		
 	}
 
 	public function index()
 	{
 	
+	}
+	public function Rental($data_id = NULL){
+		
+		$data['data_id'] = $data_id;
+		$data['client_detail'] = NULL;
+
+		if(is_numeric($data_id)){
+			
+			if($_SESSION['id'] == $data_id){
+
+				$data['rental_data'] = $this->Admin_model->get_rental_dataById($data_id);
+
+				$this->load->view('/client/rental_detail',$data);
+
+			}else{
+				redirect(base_url('/Control/category'));
+			}
+		}
 	}
 	
 	public function Detail($data_id = NULL)

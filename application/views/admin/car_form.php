@@ -315,39 +315,7 @@ section{
   margin-bottom: 20px ;
 }
 
-.status-box{
-  padding: 5px 10px 5px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
 
-}
-.status-avalible {
-  background: var(--green6);
-}
-.status-rented {
-  background: var(--yellow6);
-}
-.status-fixing {
-  background: var(--orange6);
-}
-.status-broken {
-  background: var(--red6);
-}
-
-.status-success {
-  background: var(--green6) !important;
-}
-.status-warning {
-  background: var(--yellow6) !important;
-}
-.status-danger {
-  background: var(--orange6) !important;
-}
-.status-error {
-  background: var(--red6) !important;
-}
 
 .section-status{
   width: 100%;

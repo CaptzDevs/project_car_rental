@@ -18,6 +18,12 @@ class Admin_model extends CI_Model
         return $query;
     }
 
+    public function update_all($table,$col,$id,$data){
+        $this->db->where($col,$id);
+        $query = $this->db->update($table,$data);
+        return $query;
+    }
+
       public function delete($table , $id ){
         
                  $this->db->where('id',$id);
@@ -29,11 +35,82 @@ class Admin_model extends CI_Model
         return $this->db->get($table)->result_array();
     }
 
+    //dashboard Data 
+
+    public function get_count_vehicle_status(){
+        $sql = "SELECT 
+        COUNT(CASE WHEN veh.vehicle_status = '0' THEN veh.id END ) as broken ,
+        COUNT(CASE WHEN veh.vehicle_status = '1' THEN veh.id END ) as ready,
+        COUNT(CASE WHEN veh.vehicle_status = '2' THEN veh.id END ) as rented,
+        COUNT(CASE WHEN veh.vehicle_status = '3' THEN veh.id END ) as fixing
+        
+        FROM `tbl_vehicle` veh";
+
+        $data =  $this->db->query($sql)->result_array();
+
+        return $data;
+        
+    }
+
+    public function get_count_client_status(){
+        $sql = "SELECT 
+        COUNT(CASE WHEN cli.approve_status = '0' THEN cli.id END ) as denied ,
+        COUNT(CASE WHEN cli.approve_status = '1' THEN cli.id END ) as approve,
+        COUNT(CASE WHEN cli.approve_status = '2' THEN cli.id END ) as pending
+        FROM `tbl_client` cli ";
+        $data =  $this->db->query($sql)->result_array();
+        return $data;
+                
+    }
+
+    public function get_client_data(){
+        $this->db->where("role",'1');
+        return $this->db->get('tbl_client')->result_array();
+    }
+    public function get_image_byClientID($client_id){
+        $this->db->where("ref_id",$client_id);
+        return $this->db->get('tbl_client_image')->result_array();
+    }
+
+    public function get_member_data(){
+        $this->db->where("role",'0');
+        return $this->db->get('tbl_client')->result_array();
+    }
+
     public function get_data_by_id($table,$id){
         $this->db->where('id',$id);
         return $this->db->get($table)->result_array()[0];
         
     }
+
+    public function get_rental_data(){
+ 
+            $sql_lastest = 
+            "SELECT * ,
+                cli.name as client_name 
+                FROM `tbl_rental` ren
+                INNER JOIN tbl_client as cli on ren.client_id = cli.id
+                INNER JOIN tbl_vehicle as veh on ren.vehicle_id = veh.id
+                WHERE ren.data_status = '1'";
+
+        $lastest_data =  $this->db->query($sql_lastest)->result_array();
+
+        return $lastest_data; 
+
+    }
+
+    public function get_rental_dataById($client_id){
+        //inclue detail and image 
+        $sql_detail = "SELECT * FROM tbl_vehicle as ve 
+        INNER JOIN  tbl_rental as ren on ve.id = ren.vehicle_id
+        WHERE client_id = ".$client_id."
+        ORDER BY ren.date_add DESC";
+ 
+        
+        return   $this->db->query($sql_detail)->result_array()[0];
+
+    }
+    
 
     public function get_full_dataById($table,$id){
         //inclue detail and image 
