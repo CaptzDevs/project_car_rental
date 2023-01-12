@@ -294,7 +294,7 @@ margin-top: 50px;
     left: 0;
     background: rgb(45, 45, 45);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 10px;
     color: white;
@@ -357,7 +357,7 @@ margin-top: 50px;
   padding: 20px;
   position: relative;
   padding-bottom: 120px;
-
+  font-size: .8rem !important;
 
 }
 .form-quotation-head{
@@ -643,23 +643,185 @@ li{
 }
 
 
-@media (max-width: 576px) { 
 
-  
- }
+
+/* calendar point */
+.calendar-points{
+      /*   width: 110%; */
+      width: 715px;
+        max-width: 715px;
+        min-width: 250px;
+        height: auto;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 10px;
+      padding-top: 10px;
+      }
+    .section-year{
+        width: fit-content;
+        padding: 10px;
+        height: auto;
+        border-radius: 10px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        
+    }
+    
+    .calen-day{
+        min-width: 25px;
+        min-height: 25px;
+        background: rgb(108, 108, 108);
+        border-radius: 5px;
+        font-size: .7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: .5s;
+        color: white;
+
+    }
+    .calen-day:hover{
+        transition: .5s;
+        background: rgb(52, 52, 52) !important;
+
+    }
+
+    .color-none{
+        transition: .5s;
+        background: rgb(38, 38, 38) !important;
+        color: rgba(255, 255, 255, 0.249);
+    }
+
+    .disabled-select-before{
+         pointer-events: none;
+         background: rgba(77, 77, 77, 0.514) !important;
+    }
+
+    .disabled-select{
+         pointer-events: none;
+         background: rgba(163, 163, 163, 0.514) !important;
+        background: rgb(0, 0, 0) !important;
+        opacity: 70%;
+        color: rgba(255, 255, 255, 0.249);
+
+    }
+
+    
+    .selected-date{
+        transition: .5s;
+        background: rgb(0, 0, 0) !important;
+        color: rgba(255, 255, 255, 0.249);
+    }
+    
+    .start-date-hl{
+        background: rgb(154, 154, 154) !important;
+        color: black;
+    }
+    
+    .end-date-hl{
+        background: var(--gray-300) !important;
+        color: black;
+        
+    }
+    #form_calendar{
+        width: fit-content;
+        padding: 10px;
+        background: rgb(26, 26, 26);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        overflow:auto;
+        overflow-x: hidden;
+        filter: drop-shadow(10px 10px rgb(17, 17, 17));
+        height: 200px;
+        padding: 50px;
+        padding-bottom: 10px;
+      }
+   
+
+      .form-footer{
+        width: 100%;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 5px;
+        
+      }
+
+      .form-footer-btn{
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border: none;
+        outline: none;
+        background: rgb(44, 44, 44);
+
+        color: white;
+      }
+
+      .form-footer-btn:hover{
+        background: rgb(44, 44, 44);
+        filter: drop-shadow(5px  5px rgb(86, 86, 86) );
+        color: white;
+      }
+      .form-footer-btn:disabled{
+        background: rgba(44, 44, 44, 0.371);
+
+      }
+
+      .selected-start-date , .selected-end-date , .selected-amount-date {
+        background: rgb(52, 52, 52);
+      }
+
+      .datepicker{
+        font-size: .8rem;
+      }
+ /*    #form_quotation{
+      width: 30%;
+      height: 100%;
+        padding: 10px;
+        background: rgb(26, 26, 26);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        filter: drop-shadow(10px 10px rgb(17, 17, 17));
+    } */
+
+    @media (max-width: 576px) { 
+
+    }
 
 @media (max-width: 768px) { 
-  .form-quotation{
-  width: 100%;
+.form-quotation{
+width: 100%;
 } 
+.calendar-points{
+  width: 110%;
+}
  }
 
-@media (max-width: 992px) {  }
+@media (max-width: 992px) {  
+
+}
 
 @media (max-width: 1200px) {  }
 
 @media (max-width: 1400px) {  }
-
 </style>
 <body>
   <?php include('header.php') ?>
@@ -747,27 +909,36 @@ li{
 
                   <?php 
                   if(!isset($_SESSION['id'])){   ?>
+
                         <button id="btn_login">Login or Signup</button>
                         <span style="font-size: .5rem;"> You need to Login before renting car</span>
 
                   <?php } else{
+
                   $is_approved = $this->Admin_model->get_data_by_id("tbl_client",$_SESSION['id'])['approve_status'];
-
-                   if($is_approved == '1'){ ?>
-
+                  if($is_approved == '1'){ ?>
                         <button id="btn_rentCar">Rent</button>
 
                   <?php }else if($is_approved == '0'){  ?>
-                    <a style="width: 100%;" href="<?php echo base_url('/Client/detail/').$_SESSION['id'] ?>">  <button > Verify </button></a>
-
-                       
+                        
+                        <a style="width: 100%;" href="<?php echo base_url('/Client/detail/').$_SESSION['id'] ?>">  <button > Verify </button></a>
                         <span style="font-size: .5rem;"> You need to verify your identity before renting</span>
-                    <?php }} ?>
+
+                    <?php }
+                    else if($is_approved == '2'){  ?>
+                        
+                      <a style="width: 100%;" href="<?php echo base_url('/Client/detail/').$_SESSION['id'] ?>">  <button > Profile Status : Pending </button></a>
+                      <span style="font-size: .5rem;"> Your data need to approve identity before renting</span>
+
+                  <?php }
+                  } ?>
             </aside>
         </section>
 
         <section class="quotation">
-              <button class="close-panel"><i class="fa-solid fa-xmark"></i></button> 
+              <button class="close-panel" id="close_modal"><i class="fa-solid fa-xmark"></i></button> 
+              <button class="close-panel d-none" id="close_calendar"><i class="fa-solid fa-xmark"></i></button> 
+
 
              <form class="form-quotation" id="form_quotation" action="">
                 <div class="form-quotation-head">
@@ -790,16 +961,33 @@ li{
                        </div>
                      </div>
                    
-                     <div class="col-12 ">
-                         <div class="form-group">
-                           <label for="date_pay" >Start Rent</label>
-                           <input class="datepicker" type="text" id="start_rent" name="start_rent" autocomplete="off">
-                     </div>
-                   </div>
+                     <div class="col-12">
+                      <div class="row gx-1">
+                        <div class="col-sm-12 col-xl-5">
+                          <div class="form-group">
+                            <label for="date_pay" >Start Rent</label>
+                            <input class="datepicker" type="text" id="start_rent" name="start_rent" autocomplete="off">
+                      </div>
+                    </div>
 
+                    <div class="col-sm-12 col-xl-2 text-center d-flex align-items-center justify-content-center">
+                      <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+ 
+                    <div class="col-sm-12 col-xl-5">
+                          <div class="form-group">
+                            <label for="date_pay" >End Rent</label>
+                            <input class="datepicker" type="text" id="end_rent" name="end_rent" autocomplete="off">
+                      </div>
+                    </div>
+                    
+                      </div>
+
+                      
+                     </div>
                 
                  
-                   <div class="col-xl-8">
+                   <div class="col-xl-12">
                     
                        <div class="sum-rateperday">
                         1 days | <?php echo number_format($vehicle_detail['rate']) ?> ฿
@@ -807,7 +995,7 @@ li{
                        
                    </div>
 
-                    <div class="col-xl-3 col-md-12">
+                    <div class="col-xl-3 col-md-12 d-none">
                         <div class="form-group">
                           <label for="date_amount"  >Rent days</label>
                           <div class="amount-group">
@@ -819,12 +1007,7 @@ li{
                       </div>
                     </div>
 
-                    <div class="col-12 ">
-                         <div class="form-group">
-                           <label for="date_pay" >End Rent</label>
-                           <input class="datepicker" type="text" id="end_rent" name="end_rent" autocomplete="off">
-                     </div>
-                   </div>
+                  
 
                     <div class="col-3 total-price">
                           <div >Total | </div>
@@ -1083,6 +1266,19 @@ li{
 
       </form>
            
+      <form class="form-quotation form-next" id="form_calendar" action="">
+              <h2>Calendar</h2>
+              <div class="calendar-points" id="calendar_points" width="100" height="100"></div>
+              <div class="form-footer">
+                <div class="row bg-black" style="width: 90%;">
+                  <div class="col-4 p-2 selected-start-date text-center" style="font-size: .8rem;"></div>
+                  <div class="col-4 p-2 selected-amount-date text-center" style="font-size: .8rem;"></div>
+                  <div class="col-4 p-2 selected-end-date text-center" style="font-size: .8rem;"></div>
+                </div>
+                <button class="form-footer-btn" id="btn_rent_date" disabled>Submit</button>
+              </div>
+          </form>
+  
 
         </section>
     </main>
@@ -1093,7 +1289,286 @@ li{
        All Design By Captz
   </footer>
   
+  <script>
+    
+    let date_arr = <?php print_r($renting_date_arr) ?>
 
+  
+    
+    let d2 = new Date()
+    let THIS_YEAR = d2.getFullYear()
+    let TODAY = `${d2.getFullYear()}${("0"+(d2.getMonth()+1)).slice(-2)}${("0"+(d2.getDate())).slice(-2)}`
+
+    renderCelendarPoint(THIS_YEAR)
+      renderCelendarPoint(THIS_YEAR+1)
+    let selectDate = []
+
+    $(".calen-day").click((e)=>{
+        let start_date = 0 
+        let end_date = 0
+        let fullDate = e.target.dataset.fulldate
+        let year =e.target.dataset.year
+        let month = e.target.dataset.month
+        let date = e.target.dataset.date
+
+        e.target.classList.add("selected-date")
+        if(fullDate == selectDate[0] && selectDate.length == 1){
+            selectDate.length = 0
+            $(".calen-day.start-date-hl").removeClass('start-date-hl')
+            $(".calen-day.end-date-hl").removeClass('end-date-hl')
+
+
+        }else if(fullDate == selectDate[1]){
+            selectDate[0] = selectDate[1]
+            selectDate.length = 1
+
+            $(".calen-day.selected-date").each((i,item)=>{
+                item.classList.remove('selected-date')
+                item.classList.remove('start-date-hl')
+                item.classList.remove('end-date-hl')
+
+            })
+        }
+        else if(fullDate == selectDate[0] && selectDate.length == 2){
+            selectDate[0] = selectDate[1]
+            selectDate.length = 1
+
+            $(".calen-day.selected-date").each((i,item)=>{
+                item.classList.remove('selected-date')
+                item.classList.remove('start-date-hl')
+                item.classList.remove('end-date-hl')
+
+            })
+        }
+        else if(selectDate.length < 2){
+            selectDate.push(fullDate)
+            if(+selectDate[1] < +selectDate[0]){
+                selectDate.reverse()
+                $(".calen-day.start-date-hl").removeClass('start-date-hl')
+                $(".calen-day.end-date-hl").removeClass('end-date-hl')
+
+            }
+        }else {
+            selectDate[1] = fullDate
+            
+            if(+selectDate[1] < +selectDate[0]){
+                selectDate.reverse()
+                $(".calen-day.start-date-hl").removeClass('start-date-hl')
+                $(".calen-day.end-date-hl").removeClass('end-date-hl')
+            }
+                $(".calen-day.selected-date").each((i,item)=>{
+            
+                    item.classList.remove('selected-date')
+                    item.classList.remove('end-date-hl')
+                    item.classList.remove('start-date-hl')
+
+                })
+        } 
+       
+        //selecting 
+        $(".calen-day").each((i,item)=>{
+
+            if(item.dataset.fulldate == selectDate[0]) item.classList.add('start-date-hl')
+            if(item.dataset.fulldate == selectDate[1]) item.classList.add('end-date-hl')
+
+            if(selectDate.length == 2 && item.dataset.fulldate >= selectDate[0] && item.dataset.fulldate <= selectDate[1]){
+                
+                item.classList.add('selected-date')
+                if(item.className.includes('disabled-select')){
+                    selectDate.length = 0
+                    $(".calen-day.selected-date").each((i,item)=>{
+
+                        item.classList.remove('selected-date')
+                        item.classList.remove('start-date-hl')
+                        item.classList.remove('end-date-hl')
+                    })
+                }
+                
+            }
+           
+            if(selectDate.length == 0){
+                item.classList.remove('selected-date')
+                item.classList.remove('start-date-hl')
+                item.classList.remove('end-date-hl')
+            }
+        })
+   
+
+  
+        if(selectDate.length == 0){
+          $(".selected-start-date").text('--')
+          $(".selected-end-date").text('--')
+          $(".selected-amount-date").text('0 days')
+          $(".selected-amount-date").removeClass('status-error')
+          $("#btn_rent_date").prop('disabled',true)
+
+        }
+
+        if(selectDate.length == 1){
+          $(".selected-start-date").text( convertDate(selectDate[0],'dmy').join(' / '))
+          $(".selected-end-date").text('--')
+          $(".selected-amount-date").text('0 days')
+          $(".selected-amount-date").removeClass('status-error')
+          $("#btn_rent_date").prop('disabled',true)
+
+        }
+        if(selectDate.length == 2){
+          
+          $(".selected-start-date").text(convertDate(selectDate[0],'dmy').join(' / '))
+          $(".selected-end-date").text(convertDate(selectDate[1],'dmy').join(' / '))
+          $(".selected-amount-date").text(dateDiff(selectDate[0],selectDate[1])+' days')
+         
+          if(dateDiff(selectDate[0],selectDate[1]) > 30){
+            $(".selected-amount-date").addClass('status-error')
+          }else{
+            $("#btn_rent_date").prop('disabled',false)
+            $(".selected-amount-date").removeClass('status-error')
+
+          }
+        }
+
+        $("#btn_rent_date").click((e)=>{
+            e.preventDefault()
+            $("#start_rent")[0].dataset.value = selectDate[0]
+            $("#end_rent")[0].dataset.value = selectDate[1]
+            $("#date_amount").val(dateDiff(selectDate[0],selectDate[1]))
+
+            renderInputDate('start_rent')
+            renderInputDate('end_rent')
+
+            let days = dateDiff(selectDate[0],selectDate[1])
+            let price = days* <?php echo (int) $vehicle_detail['rate']; ?>;
+            let deposit = <?php echo (int) $vehicle_detail['deposit']; ?>;
+
+            $(".sum-rateperday").html(`${days} days | ${price.toLocaleString()} ฿`)
+            $('#total_price').html(` ${(price+deposit).toLocaleString()} `)
+
+            $("#form_quotation").removeClass('slide-out-to-left')
+            $("#form_calendar").removeClass('slide-form')
+
+            setTimeout(() => {
+            $("#form_calendar").css("display",'none')
+            }, 500);
+
+            $('.close-panel#close_calendar').addClass('d-none')
+            $('.close-panel#close_modal').removeClass('d-none')
+
+        })
+
+
+        console.log(fullDate)
+        console.log(selectDate)
+    })
+
+
+    /* -------------------------------------------- */
+    function convertDate(fulldate,format='mdy'){
+        fulldate = (''+fulldate)
+        y = (fulldate.slice(0,4))
+        m = (fulldate.slice(4,6))
+        d = (fulldate.slice(6,8))
+
+        if(format == 'mdy'){
+          return [m,d,y]
+        }else if(format == 'dmy'){
+          return [d,m,y]
+        }
+    }
+
+    function dateDiff(date1,date2){
+        let date_format1 = new Date(convertDate(date1))
+        let date_format2 = new Date(convertDate(date2))
+        const diffTime = Math.abs(date_format2 - date_format1);
+        const diffDays = Math.ceil(diffTime / 86400000); 
+        return diffDays
+    }
+
+    function renderColor(){
+    setTimeout(() => {
+        let i = 0
+        let count = setInterval(() => {
+            $('.calen-day')[i].classList.remove('color-none')
+
+            if(i == $('.calen-day').length-1){
+                clearInterval(count)
+            }
+            i++;
+
+        }, 5);
+        }, 100);
+    }
+
+
+
+
+    function daysInYear(year) {
+        
+    return ((year % 4 === 0 && year % 100 > 0) || year %400 == 0) ? 366 : 365;
+    }
+
+    function renderCelendarPoint(year){
+          let arrDaysOfMonth = []
+
+    for (let i = 1 ; i <= 12; i++){
+        arrDaysOfMonth.push(new Date(year, i, 0).getDate())
+    }
+    
+    let month_c = 0;
+    let c2 = 0
+
+    let disabled_select = ''
+
+    let date_ex = date_arr
+    let c_arr = 0;
+
+    let month_section = ["red6","orange6","yellow6",'lime6',"green6",'teal6','cyan6',"blue6","indigo6","violet6",'purple','grape6']
+
+    $("#calendar_points")[0].insertAdjacentHTML("beforeend",`<section class='section-year' id='year_${year}'></section>` )
+
+    for (let i = 1 ; i <= daysInYear(year); i++){
+        c2++
+        if(c2 > arrDaysOfMonth[month_c]){
+            month_c += 1;
+            c2 = 1
+        }
+
+
+        let fullDate = `${year}${("0"+(+month_c+1)).slice(-2)}${("0"+(c2)).slice(-2)}`
+        let month = `${("0"+(month_c+1)).slice(-2)}`
+        let date = `${("0"+(c2)).slice(-2)}`
+
+        disabled_select_before =  +fullDate < TODAY ? 'disabled-select' : '' 
+
+       if(+date_ex[c_arr] <= +fullDate && +date_ex[c_arr+1] >= +fullDate){
+            disabled_select = 'disabled-select' 
+        } else{
+            disabled_select =  ''
+        }
+        if(+date_ex[c_arr+1] == +fullDate){
+            c_arr +=2
+        }
+     
+
+             $(`#year_${year}`)[0].insertAdjacentHTML("beforeend",`
+                <div class="calen-day color-none ${disabled_select_before} ${disabled_select}" 
+                        data-fulldate = '${fullDate}'
+                        data-year = '${year}'
+                        data-month = '${month}'
+                        data-date = '${date}'
+
+                style="background:var(--${month_section[month_c]});">${date}</div>
+             ` )
+       
+    }
+
+ 
+    renderColor()
+    
+    
+        
+    }
+  
+</script>
   <script>
 
   $('aside').addClass('fade-panel-in')
@@ -1157,12 +1632,26 @@ setTimeout(() => {
         $(".content").addClass('slide-out-to-left')
         $("body").css("overflow","hidden")
         $('html,body').scrollTop(0);
+    
+
+
     })
 
-    $(".close-panel").click((e)=>{
+    $(".close-panel#close_modal").click((e)=>{
         $(".quotation").removeClass('slide-in-from-right')
         $(".content").removeClass('slide-out-to-left')
         $("body").css("overflow","auto")
+
+
+    })
+    $('.close-panel#close_calendar').click((e)=>{
+        $("#form_quotation").removeClass('slide-out-to-left')
+        $("#form_calendar").css("display",'none')
+        $("#form_calendar").removeClass('slide-form')
+
+        $('.close-panel#close_calendar').addClass('d-none')
+        $('.close-panel#close_modal').removeClass('d-none')
+
     })
 
     $("#next-1").click((e)=>{
@@ -1171,7 +1660,6 @@ setTimeout(() => {
       $("#form_payment").css("display",'block')
       $("#form_payment").addClass('slide-form')
 
-      rendetEndDate()
 
       let price = parseInt($('#total_price').text().replace(/,/g, ''), 10)
       let vat = Math.round(price*0.07)
@@ -1216,9 +1704,21 @@ setTimeout(() => {
 
       $("#form_confirm").css("display",'block')
       $("#form_confirm").removeClass('slide-form')
-
-   
     })
+
+    $('#start_rent').click((e)=>{
+      e.preventDefault()
+      $("#form_quotation").addClass('slide-out-to-left')
+      $("#form_calendar").css("display",'flex')
+      $("#form_calendar").addClass('slide-form')
+
+      $('.close-panel#close_calendar').removeClass('d-none')
+      $('.close-panel#close_modal').addClass('d-none')
+
+
+
+    })
+
     let CLIENT_ID = "<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''  ?>"
       let VEHICLE_ID = "<?php echo isset($vehicle_detail['id']) ? $vehicle_detail['id'] : ''  ?>"
 
@@ -1349,17 +1849,21 @@ setTimeout(() => {
 }
 
 
-    function rendetEndDate(){
-      let fulldate = $("#start_rent")[0].dataset.value
-          let d = new Date(fulldate.slice(0,4),fulldate.slice(4,6),(+fulldate.slice(6,8)+(+$("#date_amount").val())))
-          $("#end_rent").val(`${d_en_sm[d.getDay()]}, ${("0"+d.getDate()).slice(-2)} ${m_en_full[d.getMonth()]} ${d.getFullYear()}`)
+    function renderInputDate(id = ''){
+          let fulldate = $("#"+id)[0].dataset.value
+          let convertedDate = convertDate(fulldate,'dmy')
+          let d = new Date(convertedDate[2],+convertedDate[1]-1,convertedDate[0])
 
-          $("#end_rent")[0].dataset.value = `${d.getFullYear()}${("0"+(d.getMonth())).slice(-2)}${("0"+d.getDate()).slice(-2)}`
+          console.log(d)
+
+          let d_en_sm = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
+          let m_en_full = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+          $("#"+id).val(`${d_en_sm[d.getDay()]}, ${("0"+d.getDate()).slice(-2)} ${m_en_full[d.getMonth()+1]} ${d.getFullYear()}`)
+          $("#"+id)[0].dataset.value = `${d.getFullYear()}${("0"+(d.getMonth())).slice(-2)}${("0"+d.getDate()).slice(-2)}`
     }
 
-    let d_en_sm = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
-    let m_en_full = ['','January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-
+ 
     $("#btn_incr_day").click((e)=>{
       e.preventDefault()
     
@@ -1462,7 +1966,7 @@ setTimeout(() => {
 
     let d = new Date()
 
- $("#start_rent").Calendar('calendar',{
+/*  $("#start_rent").Calendar('calendar',{
   format : "dd/MM/yyyy",
   separation : " ",
     lang : "en",
@@ -1470,7 +1974,7 @@ setTimeout(() => {
     closeOnSelect : true,
     max  : 30000101, 
     min : d.getFullYear()+""+("0"+(d.getMonth()+1)).slice(-2)+""+("0"+d.getDate()).slice(-2)
-}) 
+})  */
 $("#end_rent").prop('readonly',true)
 
 

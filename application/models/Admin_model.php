@@ -35,7 +35,7 @@ class Admin_model extends CI_Model
         return $this->db->get($table)->result_array();
     }
 
-    //dashboard Data 
+    //dashboard Data --------------
 
     public function get_count_vehicle_status(){
         $sql = "SELECT 
@@ -58,9 +58,35 @@ class Admin_model extends CI_Model
         COUNT(CASE WHEN cli.approve_status = '1' THEN cli.id END ) as approve,
         COUNT(CASE WHEN cli.approve_status = '2' THEN cli.id END ) as pending
         FROM `tbl_client` cli ";
-        $data =  $this->db->query($sql)->result_array();
-        return $data;
+      return $this->db->query($sql)->result_array();
                 
+    }
+
+    public function get_summary(){
+        $sql = "SELECT COUNT(veh.id)  as veh,
+        (SELECT COUNT(cli.id) as cl FROM tbl_client cli WHERE cli.role = '1') as cli ,
+        (SELECT COUNT(ren.id) as re FROM tbl_rental ren ) as ren
+        FROM tbl_vehicle veh";
+
+          return  $this->db->query($sql)->result_array();
+    }
+
+    //---------------------------------------
+
+    public function get_renting_dateArray($vehicle_id){
+        $sql = "SELECT start_rent_date,end_rent_date FROM `tbl_rental` rent 
+        WHERE rent.vehicle_id = ".$vehicle_id."  AND rent.data_status = '1' AND (rent.request_status = '2' OR rent.returned_status = '2')
+        ORDER BY rent.start_rent_date";
+
+       $data = $this->db->query($sql)->result_array();
+       $date_arr = [];
+
+        foreach( $data as $date_value){
+            array_push($date_arr,$date_value['start_rent_date']);
+            array_push($date_arr,$date_value['end_rent_date']);
+        }
+
+        return $date_arr;
     }
 
     public function get_client_data(){
@@ -83,19 +109,28 @@ class Admin_model extends CI_Model
         
     }
 
+    public function get_rental_byVehicleID($vehicle_id){
+        $sql  = "SELECT * FROM `tbl_rental` rent 
+        WHERE rent.vehicle_id = ".$vehicle_id." AND rent.data_status = '1'";
+        return $this->db->query($sql)->result_array();
+
+    }
+
     public function get_rental_data(){
  
             $sql_lastest = 
             "SELECT * ,
-                cli.name as client_name 
+                cli.name as client_name, 
+                ren.date_add as request_date
                 FROM `tbl_rental` ren
                 INNER JOIN tbl_client as cli on ren.client_id = cli.id
                 INNER JOIN tbl_vehicle as veh on ren.vehicle_id = veh.id
-                WHERE ren.data_status = '1'";
+                WHERE ren.data_status = '1'
+                ORDER BY ren.id ASC"
+                ;
 
-        $lastest_data =  $this->db->query($sql_lastest)->result_array();
+                return  $this->db->query($sql_lastest)->result_array();
 
-        return $lastest_data; 
 
     }
 

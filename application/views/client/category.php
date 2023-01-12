@@ -278,16 +278,7 @@ a{
             </ul>
           </div>
 
-          <div class="sort-section">
-            <div> Seat</div>
-            <ul>
-                <li><i class="fa-regular fa-square"></i> 2 </li>
-                <li><i class="fa-regular fa-square"></i> 4 </li>
-                <li><i class="fa-regular fa-square"></i> 6 </li>
-
-            </ul>
-          </div>
-          
+       
 
             
             
@@ -295,14 +286,30 @@ a{
         </aside>
 
         <section class="content" >
-            <?php foreach($vehicle_data as $value){ ?>
-            <a class="car-item" href="<?php echo base_url('/Control/preview/').$value['id'] ?>"> 
+            <?php foreach($vehicle_data as $value){ 
+              $is_renting = false;
+              $rental_data =  $this->Admin_model->get_rental_byVehicleID($value['id']);
+
+              if(count($rental_data) > 0){
+
+              $start_rent = DateTime::createFromFormat('Ymd', $rental_data[0]['start_rent_date']);
+              $end_rent = DateTime::createFromFormat('Ymd', $rental_data[0]['end_rent_date']);
+
+              $today = new DateTime();
+
+
+              $is_renting =  $today >= $start_rent && $today <= $end_rent && $value['vehicle_status'] == '2';
+
+            }
+
+              ?>
+            <a class="car-item" style="opacity: <?php echo $is_renting ? '50%' : '100%'?>;"  href="<?php echo $is_renting ? 'javascript:void(0)' : base_url('/Control/preview/').$value['id'] ?>"> 
               <?php echo $value['vehicle_type'] == '1' ?  '<i class="fa-solid fa-car-side"></i> ' : '<i class="fa-solid fa-motorcycle"></i>' ?>
               <div class="car-item-image">
                 <img src="<?php echo $value['image_type'] == '1'? base_url("/uploads/images/".$value['image_url']) : $value['image_url'] ?>">
               </div>
               <div class="car-item-name">
-                <?php echo $value['name'] ?>
+                <?php echo $is_renting ? 'Can rent again in : '.$end_rent->format('d/m/Y') : $value['name'] ?>
               </div> 
             </a>
             <?php } ?>

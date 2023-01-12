@@ -21,6 +21,7 @@ class Control extends CI_Controller {
 	{
 		$data['data_id'] = $data_id;
 		$data['vehicle_data'] = $this->Admin_model->get_full_dataById('tbl_vehicle',$data_id);
+		$data['renting_date_arr'] = json_encode($this->Admin_model->get_renting_dateArray($data_id));
 
 
 			$this->load->view('/client/preview',$data);

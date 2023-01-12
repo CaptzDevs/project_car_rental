@@ -129,7 +129,7 @@ background: #000;
             <a href="/">Home</a>
         </li>   
         <li>
-            <a href="/Cars">Cars</a>
+            <a href="<?php echo base_url("/Control/Category/")?>">Cars</a>
         </li>
         <li>
             <a href="/Service">Service</a>
@@ -142,7 +142,7 @@ background: #000;
     </ul>
     <div class='header-panel'>
           <?php if( isset( $_SESSION['id'])){ ?>
-            <div class="header-panel-icon" id="user-profile"><i class="fa-solid fa-user"></i></div>
+            <div class="header-panel-icon" id="user-profile"> <?php echo  $_SESSION['username'] ?> <i class="fa-solid fa-user"></i></div>
             <div class="header-panel-dropdown">
               <a href="<?php echo base_url("/Client/detail/").$_SESSION['id'] ?>" class="header-dropdown-item">Profile</a>
               <a href="<?php echo base_url("/Client/rental/").$_SESSION['id'] ?>" class="header-dropdown-item">Rental Status</a>

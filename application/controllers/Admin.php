@@ -26,6 +26,15 @@ class Admin extends CI_Controller {
 		$data['all_vehicle'] = $this->Admin_model->get_all_vehicleData_with_ImageSection('tbl_vehicle','overview');
 		$data['all_client'] = $this->Admin_model->get_client_data();
 		$data['all_rental'] = $this->Admin_model->get_rental_data();
+
+		$data['client_status'] = $this->Admin_model->get_count_client_status()[0];
+		$data['vehicle_status'] = $this->Admin_model->get_count_vehicle_status()[0];
+		$data['summary'] = $this->Admin_model->get_summary()[0];
+
+
+		
+
+
 		$this->load->view('/admin/dashboard',$data);
 
 

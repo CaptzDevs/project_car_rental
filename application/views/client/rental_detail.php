@@ -677,19 +677,22 @@ li{
             <?php $ve_status_color_arr = ['error','success','warning'] ?>
     <?php 
 
-    $end_rent = DateTime::createFromFormat('Ymd', $rental_data['end_rent_date']);
     $start_rent = DateTime::createFromFormat('Ymd', $rental_data['start_rent_date']);
+    $end_rent = DateTime::createFromFormat('Ymd', $rental_data['end_rent_date']);
 
     
     $today = new DateTime();
-    $interval = $today->diff($end_rent);
+
+    $lateday = $today->diff($end_rent)->format('%a');
     
-    $remainingDays = $interval->format('%a');
+    $date_before_return = $today->diff($end_rent)->format('%a');
 
-    $istimetorent = $today >= $start_rent ;
+    $date_before_renting = $today->diff($start_rent)->format('%a');
 
-    $datebefore_renting = $today->diff($start_rent)->format('%a');
 
+    $is_renting = $today >= $start_rent && $today <= $end_rent;
+    $is_late =  $today >= $start_rent && $today >= $end_rent ;
+ 
  
     ?>
           <div class="form-quotation-head">
@@ -698,17 +701,31 @@ li{
             <div style="font-size: .8rem;" class="status status-<?php echo $rental_data ? $ve_status_color_arr[$rental_data['request_status']]  : '' ?> rounded px-2">
             <?php echo $rental_data ? $ve_status_arr[$rental_data['request_status']]  : '' ?> <!-- <i class="fa-solid fa-check"></i> --></div>
 
-            <?php if($datebefore_renting > 0  && $rental_data['request_status'] != 0){ ?> 
+            <?php if($date_before_renting > 0 && $rental_data['request_status'] != 0 && !$is_renting && !$is_late){ ?> 
               <div class="status status-success rounded px-2 mt-1"  style="font-size: .8rem;">
-              <?php echo $datebefore_renting ?> Days before renting
+              <?php echo $date_before_renting ?> Days before renting
             </div>
           <?php  } ?>
-              
-            <?php if($rental_data['request_status'] != 0 && $istimetorent ){ ?>
-            <div class="status status-success <?php echo $remainingDays < 2 ? 'status-error ': '' ?> rounded px-2 mt-1"  style="font-size: .8rem;">
-              <?php echo $remainingDays ?> Days Remain
+
+          <?php if($date_before_renting >= 0 && $rental_data['request_status'] != 0  && $is_renting){ ?> 
+              <div class="status status-success rounded px-2 mt-1"  style="font-size: .8rem;">
+                  Renting
+            </div>
+          <?php  } ?>
+
+            <?php if($rental_data['request_status'] != 0  && $is_renting ){ ?>
+            <div class="status status-success <?php echo $date_before_return < 2 ? 'status-warning ': '' ?> rounded px-2 mt-1"  style="font-size: .8rem;">
+              <?php echo $date_before_return ?> Days remain before return
             </div>
               <?php } ?>
+
+
+              <?php if($rental_data['request_status'] != 0  && $is_late ){ ?>
+            <div class="status status-error rounded px-2 mt-1"  style="font-size: .8rem;">
+              <?php echo $lateday ?> Days Late
+            </div>
+              <?php } ?>
+
           </div>
 
 

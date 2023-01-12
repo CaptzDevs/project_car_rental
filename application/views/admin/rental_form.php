@@ -961,9 +961,10 @@ a{
           <div class="form-group-section borderless">
             <label for="">Request Status</label>
             <div class="vehicle-stastus-form">
-              <div data-value="1" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '1' ? 'status-selected' : '' ?> ">Approve <i class="fa-solid fa-file-check"></i> </div>
-              <div data-value="2" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '2' ? 'status-selected' : '' ?> ">Pending <i class="fa-solid fa-clock"></i></div>
-              <div data-value="0" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '0' ? 'status-selected' : '' ?> ">Denied <i class="fa-solid fa-file-excel"></i></div>
+        
+              <div data-value="1" data-vehicle_id="<?php echo $rental_data['vehicle_id'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '1' ? 'status-selected' : '' ?> ">Approve <i class="fa-solid fa-file-check"></i> </div>
+              <div data-value="2" data-vehicle_id="<?php echo $rental_data['vehicle_id'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '2' ? 'status-selected' : '' ?> ">Pending <i class="fa-solid fa-clock"></i></div>
+              <div data-value="0" data-vehicle_id="<?php echo $rental_data['vehicle_id'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box request_status <?php echo $rental_data && $rental_data['request_status'] == '0' ? 'status-selected' : '' ?> ">Denied <i class="fa-solid fa-file-excel"></i></div>
             </div>
           </div>
 
@@ -971,16 +972,25 @@ a{
           <div class="form-group-section borderless">
             <label for="">Returning Car Status</label>
             <div class="vehicle-stastus-form">
-              <div data-value="1" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '1' ? 'status-selected' : '' ?> "> Returned <i class="fa-solid fa-circle-check"></i></div>
-              <div data-value="0" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '0' ? 'status-selected' : '' ?> "> Renting <i class="fa-solid fa-car-side"></i></div>
-              <div data-value="2" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '2' ? 'status-selected' : '' ?> "> Late <i class="fa-solid fa-clock"></i></div>
+              <div data-value="1" data-vehicle_id="<?php echo $rental_data['vehicle_id'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '1' ? 'status-selected' : '' ?> "> Returned <i class="fa-solid fa-circle-check"></i></div>
+              <div data-value="2" data-vehicle_id="<?php echo $rental_data['vehicle_id'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box returned_status <?php echo $rental_data && $rental_data['returned_status'] == '2' ? 'status-selected' : '' ?> "> Renting <i class="fa-solid fa-car-side"></i></div>
+            
 
             </div>
           </div>
             <?php } ?>
+            <?php if($rental_data['request_status'] == '1' && $rental_data['returned_status'] == '1'){ ?>
         
+            <div class="form-group-section borderless">
+            <label for="">Return Time</label>
+            <div class="vehicle-stastus-form">
+        
+              <div data-value="1" data-vehicle_id="<?php echo $rental_data['is_late'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box is_late <?php echo $rental_data && $rental_data['is_late'] == '1' ? 'status-selected' : '' ?> ">On Time <i class="fa-solid fa-circle-check"></i> </div>
+              <div data-value="0" data-vehicle_id="<?php echo $rental_data['is_late'] ?>" data-id="<?php echo $rental_data['id'] ?>" class="vehicle-stastus-box is_late <?php echo $rental_data && $rental_data['is_late'] == '0' ? 'status-selected' : '' ?> ">Late <i class="fa-solid fa-clock"></i></div>
+            </div>
+          </div>
 
-
+          <?php } ?>
         
           </div>
 
@@ -1101,8 +1111,9 @@ a{
 
     <script>
 
-$(".returned_status,.approve_receipt,.request_status").click((e)=>{
+$(".returned_status,.approve_receipt,.request_status,.is_late").click((e)=>{
   let value = e.target.dataset.value
+  let vehicle_id = e.target.dataset.vehicle_id
   let id = e.target.dataset.id
   if(e.target.className.includes('approve_receipt')){
     $('.approve_receipt').each((i,item)=>{
@@ -1117,7 +1128,17 @@ $(".returned_status,.approve_receipt,.request_status").click((e)=>{
         
         
       })
+
       updateStatus('tbl_rental','id',id,'returned_status',value)
+      updateStatus('tbl_rental','id',id,'is_late','1')
+
+      /* updateStatus('tbl_rental','id',id,'data_status',(+value-1).toString()) */
+
+      
+
+      updateStatus('tbl_vehicle','id',vehicle_id,'vehicle_status',value)
+
+      
       
   }
 
@@ -1125,11 +1146,29 @@ $(".returned_status,.approve_receipt,.request_status").click((e)=>{
     $('.request_status').each((i,item)=>{
         item.classList.remove('status-selected')
       })
-      updateStatus('tbl_rental','id',id,'request_status',value)
-      location.reload()
+        updateStatus('tbl_rental','id',id,'request_status',value)
+
+
+        if(value == '2'){
+          updateStatus('tbl_vehicle','id',vehicle_id,'vehicle_status','1')
+          updateStatus('tbl_rental','id',id,'returned_status','2')
+
+        }else  if(value == '1'){
+          updateStatus('tbl_vehicle','id',vehicle_id,'vehicle_status','2')
+        }
+
+     /*  location.reload() */
         
    
   }
+
+  if(e.target.className.includes('is_late')){
+    $('.is_late').each((i,item)=>{
+        item.classList.remove('status-selected')
+      })
+      updateStatus('tbl_rental','id',id,'is_late',value)
+  }
+
   
 
     e.target.classList.add('status-selected')
@@ -1221,7 +1260,6 @@ function updateStatus(table ,id_name, ref_id , section , value){
 
     datasend[section] = value;
     datasend[id_name] = ref_id;
-
 
     
     $.ajax({

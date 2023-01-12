@@ -612,18 +612,20 @@ border: 1px solid white;
           <section class="banner">
                     <div class="banner-card">
                       <i class="fa-solid fa-car-side"></i>
-                      <span class="banner-amount">150</span>
+                      <span class="banner-amount"><?php echo $summary['veh'] ?></span>
                       <span class="lbl_amount">Cars</span>
                     </div>
 
                     <div class="banner-card">
                       <i class="fa-duotone fa-file-check"></i>
-                      <span class="banner-amount">150</span>
+                      <span class="banner-amount"><?php echo $summary['ren'] ?></span>
+
                       <span class="lbl_amount">Rented</span>
                     </div>
                     <div class="banner-card">
                       <i class="fa-solid fa-users"></i>
-                      <span class="banner-amount">150</span>
+                      <span class="banner-amount"><?php echo $summary['cli'] ?></span>
+
                       <span class="lbl_amount">Customer</span>
                     </div>
 
@@ -632,27 +634,80 @@ border: 1px solid white;
                 <div class="card-status">
                     <div class="card-status-bar status-avalible"></div>
                     <div class="status-label">Avalible <i class="fa-solid fa-file-lines"></i></div>
-                    <div class="status-amount">50</div>
+                    <div class="status-amount"><?php echo $vehicle_status['ready'] ?></div>
                 </div>
                 <div class="card-status">
                   <div class="card-status-bar status-rented"></div>
                     <div class="status-label">Rented  <i class="fa-solid fa-file-check"></i></div>
-                    <div class="status-amount"> 50 </div>
+                    <div class="status-amount">  <?php echo $vehicle_status['rented'] ?> </div>
                 </div>
                 <div class="card-status">
                   <div class="card-status-bar status-fixing"></div>
                     <div class="status-label">Fixing <i class="fa-solid fa-file-exclamation"></i> </div>
-                    <div class="status-amount">50</div>
+                    <div class="status-amount"> <?php echo $vehicle_status['fixing'] ?></div>
                 </div>
                 <div class="card-status">
                   <div class="card-status-bar status-broken"></div>
                     <div class="status-label">Broken <i class="fa-solid fa-file-excel"></i> </div>
-                    <div class="status-amount">50</div>
+                    <div class="status-amount"> <?php echo $vehicle_status['broken'] ?></div>
                 </div>
 
             </section>
+            <?php  
+                  $status_client_color = ['error','success','warning'] ;
+                  $status_client_arr = ['late','returned','renting'];
+                  /* print_r($all_rental)  */
+                  ?>
+            <section class="section-table">
+              <div class="label-text">Rent Detail <i class="fa-solid fa-files"></i></div>
+              <div class="table-responsive text-nowrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th  scope="col">#</th>
+                    <th  scope="col">Client</th>
+                    <th  scope="col">Vehicle</th>
+                    <th  scope="col">Send Request Date</th>
+                    <th  scope="col">Start Rent</th>
+                    <th  scope="col">End Rent</th>
+                    <th  style="width: 10%;"  scope="col">Rent Status</th>
+                    <th style="width: 10px;" scope="col"></th>
 
-            <?php $status_arr = ['broken','avalible' , 'rented' , 'fixing' , ] ?>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php $i = 0 ?>
+                  <?php foreach($all_rental as $value){ 
+                    $i++;
+                       $start_date = DateTime::createFromFormat('Ymd', $value['start_rent_date'])->format('d / m / Y');
+                       $end_date = DateTime::createFromFormat('Ymd', $value['end_rent_date'])->format('d / m / Y');
+                    ?>
+                  <tr class="data-row rent_data" data-id="<?php echo $value['client_id']?>">
+                    <th scope="row"><?php echo $i ?></th>
+                    <td><?php echo $value['client_name'] ?></td>
+                    <td><?php echo $value['name'] ?></td>
+                    <td><?php echo $value['request_date'] ?></td>
+                    <td><?php echo $start_date ?></td>
+                    <td><?php echo $end_date ?></td>
+
+                    <td >
+                      <div class="status-box <?php echo $value['request_status'] == '2' ? "status-".$status_client_color[$value['returned_status']] : "status-border-".($value['is_late'] == '1' ? $status_client_color[$value['returned_status']] : 'error')?>" >
+                      <?php echo $value['request_status'] == '2' ? 'Pending ...' :  $status_client_arr[$value['returned_status']]  ; ?>
+                      <?php echo $value['is_late'] == '0' ?  "(Late)"  :  " " ; ?>
+
+                    </div>
+                  </td>
+                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
+                  </tr>
+                  <?php } ?>
+
+                
+                </tbody>
+              </table>
+            </div>
+            </section>
+
+            <?php $status_arr = ['broken','avalible' , 'rented' , 'fixing'] ?>
 
         <section class="table-group">  
             <section class="section-table">
@@ -661,7 +716,7 @@ border: 1px solid white;
               <table class="table">
                 <thead>
                   <tr>
-                    <th  scope="col">ID</th>
+                    <th  scope="col">#</th>
                     <!-- <th  scope="col">Image</th> -->
                     <th  scope="col">Name</th>
                     <th style="width: 20%;"  scope="col">Status</th>
@@ -705,7 +760,7 @@ border: 1px solid white;
               <table class="table">
                 <thead>
                   <tr>
-                    <th  scope="col">ID</th>
+                    <th  scope="col">#</th>
                     <th  scope="col">Name</th>
                     <th  scope="col">Email</th>
                     <th  scope="col">Detail</th>
@@ -763,54 +818,7 @@ border: 1px solid white;
               </table>
             </div>
             </section>
-            <?php  $status_client_color = ['warning','success','error'] ;
-                  $status_client_arr = ['renting','returned','late'];
-                  /* print_r($all_rental)  */
-                  ?>
-            <section class="section-table">
-              <div class="label-text">Rent Detail <i class="fa-solid fa-files"></i></div>
-              <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th  scope="col">ID</th>
-                    <th  scope="col">Client</th>
-                    <th  scope="col">Vehicle</th>
-                    <th  scope="col">Start Rent</th>
-                    <th  scope="col">End Rent</th>
-                    <th  style="width: 10%;"  scope="col">Rent Status</th>
-                    <th style="width: 10px;" scope="col"></th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                 <?php $i = 0 ?>
-                  <?php foreach($all_rental as $value){ 
-                    $i++;
-                       $start_date = DateTime::createFromFormat('Ymd', $value['start_rent_date'])->format('d / m / Y');
-                       $end_date = DateTime::createFromFormat('Ymd', $value['end_rent_date'])->format('d / m / Y');
-                    ?>
-                  <tr class="data-row rent_data" data-id="<?php echo $value['client_id']?>">
-                    <th scope="row"><?php echo $i ?></th>
-                    <td><?php echo $value['client_name'] ?></td>
-                    <td><?php echo $value['name'] ?></td>
-                    <td><?php echo $start_date ?></td>
-                    <td><?php echo $end_date ?></td>
-
-                    <td >
-                      <div class="status-box <?php echo $value['request_status'] == '2' ? "status-".$status_client_color[$value['returned_status']] : "status-border-".$status_client_color[$value['returned_status']] ?>" >
-                      <?php echo $value['request_status'] == '2' ? 'Pending ...' : $status_client_arr[$value['returned_status']]  ; ?>
-                    </div>
-                  </td>
-                    <td> <button class="btn-edit"><i class="fa-regular fa-file-lines"></i></button> </td>
-                  </tr>
-                  <?php } ?>
-
-                
-                </tbody>
-              </table>
-            </div>
-            </section>
+          
         </section>
 
         </div>

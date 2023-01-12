@@ -683,8 +683,9 @@ border: 1px solid white;
             ?>
 
 
-<?php  $status_client_color = ['warning','success','error'] ;
-                  $status_client_arr = ['renting','returned','late'];
+                <?php 
+                 $status_client_color = ['error','success','warning'] ;
+                  $status_client_arr = ['late','returned','renting'];
                   /* print_r($all_rental)  */
                   ?>
             <section class="section-table">
